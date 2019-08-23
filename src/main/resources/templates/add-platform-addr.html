@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <title>平台地址操作</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <base th:href="@{/}">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <style>
+        table td{
+            text-align: center;
+        }
+        .tableLeft{
+            background-color: #f5f5f5;
+        }
+        .tableRight{
+            text-align: right;
+        }
+        textarea{
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <input type="hidden" id="id" th:value="${addr.id}">
+    <div class="row">
+        <table class="table table-hover table-bordered">
+            <tbody>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>地址前缀</td>
+                <td><input type="text" placeholder="请输入参数名称,如:广西柳州" class="form-control input-width-auto" id="addrPrefix" name="addrPrefix" th:value="${addr.addrPrefix}"></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>负责人</td>
+                <td><input type="text" placeholder="请输入参数编码" class="form-control input-width-auto" id="responsibleMan" name="responsibleMan" th:value="${addr.responsibleMan}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>运费</td>
+                <td><input type="text" placeholder="请输入参数名称" class="form-control input-width-auto" id="freight" name="freight" th:value="${addr.freight}"></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>负责人电话</td>
+                <td><input type="text" placeholder="请输入参数编码" class="form-control input-width-auto" id="responsiblePhone" name="responsiblePhone" th:value="${addr.responsiblePhone}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>地址排序字母</td>
+                <td>
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <input type="text" placeholder="请输入参数名称" class="form-control input-width-auto" id="sortChar" name="sortChar" th:value="${addr.sortChar}">
+                        </div>
+                        <div style="color: red;padding-left: 10px;line-height: 45px">优先排序</div>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>地址名称</td>
+                <td style="text-align: left"><input type="text" placeholder="请输入地址名称,如: XX小区" class="form-control input-width-auto" id="addrName" name="addrName" th:value="${addr.addrName}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>地址排序</td>
+                <td>
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <input type="text" placeholder="请输入参数名称" class="form-control input-width-auto" id="addrSort" name="addrSort" th:value="${addr.addrSort}">
+                        </div>
+                        <div style="color: red;padding-left: 10px;line-height: 45px">地址排序,数据越大越靠前</div>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>地址类型</td>
+                <td>
+                   <div style="text-align: left" th:if="${addr.id == null || addr.id == 0}">
+                       <input type="checkbox" name="addrType" th:checked="${addr.addrType == 4}" value="4">自取&nbsp;&nbsp;
+                       <input type="checkbox" name="addrType" th:checked="${addr.addrType == 5}" value="5">配送&nbsp;&nbsp;
+                       <input type="checkbox" name="addrType" th:checked="${addr.addrType == 6}" value="6">还货&nbsp;&nbsp;
+                   </div>
+                   <div style="text-align: left" th:if="${addr.id > 0}">
+                       <div style="display: flex">
+                           <div class="form-group">
+                               <select class="form-control" name="addrType" id="addrType">
+                                   <option value="4" th:selected="${addr.addrType == 4}">自取</option>
+                                   <option value="5" th:selected="${addr.addrType == 5}">配送</option>
+                                   <option value="6" th:selected="${addr.addrType == 6}">还货</option>
+                               </select>
+                           </div>
+                       </div>
+                   </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>详细地址</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none"  rows="3" th:text="${addr.detailAddr}" id="detailAddr" name="detailAddr" placeholder="完整地址"></textarea></td>
+            </tr>
+            <tr>
+                <td class="tableLeft">详细说明</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none"  rows="3" th:text="${addr.addrDesc}" id="addrDesc" name="addrDesc"></textarea></td>
+            </tr>
+            <tr>
+                <td class="tableLeft">备注</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none"  rows="6" th:text="${addr.remark}" id="remark" name="remark"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <input type="button" value="返回列表" onclick="javascript:window.location.href = 'addr/platformAddrPage'" class="btn btn-info">
+                    <input type="button" value="保存并继续添加" class="btn btn-success" data-mark="1" th:if="${addr.id == null || addr.id == 0}">
+                    <input type="button" value="保存" class="btn btn-success" data-mark="0">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<!-- Data picker -->
+<script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<!-- layerDate plugin javascript -->
+<script src="js/plugins/layer/laydate/laydate.js"></script>
+
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+
+<!-- 自定义js -->
+<script src="js/common.js" th:inline="javascript"></script>
+<script th:inline="javascript">
+
+    $(".btn-success").on("click",function (e) {
+        var id = $("#id").val();
+        var addrPrefix = $("#addrPrefix").val();
+        if (addrPrefix == '') {
+            return myAlertSimple("请输入地址前缀");
+        }
+        var freight = $("#freight").val();
+        var regPrice =  /^\d+(\.\d+)?$/;
+        if (!regPrice.test($.trim(freight))) {
+            return myAlertSimple("非法运费");
+        }
+        var responsibleMan = $("#responsibleMan").val();
+        if (responsibleMan == '') {
+            return myAlertSimple("请输入负责人");
+        }
+        var responsiblePhone = $("#responsiblePhone").val();
+        if (responsiblePhone == '') {
+            return myAlertSimple("请输入负责人电话");
+        }
+        var sortChar = $("#sortChar").val()
+        var az = /^[A-Z]{0,1}$/;
+        if( !az.test($.trim(sortChar))){
+            return myAlertSimple("地址排序字母,大写A到Z");
+        }
+        var addrSort = $("#addrSort").val();
+        var regNum=/^[0-9]*$/;
+        if(!regNum.test($.trim(addrSort))){
+            return myAlertSimple("非法排序");
+        }
+        var addrTypes = "";
+        if (id > 0) {
+            addrTypes = $("#addrType").val();
+        }else{
+            var addrTypeObj = $("input[name='addrType']");
+            addrTypeObj.each(function () {
+                if($(this).is(':checked')){
+                    addrTypes = addrTypes + $(this).val().trim() +",";
+                }
+            })
+        }
+
+        if(addrTypes == ''){
+            return myAlertSimple("请选择地址类型");
+        }
+        var addrName = $("#addrName").val();
+        if (addrName == '') {
+            return myAlertSimple("请输入地址名称");
+        }
+        var detailAddr = $("#detailAddr").val();
+        if (detailAddr == '') {
+            return myAlertSimple("请输入详细地址");
+        }
+        var addrDesc = $("#addrDesc").val();
+        var remark = $("#remark").val();
+
+        var mark = $(this).attr("data-mark");
+        if (id > 0) {
+            mark = 0;
+        }
+        var data = {
+            "addr.id":id,
+            "addr.addrPrefix":addrPrefix.trim(),
+            "addr.freight":freight.trim(),
+            "addr.responsibleMan":responsibleMan.trim(),
+            "addr.responsiblePhone":responsiblePhone.trim(),
+            "addr.sortChar":sortChar.trim(),
+            "addr.addrSort":addrSort.trim(),
+            "addrTypes":addrTypes,
+            "addr.addrName":addrName.trim(),
+            "addr.detailAddr":detailAddr.trim(),
+            "addr.addrDesc":addrDesc.trim(),
+            "addr.remark":remark.trim()
+        }
+        //上传完得到id 或者路径 标志上传成功
+        $.ajax({
+            url: "addr/savePlatformAddrData",
+            type: 'POST',
+            data: data,// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                if (code == "1") {
+                    myAlertSimple(data.msg);
+                    if(mark == 1){
+                        setTimeout("javascript:window.location.href = 'addr/addPlatformAddrPage'",1000);
+                    }else {
+                        setTimeout("javascript:window.location.href = 'addr/platformAddrPage'",1000);
+                    }
+                }
+            }
+        });
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <title>增加抢购商品</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <base th:href="@{/}">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <style>
+        table td{
+            text-align: center;
+        }
+        .tableLeft{
+            background-color: #f5f5f5;
+        }
+        .deleteImg{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            top: 27px;
+            right: 2px;
+            text-align: right;
+        }
+        .shop-info-img{
+            /*display: flex;*/
+            width: 100%;
+        }
+
+        .shop-info-img>div{
+            float: left;
+            width: 25%;
+            height: 300px;
+            padding: 0px 18px;
+        }
+        .shop-info-img>div>img{
+            border: 2px solid #ccc;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            top: -25px;
+            cursor:pointer;
+        }
+        .deleteImg0{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            top: 27px;
+            right: 2px;
+            text-align: right;
+        }
+        .deleteImg{
+            width: 100%;
+            height: 25px;
+            position: relative;
+            top: 10px;
+            right: 10px;
+            text-align: right;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <input type="hidden" id="goodsId" th:value="${goods.goodsId}">
+    <input type="hidden" id="timeGoodsId" th:value="${timeGoods.id}">
+
+    <div class="row">
+        <table class="table table-hover table-bordered">
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>商品标识</td>
+                <td style="text-align: left"><span style="padding-left: 15px" th:text="${goods.goodsId}"></span></td>
+                <td rowspan="6" class="tableLeft"><span style="color: red;font-weight: bold"> </span>图片</td>
+                <td rowspan="6">
+                    <div id = "imgShowDiv">
+                        <img style="border: 1px solid #ccc" src="./img/null.jpg" width="200px" height="200px" th:if="${webImgPath == ''}">
+                        <img style="border: 1px solid #ccc" th:src="${webImgPath}"   width="200px" height="200px" th:if="${webImgPath != ''}">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>商品名称</td>
+                <td style="text-align: left"><span style="padding-left: 15px" th:text="${goods.goodsName}"></span></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>商品成本价</td>
+                <td style="text-align: left"><span style="padding-left: 15px" th:text="${goods.purchasePrice}"></span></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>商品原价</td>
+                <td style="text-align: left"><span style="padding-left: 15px" th:text="${goods.trueMoney}"></span></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>商品销售价格</td>
+                <td style="text-align: left"><span style="padding-left: 15px" th:text="${goods.nowMoney}"></span></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>商品库存</td>
+                <td style="text-align: left"><span style="padding-left: 15px" th:text="${goods.goodsNum}"></span></td>
+            </tr>
+        </table>
+        <table class="table table-hover table-bordered">
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>开始时间</td>
+                <td>
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input type="text" class="form-control"  placeholder="请输入开始时间"  readonly th:value="${#dates.format(timeGoods.beginTime, 'yyyy-MM-dd HH:mm:ss')}" id="beginTime" name="beginTime" >
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>抢购价</td>
+                <td><input type="text" placeholder="请输入抢购价" class="form-control" name="timePrice" id="timePrice" th:value="${timeGoods.timePrice}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>结束时间</td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input type="text" class="form-control" readonly placeholder="请输入结束时间" th:value="${#dates.format(timeGoods.endTime, 'yyyy-MM-dd HH:mm:ss')}" id="endTime" name="endTime" >
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>限购方式</td>
+                <td>
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <select  class="form-control" name="timeWay" id="timeWay" >
+                                <option value="-1">--选择限购方式--</option>
+                                <option value="1" th:each="p:${listParam}" th:selected="${p.paramKey == timeWay}" th:value="${p.paramKey}"><span th:text="${p.paramValue}"></span></option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>库存</td>
+                <td><input type="text" placeholder="请输入库存" class="form-control" name="goodsStore" id="goodsStore" th:value="${timeGoods.goodsStore}"></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">*  </span>限购数</td>
+                <td><input type="text" placeholder="请输入限购数" class="form-control" name="limitNum" id="limitNum" th:value="${timeGoods.limitNum}"></td>
+            </tr>
+
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>权重</td>
+                <td>
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <input type="text" placeholder="请输入权重" class="form-control input-width-auto" id="dataIndex" name="dataIndex" th:value="${timeGoods.weight}" >
+                        </div>
+                        <div style="color: red;padding-left: 10px;line-height: 45px">数值越大越靠前</div>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>限购统计开始时间</td>
+                <td>
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input type="text" class="form-control"  placeholder="请输入限购统计开始时间"  readonly th:value="${#dates.format(timeGoods.limitBeginTime, 'yyyy-MM-dd HH:mm:ss')}" id="limitBeginTime" name="limitBeginTime" >
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="tableLeft">备注</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="4"  id="remark" name="remark" th:text="${timeGoods.remark}"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <input type="button" value="返回列表" onclick="javascript:window.location.href = 'goods/goodsPage'" class="btn btn-info" th:if="${fromPage == 0}">
+                    <input type="button" value="返回列表" onclick="javascript:window.location.href = 'timeGoods/timeGoodsPage'" class="btn btn-info" th:if="${fromPage == 1}">
+                    <input type="button" value="保存" class="btn btn-success btn-save" data-mark="0">
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- Data picker -->
+<script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<!-- 自定义js -->
+<script src="js/content.js?v=1.0.0"></script>
+<script src="js/common.js" th:inline="javascript"></script>
+<script src="js/imgUtils.js" th:inline="javascript"></script>
+<script src="js/laydate/laydate.js"></script>
+
+<script th:inline="javascript">
+    $(".btn-save").on("click",function (e) {
+        var goodsId = $("#goodsId").val();
+        var timeGoodsId = $("#timeGoodsId").val();
+        var beginTime = $("#beginTime").val();
+        var timePrice = $("#timePrice").val();
+        var endTime = $("#endTime").val();
+        var timeWay = $("#timeWay").val();
+        var goodsStore = $("#goodsStore").val();
+        var limitNum = $("#limitNum").val();
+        var dataIndex = $("#dataIndex").val();
+        var limitBeginTime = $("#limitBeginTime").val();
+        var remark = $("#remark").val();
+
+        var regNum=/^[0-9]*$/;
+        if(!regNum.test($.trim(dataIndex))){
+            return myAlertSimple("非法权重");
+        }
+        if(!regNum.test($.trim(goodsStore))){
+            return myAlertSimple("非法库存");
+        }
+        if(!regNum.test($.trim(limitNum))){
+            return myAlertSimple("非法限购数");
+        }
+        if(!numAndpoint(timePrice)){
+            return myAlertSimple("非法抢购价");
+        }
+
+        if(beginTime == null || beginTime == ''){
+            return myAlertSimple("开始时间不能为空");
+        }
+        if(endTime == null || endTime == ''){
+            return myAlertSimple("结束时间不能为空");
+        }
+        if(endTime < beginTime){
+            return myAlertSimple("结束时间不能小于开始时间");
+        }
+        if(limitBeginTime == null || limitBeginTime == ''){
+            return myAlertSimple("限购统计开始时间不能为空");
+        }
+
+        if(timeWay == -1){
+            return myAlertSimple("选择限购方式");
+        }
+
+        var data = {
+            "id":timeGoodsId,
+            "goodsId":goodsId,
+            "beginTime":beginTime,
+            "endTime":endTime,
+            "timePrice":timePrice,
+            "goodsStore":goodsStore,
+            "limitNum":limitNum,
+            "timeWay":timeWay,
+            "weight":dataIndex,
+            "status":1,
+            "limitBeginTime":limitBeginTime,
+            "remark":remark.trim()
+        }
+        //上传完得到id 或者路径 标志上传成功
+        $.ajax({
+            url: "timeGoods/saveTimeGoodsData",
+            type: 'POST',
+            data: data,// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple(data.msg);
+                if (code == "5" || code == '6') {
+                    var fromPage = [[${fromPage}]];
+                    if(fromPage == 1){
+                        setTimeout("javascript:window.location.href = 'timeGoods/timeGoodsPage'",1000);
+                    }else{
+                        setTimeout("javascript:window.location.href = 'goods/goodsPage'",1000);
+                    }
+                }
+            }
+        });
+    })
+
+</script>
+<script th:inline="javascript">
+    var nowDate = [[${nowDate}]];
+    var beginTime = laydate.render({
+        elem: '#beginTime' //指定元素
+        ,type: 'datetime'
+        ,closeStop: '#beginTime'
+        ,position: 'abolute'
+        , min: nowDate
+        ,done: function(value, date){
+            if(null!=value){
+                date.month = date.month-1;
+                endTime.config.min = date;
+            }
+        }
+    });
+
+    var endTime = laydate.render({
+        elem: '#endTime' //指定元素
+        ,type: 'datetime'
+        ,closeStop: '#endTime'
+        , position: 'abolute'
+    });
+
+    laydate.render({
+        elem: '#limitBeginTime' //指定元素
+        ,type: 'datetime'
+        ,closeStop: '#limitBeginTime'
+        ,position: 'abolute'
+    });
+
+</script>
+
+</body>
+</html>      

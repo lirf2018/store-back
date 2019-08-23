@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+
+    <title>活动管理</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <base th:href="@{/}">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-inline">
+                        <div>
+                            <label>活动标题:</label><input class="form-control input-width190" id="title" name="title" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
+                            <label>状态:</label>
+                            <select class="form-control" id="status" name="status" onchange="searchData()">
+                                <option value="-1">--选择状态--</option>
+                                <option value="1">有效</option>
+                                <option value="0">无效</option>
+                            </select>
+                            <input type="button" class="btn btn-primary" value="查询" onclick="searchData()">
+                            <button class="btn btn-success" type="button" onclick="addOrUpdateData(0)"><i class=""></i><span class="bold">新增</span></button>
+                        </div>
+                    </div>
+                    <div>&nbsp;</div>
+                    <table id="tableId" class="table table-striped table-bordered table-hover display">
+                        <thead>
+                        <tr>
+                            <th>标识</th>
+                            <th>标题</th>
+                            <th>图片</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>权重</th>
+                            <th>状态</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-center">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- Data picker -->
+<script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
+<!-- 自定义js -->
+<script src="js/common.js" th:inline="javascript"></script>
+
+<!-- Page-Level Scripts -->
+<script>
+    var table;
+    $(document).ready(function () {
+        table = $('#tableId').DataTable({
+            serverSide: true,
+            ordering: false,
+            searching: false,
+            bProcessing: false,
+            bLengthChange: false, //改变每页显示数据数量 [10, 20, 30, 40],
+            // aLengthMenu : [10, 20, 30, 40],
+            language: {
+                sInfo: "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+                sInfoEmpty: "显示 0 条",
+            },
+            ajax: {
+                url: 'activity/loadActivityPageData',
+                type: 'POST',
+                data: function (d) {
+                    d.title = $('#title').val();
+                    d.status = $('#status').val();
+                }
+            },
+            columns:[
+                {data: 'activity_id'}
+                ,{data: 'activity_title'}
+                ,{
+                    data: function (obj) {
+                        var img = obj.activity_img == null ? "./img/null.jpg" : obj.activity_img;
+                        return "<img src='"+img+"' width='100px' height='100px'>";
+                    }
+
+                }
+                ,{
+                    data: function (obj) {
+                        return obj.start_time==null?"":obj.start_time;
+                    }
+                }
+                ,{
+                    data: function (obj) {
+                        return obj.end_time==null?"":obj.end_time;
+                    }
+                }
+                ,{
+                    data: function (obj) {
+                        return obj.data_index==null?"":obj.data_index;
+                    }
+                }
+                ,{
+                    data: function (obj) {
+                        return obj.status=='1'?"有效":'<span style="color: red">无效</span>';
+                    }
+                }
+                ,{
+                    data: function (obj) {
+                        return obj.createtime==null?"":obj.createtime;
+                    }
+                }
+            ]
+            ,columnDefs: [{
+                targets: 8,
+                data: null,
+                render: function (data, type, row) {
+                    var html = "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData("+data.activity_id+")'><i class='fa fa-paste'></i> 编辑</button> ";
+                    if(data.status == '1'){
+                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:delData("+data.activity_id+",0)'><i class='fa fa-warning'></i> 删除</button>";
+                    }else{
+                        html = html + "&nbsp;&nbsp;<button class='btn btn-info' data-id='" + data + "' type='button' onclick='javascript:delData("+data.activity_id+",1)'><i class='fa fa-check'></i> 启用</button>";
+                    }
+
+                    return html;
+                }
+            }]
+        });
+    });
+
+    //条件查询
+    function searchData() {
+        table.draw({
+            start: 0
+        });
+    }
+
+    function addOrUpdateData(activityId) {
+        window.location.href = "activity/addActivityPage?activityId="+activityId;
+    }
+
+    //修改订单状态或者删除数据
+    function delData(activityId,status) {
+        $.ajax({
+            url: "activity/updateActivityStatus",
+            type: 'POST',
+            data: {
+                "activityId":activityId,
+                "status":status
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple(data.msg);
+                if (code == "3" || code == '4') {
+                    // setTimeout("javascript:window.location.href = 'activity/activityPage'",1000);
+                    searchOrder();
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+
+</html>

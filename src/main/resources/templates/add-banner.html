@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <title>增加banner</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <base th:href="@{/}">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <style>
+        table td{
+            text-align: center;
+        }
+        .tableLeft{
+            background-color: #f5f5f5;
+        }
+        .deleteImg{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            top: 27px;
+            right: 2px;
+            text-align: right;
+        }
+        .shop-info-img{
+            /*display: flex;*/
+            width: 100%;
+        }
+
+        .shop-info-img>div{
+            float: left;
+            width: 25%;
+            height: 300px;
+            padding: 0px 18px;
+        }
+        .shop-info-img>div>img{
+            border: 2px solid #ccc;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            top: -25px;
+            cursor:pointer;
+        }
+        .deleteImg0{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            top: 27px;
+            right: 2px;
+            text-align: right;
+        }
+        .deleteImg{
+            width: 100%;
+            height: 25px;
+            position: relative;
+            top: 10px;
+            right: 10px;
+            text-align: right;
+            z-index: 100;
+        }
+        .form-control-common{
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <input type="hidden" id="bannerId" th:value="${banner.bannerId}">
+    <input type="hidden" id="img" th:value="${banner.bannerImg}">
+
+    <div class="row">
+        <table class="table table-hover table-bordered">
+            <tbody>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>标题</td>
+                <td><input type="text" placeholder="请输入标题" class="form-control" name="bannerTitle" id="bannerTitle" th:value="${banner.bannerTitle}" ></td>
+                <td rowspan="2" class="tableLeft"><span style="color: red;font-weight: bold"> </span>图片</td>
+                <td rowspan="2" style="text-align: left">
+                    <div id = "imgShowDiv">
+                        <div class="deleteImg0" onclick="deleteImg(this)" delete-mark="0"><img src="./img/delete.png" width="25px" height="25px"></div>
+                        <img style="border: 1px solid #ccc" src="./img/null.jpg" width="80px" height="80px" >
+                    </div>
+                    <form id="fileForm" method="post" enctype="multipart/form-data" action="image/uploadFile">
+                        <input style="border: none" type="file" class="form-control" name="file" id="file" multiple="multiple"  onchange="uploadFile(this)">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>名称</td>
+                <td><input type="text" placeholder="请输入名称" class="form-control" name="bannerName" id="bannerName" th:value="${banner.bannerName}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>权重</td>
+                <td>
+                    <div style="display: flex">
+                        <input type="text" placeholder="请输入权重" class="form-control form-control-common" id="dataIndex" name="dataIndex" th:value="${banner.dataIndex}" >
+                        <div style="color: red;padding-left: 10px;line-height: 45px">数值越大越靠前</div>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>状态</td>
+                <td>
+                    <select  class="form-control form-control-common" name="status" id="status" >
+                        <option value="1">有效</option>
+                        <option value="0" th:selected="${banner.status == 0}">无效</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft">链接</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="2"  id="bannerLink" name="bannerLink" th:text="${banner.bannerLink}"></textarea></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>开始时间</td>
+                <td>
+                    <input type="text" class="form-control form-control-common"  placeholder="请输入选择时间"  readonly th:value="${#dates.format(banner.startTime, 'yyyy-MM-dd HH:mm:ss')}" id="startTime" name="startTime" >
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>结束时间</td>
+                <td>
+                    <input type="text" class="form-control form-control-common" readonly placeholder="请选择结束时间" th:value="${#dates.format(banner.endTime, 'yyyy-MM-dd HH:mm:ss')}" id="endTime" name="endTime" >
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft">备注</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="4"  id="remark" name="remark" th:text="${banner.remark}"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <input type="button" value="返回列表" onclick="javascript:window.location.href = 'banner/bannerPage'" class="btn btn-info">
+                    <input type="button" value="保存并继续添加" class="btn btn-success btn-save" data-mark="1" th:if="${banner.bannerId == null || banner.bannerId == 0}">
+                    <input type="button" value="保存" class="btn btn-success btn-save" data-mark="0">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- Data picker -->
+<script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<!-- 自定义js -->
+<script src="js/content.js?v=1.0.0"></script>
+<script src="js/common.js" th:inline="javascript"></script>
+<script src="js/imgUtils.js" th:inline="javascript"></script>
+<script src="js/laydate/laydate.js"></script>
+
+<script th:inline="javascript">
+    $(".btn-save").on("click",function (e) {
+        var bannerId = $("#bannerId").val();
+        var bannerTitle = $("#bannerTitle").val();
+        var bannerName = $("#bannerName").val();
+        var dataIndex = $("#dataIndex").val();
+        var status = $("#status").val();
+        var bannerLink = $("#bannerLink").val();
+        var bannerIntro = $("#bannerIntro").val();
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        var remark = $("#remark").val();
+
+        var bannerImg = $("#img").val();
+
+        if(bannerTitle == ''){
+            return myAlertSimple("标题不能为空");
+        }
+        if(bannerName == ''){
+            return myAlertSimple("名称不能为空");
+        }
+        var regNum=/^[0-9]*$/;
+        if(!regNum.test($.trim(dataIndex))){
+            return myAlertSimple("非法权重");
+        }
+
+        if(startTime == null){
+            return myAlertSimple("开始时间不能为空");
+        }
+        if(endTime == null){
+            return myAlertSimple("结束时间不能为空");
+        }
+        if(endTime < startTime){
+            return myAlertSimple("结束时间不能小于开始时间");
+        }
+
+        var mark = $(this).attr("data-mark");//1保存并继续添加
+        var data = {
+            "bannerId":bannerId,
+            "bannerTitle":bannerTitle.trim(),
+            "bannerName":bannerName.trim(),
+            "dataIndex":dataIndex.trim(),
+            "status":status,
+            "bannerLink":bannerLink.trim(),
+            "bannerIntro":bannerIntro,
+            "startTime":startTime,
+            "endTime":endTime,
+            "bannerImg":bannerImg,
+            "remark":remark.trim()
+        }
+        //上传完得到id 或者路径 标志上传成功
+        $.ajax({
+            url: "banner/saveBannerData",
+            type: 'POST',
+            data: data,// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple(data.msg);
+                if (code == "5" || code == '6') {
+                    if(mark == 1){
+                        setTimeout("javascript:window.location.href = 'banner/addBannerPage'",1000);
+                    }else {
+                        setTimeout("javascript:window.location.href = 'banner/bannerPage'",1000);
+                    }
+                }
+            }
+        });
+    })
+
+    //图片设置
+    setShopInfoImg();
+    function setShopInfoImg(){
+        var bannerId = [[${banner.bannerId}]];
+        if (!bannerId > 0) {
+            return;
+        }
+        var webImg = [[${webImg}]];//图片访问前缀
+
+        var img0 = [[${banner.bannerImg}]];
+        if (null != img0 && img0 != '') {
+            setPageImg(webImg + img0, img0, 0)
+        }
+    }
+
+</script>
+<script th:inline="javascript">
+    var nowDate = [[${nowDate}]];
+    var startTime = laydate.render({
+        elem: '#startTime' //指定元素
+        ,type: 'datetime'
+        ,closeStop: '#startTime'
+        ,position: 'abolute'
+        , min: nowDate
+        ,done: function(value, date){
+            if(null!=value){
+                date.month = date.month-1;
+                endTime.config.min = date;
+            }
+        }
+    });
+
+    var endTime = laydate.render({
+        elem: '#endTime' //指定元素
+        ,type: 'datetime'
+        ,closeStop: '#endTime'
+        , position: 'abolute'
+    });
+</script>
+
+</body>
+</html>

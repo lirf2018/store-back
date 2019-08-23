@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title></title>
+    <base th:href="@{/}">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-param" content="uhuibao_csrf">
+    <meta name="csrf-token" content="Y19seUpBYjAaG1oaBA07HSoTAjcmBxhpADMOEX4NC0M1PFkdKBgrXQ==">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/tree.css"  rel="stylesheet">
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/layer.js"></script>
+    <script src="js/tree.js"></script>
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="tool_box" style="left: 0px;width: 100%;height: 47px">
+</div>
+<div class="container-fluid fluid-pading">
+    <style>
+        label {
+            float: right;
+            margin-top: 9px;
+        }
+
+        .aa {
+            padding-right: 0;
+        }
+
+        label i {
+            color: red;
+            margin-right: 7px;
+            vertical-align: middle;
+        }
+
+        .addmainmenu:hover {
+            color: #eea236;
+        }
+
+        .addmainmenu {
+            cursor: pointer;
+            margin-left: 11px;
+        }
+
+        .addmainmenu.active {
+            color: #449d44;
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-5" style="height: 10px;">
+            <div style="border: 1px solid #ddd;border-radius:6px;padding: 10px 10px;">
+                <a class="addmainmenu" href="./menu/menuPage">返回菜单列表</a>
+                <a class="addmainmenu" th:op="addParent" th:parentId="0">添加主菜单</a>
+                <div class="aftree domtree" style="padding:10px 5px;width: 350px">
+                    <ul>
+                        <li th:each="p,iterStat : ${menuTreeList}" th:if="${p.functionParentid == 0}">
+                            <!-- <i class="plus" th:if-="${ parentId == 0 }" ></i>
+                            <i class="removeverticalline"></i>
+                            <i class="minus" th:if="${p.functionId == parentId}" ></i>
+                            <i th:class="${p.functionId == parentId} ? 'minus' : 'plus'"></i> -->
+
+                            <i class="removeverticalline" th:if="${iterStat.index == 0 }"></i>
+                            <i th:class="plus" th:if="${parentId == 0 && #lists.size(p.childMenu) > 0}"></i>
+                            <i th:class="minus" th:if="${parentId > 0 && #lists.size(p.childMenu) > 0 && p.functionId == parentId}"></i>
+                            <i th:class="plus" th:if="${parentId > 0 && #lists.size(p.childMenu) > 0 && p.functionId != parentId}"></i>
+
+                            <span th:text="${p.functionName}"></span>&nbsp;<span th:if="${p.status == 0}" style="color:red;font-size: 6px">(状态无效)</span>
+                            <div>
+                                <a class="addmainmenu" th:op="addSub" style="margin:0" th:parentId="${p.functionId}">添加子菜单</a>
+                                <a class="addmainmenu" th:op="editParent" th:menuId="${p.functionId}">编辑</a>
+                                <a class="delete" th:menuId="${p.functionId}" th:parentId="${p.functionParentid}" th:status="1" th:if="${p.status == 0}">启用</a>
+                                <a class="delete" th:menuId="${p.functionId}" th:parentId="${p.functionParentid}" th:status="0" th:if="${p.status == 1}">删除</a>
+                            </div>
+                            <ul style="display: none;">
+                                <li  th:each="s : ${p.childMenu}" th:if="${s.functionParentid == p.functionId}">
+                                    <span th:text="${s.functionName}"></span>&nbsp;<span th:if="${s.status == 0}" style="color:red;font-size: 6px">(状态无效)</span>
+                                    <div>
+                                        <a class="addmainmenu" th:op="editSon"  th:menuId="${s.functionId}" th:parentId="${p.functionId}">编辑</a>
+                                        <a class="delete" th:menuId="${s.functionId}" th:parentId="${s.functionParentid}" th:status="1" th:if="${s.status == 0}">启用</a>
+                                        <a class="delete" th:menuId="${s.functionId}" th:parentId="${s.functionParentid}" th:status="0" th:if="${s.status == 1}">删除</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div style="height: 20px"></div>
+            </div>
+            <div style="height: 50px"></div>
+            <!-- 当上面div过长时树会顶住页面底部,影响视觉,固加上这个div留一些空白 -->
+        </div>
+        <div id="mianmeuncontainer" class="col-md-6" style="height: 10px;display: none">
+            <div class="floatfix" style="width: 760px; position: fixed; top: 47px; left: 688.75px;">
+                <div class="mianmenu" style="border: 1px solid #ddd;border-radius:6px;padding: 8px 10px;">
+                    <form id="mianmenu-form" name="add-edit-form" action="" method="post">
+                        <input type="hidden" id="menuId" name="menuId" value="">
+                        <input type="hidden" id="parentId" name="parentId" value="">
+                        <input type="hidden" id="status" name="status" value="1">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label><i>*</i>功能名称:</label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group field-funform-function_name">
+                                    <input type="text" id="menuName" name="func.functionName" class="form-control" value="">
+                                    <div class="help-block"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label><i>*</i>功能编码:</label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group field-funform-function_code">
+                                    <input type="text" id="menuCode" class="form-control"  value="">
+                                    <div class="help-block"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label><i>*</i>功能索引:</label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group field-funform-function_index">
+                                    <input type="text" id="menuIndex" class="form-control"  value="0">
+                                    <div class="help-block"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="padding: 0">
+                                <i style="color:green">(该值必须为数字)</i> </div>
+                        </div>
+                        <div class="row" id="url-div">
+                            <div class="col-md-3">
+                                <label><i>*</i>功能动作:</label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group field-funform-url">
+                                    <input type="text" id="menuUrl" class="form-control" value="">
+                                    <div class="help-block"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>备注:</label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group field-funform-remark">
+                                    <textarea id="menuRemark" class="form-control" style="width: 300px;height: 150px;"></textarea>
+                                    <div class="help-block"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 col-md-offset-3" style="position:static;text-align: center">
+                                <button type="button" class="btn submit">提交</button>
+                                <button type="button" class="btn cancel">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- 自定义js -->
+<script src="js/common.js" th:inline="javascript"></script>
+<script th:inline="javascript" type="text/javascript">
+    $(".addmainmenu").on("click",function (e) {
+        $("#url-div").show();//功能动作
+        //添加深色
+        $(".addmainmenu").attr("class","addmainmenu");
+        $(this).attr("class","addmainmenu active");
+
+        //初始化form
+        $("#menuId").val("");
+        $("#parentId").val("");
+        $("#menuName").val("");
+        $("#menuCode").val("");
+        $("#menuIndex").val("0");
+        $("#menuUrl").val("");
+        $("#menuRemark").val("");
+
+        var op = $(this).attr("op");
+        if("addParent" == op || "addSub" == op){
+            //设置增加值
+            var parentId = $(this).attr("parentId");
+            $("#menuId").val(0);
+            $("#parentId").val(parentId);
+        }else{
+            //
+            var ope = $(this).attr("op");
+            var menuId = $(this).attr("menuId");
+            var parentId = $(this).attr("parentId");
+            if("editParent" == ope){
+                //编辑父菜单
+                $("#menuId").val(menuId);
+                $("#parentId").val(0);
+
+            }else{
+                //编辑子菜单
+                $("#menuId").val(menuId);
+                $("#parentId").val(parentId);
+            }
+
+            //设置编辑值
+            var menuId = $(this).attr("menuId");
+            var functions = [[${functions}]];
+            for (var i = 0; i < functions.length; i++) {
+                if(functions[i].functionId == menuId ){
+                    $("#menuName").val(functions[i].functionName);
+                    $("#menuCode").val(functions[i].functionCode);
+                    $("#menuIndex").val(functions[i].dataIndex);
+                    $("#menuUrl").val(functions[i].functionAction);
+                    $("#menuRemark").val(functions[i].remark);
+                    $("#status").val(functions[i].status);
+                    break;
+                }
+            }
+        }
+        if(op == "addParent" || op == "editParent"){
+            $("#url-div").hide();
+        }
+        $("#mianmeuncontainer").show();
+    })
+
+    $(".cancel").on("click",function (e) {
+        $("#mianmeuncontainer").hide();
+    })
+
+    $(".submit").on("click",function (e) {
+        var menuId = $("#menuId").val();
+        var parentId = $("#parentId").val();
+        var menuName = $("#menuName").val();
+        var menuCode = $("#menuCode").val();
+        var menuIndex = $("#menuIndex").val();
+        var menuUrl = $("#menuUrl").val();
+        var menuRemark = $("#menuRemark").val();
+        var status = $("#status").val();
+        if(parentId>0 && menuUrl == ''){
+            return myAlertSimple("功能动作不能为空");
+        }
+        if(menuName == ''){
+            return myAlertSimple("功能名称不能为空");
+        }
+        if(menuCode == ''){
+            return myAlertSimple("功能编码不能为空");
+        }
+
+        var functionType = 0;//第一级菜单
+        if(parentId > 0){
+            functionType = 1;
+        }
+        if(menuId == 0){
+            menuId = "";
+        }
+        var data = {
+                "func.functionId":menuId,
+                "func.functionParentid":parentId,
+                "func.functionName":menuName,
+                "func.functionCode":menuCode,
+                "func.dataIndex":menuIndex,
+                "func.functionAction":menuUrl,
+                "func.remark":menuRemark,
+                "func.functionType":functionType,
+                "func.status":status
+        }
+        //上传完得到id 或者路径 标志上传成功
+        $.ajax({
+            url: "menu/addMenuTree",
+            type: 'POST',
+            data: data,// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                if (code === "6" || code === "5") {
+                    myAlertSimple(data.msg);
+                    setTimeout("toPage("+parentId+")",1000);
+                }else {
+                    myAlertSimple(data.msg);
+                }
+            }
+        });
+    })
+    function toPage(parentId) {
+        window.location.href = "menu/toMenuTreePage?parentId="+parentId;
+    }
+
+    $(".delete").on("click",function (e) {
+        var menuId = $(this).attr("menuId");
+        var parentId = $(this).attr("parentId");
+        var status = $(this).attr("status");
+        $.ajax({
+            url: "menu/updateMenuStatus",
+            type: 'POST',
+            data: {"menuId":menuId,"status":status},// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                myAlertSimple(data.msg);
+                setTimeout("toPage("+parentId+")",1000);
+            }
+        });
+        /*swal({
+            title: "您确定要删除这条信息吗",
+            text: "删除后将无法恢复，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "删除",
+            closeOnConfirm: false
+        }, function () {
+            $.ajax({
+                url: "menu/deleteMenu",
+                type: 'POST',
+                data: {"menuId":menuId,"parentId":parentId},// 要提交的表单 ,
+                async: false,
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                    setTimeout("toPage("+parentId+")",1000);
+                }
+            });
+        });*/
+    })
+</script>
+</body>
+</html>

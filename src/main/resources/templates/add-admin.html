@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <title>用户操作</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <base th:href="@{/}">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <style>
+        table td{
+            text-align: center;
+        }
+        .tableLeft{
+            background-color: #f5f5f5;
+        }
+        textarea{
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <input type="hidden" id="adminId" th:value="${admin.adminId}">
+<div class="row">
+    <table class="table table-hover table-bordered">
+        <tbody>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>所属店铺</td>
+                <td>
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <select class="form-control" name="shopId" id="shopId">
+                                <option value="0">-- 选择店铺 --</option>
+                                <option th:each="item : ${shopList}" th:value="${item.shopId}" th:text="${item.shopName}" th:selected="${item.shopId == admin.shopId}"></option>
+                            </select>
+                        </div>
+                        <div style="color: red;padding-left: 10px;line-height: 35px">账号类型为管理员可不选择</div>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>登录名称</td>
+                <td><input type="text" placeholder="请输入登录名称" class="form-control input-width-auto" id="loginName" name="loginName" th:value="${admin.loginName}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>账号类型</td>
+                <td>
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <select  class="form-control" name="memberType" id="memberType" >
+                                <option value="-1">-- 选择账号类型 --</option>
+                                <option value="0" th:selected="${admin.shopMenberType == 0}">管理员</option>
+                                <option  value="1" th:selected="${admin.shopMenberType == 1}">店长</option>
+                                <option  value="2" th:selected="${admin.shopMenberType == 2}">店员</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>用户姓名</td>
+                <td><input type="text" placeholder="请输入用户姓名" class="form-control" name="userName" id="userName" th:value="${admin.userName}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>身份证号</td>
+                <td colspan="3"><input type="text" placeholder="请输入身份证号" class="form-control" id="idcard" name="idcard" th:value="${admin.idcard}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>性别</td>
+                <td>
+                    <div class="col-sm-9" style="text-align: left">
+                        <label class="radio-inline">
+                            <input type="radio" th:checked="${admin.sex == '1'}" th:value="1"  name="sex">男</label>
+                        <label class="radio-inline">
+                            <input type="radio" th:checked="${admin.sex == '0'}" th:value="0"  name="sex">女</label>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>电话</td>
+                <td><input type="text" placeholder="请输入电话" class="form-control" id="phone" name="phone" th:value="${admin.phone}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>状态</td>
+                <td>
+                    <div class="col-sm-9" style="text-align: left">
+                        <label class="radio-inline">
+                            <input type="radio" th:checked="${admin.status == 0}"  name="status" th:value="0">无效</label>
+                        <label class="radio-inline">
+                            <input type="radio" th:checked="${admin.status == 1}"  name="status" th:value="1">有效</label>
+                        <label class="radio-inline">
+                            <input type="radio" th:checked="${admin.status == 2}"  name="status" th:value="2">冻结</label>
+                        <label class="radio-inline">
+                            <input type="radio" th:checked="${admin.status == 3}"  name="status" th:value="3">删除</label>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>密码</td>
+                <td><input type="password" placeholder="请输入密码" class="form-control" id="password" name="password" th:value="${admin.loginPassword}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>账号到期时间</td>
+                <td>
+                    <div  style="display: flex;width: 100%">
+                        <input id="sDate" readonly="readonly" class="laydate-icon form-control layer-date" th:value="${#dates.format(admin.memberBegintime,'yyyy-MM-dd')}"><span style="line-height: 47px;display: block">-</span>
+                        <input id="eDate" readonly="readonly" class="laydate-icon form-control layer-date" th:value="${#dates.format(admin.memberBegintime,'yyyy-MM-dd')}"></div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>用户角色</td>
+                <td>
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <select  class="form-control" name="roleId" id="roleId" >
+                                <option value="-1">-- 选择用户角色 --</option>
+                                <!--<option th:each="item : ${roleList}" th:value="${item.roleId}" th:text="${item.roleName}" th:selected="${item.roleId == admin.shopId}"></option>-->
+                                <option th:each="item : ${roleList}" th:value="${item.roleId}" th:text="${item.roleName}" th:selected="${item.roleId == userRoleId}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft">备注</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none"  rows="6" th:text="${admin.remark}" id="remark" name="remark"></textarea></td>
+            </tr>
+        <tr>
+            <td colspan="4">
+                <input type="button" value="返回列表" onclick="javascript:window.location.href = 'user/userPage'" class="btn btn-info">
+                <input type="button" value="保存并继续添加" class="btn btn-success" data-mark="1" th:if="${admin.adminId == null || admin.adminId == 0}">
+                <input type="button" value="保存" class="btn btn-success" data-mark="0">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<!-- Data picker -->
+<script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<!-- layerDate plugin javascript -->
+<script src="js/plugins/layer/laydate/laydate.js"></script>
+
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+
+<!-- 自定义js -->
+<script src="js/common.js" th:inline="javascript"></script>
+<script>
+    $(".btn-success").on("click",function (e) {
+        var adminId = $("#adminId").val();
+        var shopId = $("#shopId").val();
+        var loginName = $("#loginName").val();
+        var memberType = $("#memberType").val();
+        var userName = $("#userName").val();
+        var idcard = $("#idcard").val();
+        var phone = $("#phone").val();
+        var password = $("#password").val();
+        var sDate = $("#sDate").val();
+        var eDate = $("#eDate").val();
+        var remark = $("#remark").val();
+        var roleId = $("#roleId").val();
+        var sex = $("input[name='sex']:checked").val();
+        var status = $("input[name='status']:checked").val();
+        if (memberType == -1) {
+            return myAlertSimple("请选择账号类型");
+        }
+        if(memberType != 0 && shopId == 0){
+            return myAlertSimple("请选择店铺");
+        }
+
+        if(shopId != 0 && memberType == 0){
+            return myAlertSimple("账号类型只能选择店长或店员");
+        }
+
+        if(loginName == ''){
+            return myAlertSimple("登录名称不能为空");
+        }
+        if(userName == ''){
+            return myAlertSimple("用户名称不能为空");
+        }
+        if(idcard == '' || idcard.length != 18){
+            return myAlertSimple("非法身份证号");
+        }
+        if(phone == '' || phone.length > 12){
+            return myAlertSimple("非法电话号码");
+        }
+        if(password == ''){
+            return myAlertSimple("密码不能为空");
+        }
+        if(sDate == '' || eDate == '' || sDate>eDate){
+            return myAlertSimple("账号到期时间不能为空,且开始时间不能小于结束时间");
+        }
+
+        if(roleId == '-1'){
+            return myAlertSimple("用户角色不能为空");
+        }
+        var mark = $(this).attr("data-mark");
+        if (adminId > 0) {
+            mark = 0;
+        }
+
+        var data = {
+            "admin.adminId":adminId,
+            "admin.shopId":shopId,
+            "admin.loginName":loginName.trim(),
+            "admin.shopMenberType":memberType,
+            "admin.userName":userName.trim(),
+            "admin.idcard":idcard.trim(),
+            "admin.phone":phone.trim(),
+            "admin.loginPassword":password.trim(),
+            "admin.memberBegintime":sDate,
+            "admin.memberEndtime":eDate,
+            "admin.remark":remark.trim(),
+            "admin.sex":sex,
+            "admin.status":status,
+            "roleId":roleId
+        }
+        //上传完得到id 或者路径 标志上传成功
+        $.ajax({
+            url: "user/saveAdmin",
+            type: 'POST',
+            data: data,// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                if (code == "1") {
+                    myAlertSimple(data.msg);
+                    if(mark == 1){
+                        setTimeout("javascript:window.location.href = 'user/addAdminPage'",1000);
+                    }else {
+                        setTimeout("javascript:window.location.href = 'user/userPage'",1000);
+                    }
+
+                }
+            }
+        });
+    })
+
+</script>
+<script>
+    //日期范围限制
+    var start = {
+        elem: '#sDate',
+        format: 'YYYY-MM-DD',
+        min: laydate.now(), //设定最小日期为当前日期
+        istoday: true,
+        choose: function (datas) {
+            end.min = datas; //开始日选好后，重置结束日的最小日期
+            end.start = datas //将结束日的初始值设定为开始日
+        }
+    };
+    var end = {
+        elem: '#eDate',
+        format: 'YYYY-MM-DD',
+        min: laydate.now(),
+        istoday: false,
+        choose: function (datas) {
+            start.max = datas; //结束日选好后，重置开始日的最大日期
+        }
+    };
+    laydate(start);
+    laydate(end);
+    //给input赋值---结束时间默认当前时间，开始时间默认当前时间的后30天
+    if($("#adminId").val() == null || $("#adminId").val() == '' ){
+        $('#sDate').val(laydate.now(0, 'YYYY-MM-DD'));
+        $('#eDate').val(laydate.now(30, 'YYYY-MM-DD'));
+    }
+</script>
+</body>
+</html>

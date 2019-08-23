@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Summernote</title>
+    <!-- include libraries(jQuery, bootstrap) -->
+
+    <script src="./jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<input type="file" value="image" id="img_input" />
+<textarea id="result"></textarea>
+<img src="" alt="" id="imgId"/>
+<p id="img_area"></p>
+</body>
+<script>
+    window.onload = function() {
+        var input = document.getElementById("img_input");
+        //var result = document.getElementById("result");
+        var img_area = document.getElementById("img_area");
+        if (typeof(FileReader) === 'undefined') {
+            //result.innerHTML = "FileReader is not supported...";
+            input.setAttribute('disabled', 'disabled');
+        } else {
+            input.addEventListener('change', readFile, false);
+        }
+    };
+
+    function readFile() {
+        var file = this.files[0];
+        if (!/image\/\w+/.test(file.type)) {
+            alert("image only please.");
+            return false;
+        }
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+            /*var img = new Image,
+                width = 640, //image resize
+                quality = 0.8, //image quality
+                canvas = document.createElement("canvas"),
+                drawer = canvas.getContext("2d");*/
+            //img.src = this.result;
+            //console.log(img.src);
+            $("#imgId").attr("src",this.result)
+            /*img.onload = function() {
+                canvas.width = width;
+                canvas.height = width * (img.height / img.width);
+                drawer.drawImage(img, 0, 0, canvas.width, canvas.height);
+                img.src = canvas.toDataURL("image/jpeg", quality);
+                console.log(img.src);
+                result.innerHTML = '<img src="' + img.src + '" alt=""/>';
+                img_area.innerHTML = '<div class="sitetip">preview：</div><img src="' + img.src + '" alt=""/>';
+            }*/
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title></title>
+    <base th:href="@{/}">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-param" content="uhuibao_csrf">
+    <meta name="csrf-token" content="Y19seUpBYjAaG1oaBA07HSoTAjcmBxhpADMOEX4NC0M1PFkdKBgrXQ==">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/tree.css"  rel="stylesheet">
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/layer.js"></script>
+    <script src="js/tree.js"></script>
+    <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <style>
+        .atabletimeinput{}
+        .atableinput{}
+        .panel label{float: right;margin-top: 7px;color:#3c763d}
+        .panel .aa{padding-right: 0;}
+        .panel .aa{padding-left: 4px;}
+        .panel table th{color:#3c763d}
+        .panel .row.ff{padding-top:8px}
+        .select-style{
+            color: #449d44;
+        }
+        textarea{
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+<div class="tool_box" style="left: 0px;width: 100%;height: 47px">
+</div>
+<input type="hidden" id="choseRoleId" th:value="${roleId}">
+<div class="row afrow" style="display: flex">
+    <div class="col-md-5">
+        <div style="border: 1px solid #ddd;border-radius:6px;padding: 8px 10px;margin-left: 10px">
+            <span style="padding-left: 10px; color: gray;">角色树</span>
+            <div class="aftree domtree" style="padding:10px 5px;width: 400px">
+                <ul>
+                    <li th:each="r,iterStat : ${roleTreeList}"><i class="removeverticalline" th:if="${iterStat.index == 0}"></i><i class="minus" th:if="${iterStat.index !=0 && not #lists.isEmpty(r.childRole) }"></i><span th:text="${r.roleName}"></span><div><a th:id="${'roleId'+r.roleId}" onclick="clickSet(this)" th:roleId="${r.roleId}" name="markOnclick">角色授权</a></div>
+                        <ul>
+                            <li th:each="r1:${r.childRole}"><i class="minus" th:if="${not #lists.isEmpty(r1.childRole)}"></i><span th:text="${r1.roleName}"></span><div><a th:id="${'roleId'+r1.roleId}"  onclick="clickSet(this)" th:roleId="${r1.roleId}" name="markOnclick">角色授权</a></div>
+                                <ul>
+                                    <li th:each="r2:${r1.childRole}"><i class="minus" th:if="${not #lists.isEmpty(r2.childRole)}"></i><span th:text="${r2.roleName}"></span><div><a th:id="${'roleId'+r2.roleId}"  onclick="clickSet(this)" th:roleId="${r2.roleId}" name="markOnclick">角色授权</a></div>
+                                        <ul>
+                                            <li th:each="r3:${r2.childRole}"><span th:text="${r3.roleName}"></span><div><a th:id="${'roleId'+r3.roleId}"  onclick="clickSet(this)" th:roleId="${r3.roleId}" name="markOnclick">角色授权</a></div></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6" >
+        <div class="ibox float-e-margins">
+            <div style="overflow: hidden;border: 1px solid #ddd;border-radius:6px;padding: 10px 10px 0px 10px;margin-right: 10px">
+                <div class="form-inline">
+                    <button class="btn btn-success" type="button" onclick="saveRoleFunData()"><i class=""></i><span class="bold">保存</span></button>&nbsp;&nbsp;
+                    <button class="btn btn-success" type="button" onclick="cancelAllFun()"><i class=""></i><span class="bold">取消全选</span></button>&nbsp;&nbsp;
+                    <button class="btn btn-success" type="button" onclick="selectAllFun()"><i class=""></i><span class="bold">全选</span></button>
+                </div>
+                <div>&nbsp;</div>
+                <div class="functiontree">
+                    <div class="aftree domtree" style="padding:10px 5px;width: 350px">
+                        <ul>
+                            <li th:each="p:${menuTreeList}" th:if="${p.status == 1}">
+                                <i class="removeverticalline"></i>
+                                <i class="minus"></i><span th:text="${p.functionName}"></span>
+                                <div><input type="checkbox"  th:id="${'funId'+p.functionId}"  name="funId" th:value="${p.functionId}" onclick="selectFunParent(this)"></div>
+                                <ul>
+                                    <li th:each="s:${p.childMenu}" th:if="${s.status == 1}"><span th:text="${s.functionName}"></span>
+                                        <div><input type="checkbox" th:id="${'funId'+s.functionId}"  name="funId" th:value="${s.functionId}" onclick="selectFunSon(this)"></div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- 自定义js -->
+<script src="js/common.js" th:inline="javascript"></script>
+<!-- Page-Level Scripts -->
+</body>
+<script>
+
+    function selectAllFun() {
+        $("[name=funId]:checkbox").prop("checked", true);
+    }
+    function cancelAllFun() {
+        $("[name=funId]:checkbox").prop("checked", false);
+    }
+
+    function clickSet(obj) {
+        $("a[name='markOnclick']").attr("class","");
+        var roleId = $(obj).attr("roleId");
+        $(obj).attr("class","select-style");
+        window.location.href = "role/roleFunPage?roleId="+roleId;
+    }
+
+    function saveRoleFunData() {
+        var checkboxs = $('input[name="funId"]:checked');
+        var checkValues = "";
+        checkboxs.each(function () {
+            checkValues = checkValues + $(this).val() + ",";
+        });
+        var roleId = $("#choseRoleId").val();
+        if (roleId == 0 || roleId == '') {
+            return myAlertSimple("请选择角色");
+        }
+        $.ajax({
+            url: "role/addRoleFun",
+            type: 'POST',
+            data: {
+                "checkValues":checkValues,
+                "roleId":roleId
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                myAlertSimple(data.msg);
+            }
+        });
+    }
+    //选择父级功能
+    function selectFunParent(obj) {
+        if($(obj).is(':checked')){
+            $(obj).parent().parent().children("ul").children("li").children("div").children().prop("checked", true);
+        }else{
+           //cancel
+            $(obj).parent().parent().children("ul").children("li").children("div").children().prop("checked", false);
+        }
+    }
+
+    //选择子级功能
+    function selectFunSon(obj) {
+        var ul = $(obj).parent().parent().parent().children("li");
+        var flag = true;
+        ul.each(function () {
+            if(!$(this).children("div").children().is(':checked')){
+                flag = false;
+                return false;
+            }
+        });
+
+
+        if(flag){
+            $(obj).parent().parent().parent().parent().children("div").children().prop("checked", true);
+        }else{
+            $(obj).parent().parent().parent().parent().children("div").children().prop("checked", false);
+        }
+    }
+    var selectRole = [[${selectRoleId}]];
+    $("#roleId"+selectRole).attr("class","select-style");
+    var roleFunStrList = [[${roleFunStrList}]];
+    for (var i = 0; i < roleFunStrList.length; i++) {
+        $("#funId"+roleFunStrList[i]).prop("checked", true);
+    }
+
+    var roleId = [[${roleId}]];
+    if(roleId > 0){
+        $(".functiontree").show();
+    }else{
+        $(".functiontree").hide();
+    }
+</script>
+</html>

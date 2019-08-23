@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <title>增加店铺</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <base th:href="@{/}">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <style>
+        table td{
+            text-align: center;
+        }
+        .tableLeft{
+            background-color: #f5f5f5;
+        }
+        .deleteImg{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            top: 27px;
+            right: 2px;
+            text-align: right;
+        }
+        .shop-info-img{
+            /*display: flex;*/
+            width: 100%;
+        }
+
+        .shop-info-img>div{
+            float: left;
+            width: 25%;
+            height: 300px;
+            padding: 0px 18px;
+        }
+        .shop-info-img>div>img{
+            border: 2px solid #ccc;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            top: -25px;
+            cursor:pointer;
+        }
+        .deleteImg0{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            top: 27px;
+            right: 2px;
+            text-align: right;
+        }
+        .deleteImg{
+            width: 100%;
+            height: 25px;
+            position: relative;
+            top: 10px;
+            right: 10px;
+            text-align: right;
+            z-index: 100;
+        }
+        .form-control-common{
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <input type="hidden" id="shopId" th:value="${shop.shopId}">
+    <input type="hidden" id="img" th:value="${shop.shopLogo}">
+
+    <div class="row">
+        <table class="table table-hover table-bordered">
+            <tbody>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>店铺名称</td>
+                <td><input type="text" placeholder="请输入店铺名称" class="form-control" name="shopName" id="shopName" th:value="${shop.shopName}"></td>
+                <td rowspan="2" class="tableLeft"><span style="color: red;font-weight: bold"> </span>店铺logo</td>
+                <td rowspan="2" style="text-align: left">
+                    <div id = "imgShowDiv">
+                        <div class="deleteImg0" onclick="deleteImg(this)" delete-mark="0"><img src="./img/delete.png" width="25px" height="25px"></div>
+                        <img style="border: 1px solid #ccc" src="./img/null.jpg" width="80px" height="80px" >
+                    </div>
+                    <form id="fileForm" method="post" enctype="multipart/form-data" action="image/uploadFile">
+                        <input style="border: none" type="file" class="form-control" name="file" id="file" multiple="multiple"  onchange="uploadFile(this)">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>店铺编码</td>
+                <td><input type="text" placeholder="请输入店铺编码" class="form-control" name="shopCode" id="shopCode" th:value="${shop.shopCode}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>权重</td>
+                <td>
+                    <div style="display: flex">
+                        <input type="text" placeholder="请输入权重" class="form-control form-control-common" id="dataIndex" name="dataIndex" th:value="${shop.weight}" >
+                        <div style="color: red;padding-left: 10px;line-height: 45px">数值越大越靠前</div>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>状态</td>
+                <td>
+                    <select  class="form-control form-control-common" name="status" id="status" >
+                        <option value="1">有效</option>
+                        <option value="0" th:selected="${shop.status == 0}">无效</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>经度</td>
+                <td>
+                    <input type="text" placeholder="请输入经度" class="form-control input-width-auto" id="shopLng" name="shopLng" th:value="${shop.shopLng}" >
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>电话</td>
+                <td>
+                    <input type="text" placeholder="请输入电话" class="form-control input-width-auto" id="shopTel1" name="shopTel1" th:value="${shop.shopTel1}" >
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>纬度</td>
+                <td>
+                    <input type="text" placeholder="请输入纬度" class="form-control input-width-auto" id="shopLat" name="shopLat" th:value="${shop.shopLat}" >
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>备用电话</td>
+                <td>
+                    <input type="text" placeholder="请输入备用电话" class="form-control input-width-auto" id="shopTel2" name="shopTel2" th:value="${shop.shopTel2}" >
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>店铺余额</td>
+                <td>
+                    <input type="text" placeholder="请输入店铺余额" class="form-control input-width-auto" readonly id="shopMoney" name="shopMoney" th:value="${shop.shopMoney}" >
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>保证金</td>
+                <td>
+                    <input type="text" placeholder="请输入保证金" class="form-control input-width-auto" readonly id="deposit" name="deposit" th:value="${shop.deposit}" >
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>到期时间</td>
+                <td>
+                    <input type="text" class="form-control form-control-common"  placeholder="请选择到期时间"  readonly th:value="${#dates.format(shop.enterEndTime, 'yyyy-MM-dd')}" id="enterEndTime" name="enterEndTime" >
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>交保时间</td>
+                <td>
+                    <input type="text" class="form-control form-control-common" readonly placeholder="请选择交保时间" th:value="${#dates.format(shop.depositTime, 'yyyy-MM-dd')}" id="depositTime" name="depositTime" >
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>店铺归属</td>
+                <td>
+                    <select class="form-control form-control-common"  id="isOutShop" name="isOutShop">
+                        <option value="-1">--选择店铺归属--</option>
+                        <option value="1" th:selected="${shop.isOutShop == 1}">内部店铺</option>
+                        <option value="2" th:selected="${shop.isOutShop == 2}">第三方店铺</option>
+                    </select>
+                </td>
+                <td class="tableLeft"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tableLeft">店铺介绍</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="4"  id="introduce" name="introduce" th:text="${shop.introduce}"></textarea></td>
+            </tr>
+            <tr>
+                <td class="tableLeft">店铺地址</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="2"  id="address" name="address" th:text="${shop.address}"></textarea></td>
+            </tr>
+            <tr>
+                <td class="tableLeft">到达方式</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="4"  id="toway" name="toway" th:text="${shop.toway}"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="10">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th>店铺介绍图片</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="shop-info-img">
+                                        <div id="imgDiv4">
+                                            <input type="hidden" value="" id="img4" name="img4">
+                                            <div class="deleteImg" onclick="deleteImg(this)" delete-mark="4"><img src="./img/delete1.png" width="25px" height="25px"></div>
+                                            <img src="./img/upload.png" data-mark="4" onclick="imgOnclick(this)"  onmousemove="changeImgFileColor(this,0)" onmouseout="changeImgFileColor(this,1)">
+                                        </div>
+                                        <div id="imgDiv3">
+                                            <input type="hidden" value="" id="img3" name="img3">
+                                            <div class="deleteImg" onclick="deleteImg(this)" delete-mark="3"><img src="./img/delete1.png" width="25px" height="25px"></div>
+                                            <img src="./img/upload.png"  data-mark="3" onclick="imgOnclick(this)"  onmousemove="changeImgFileColor(this,0)" onmouseout="changeImgFileColor(this,1)">
+                                        </div>
+                                        <div id="imgDiv2">
+                                            <input type="hidden" value="" id="img2" name="img2">
+                                            <div class="deleteImg" onclick="deleteImg(this)" delete-mark="2"><img src="./img/delete1.png" width="25px" height="25px"></div>
+                                            <img src="./img/upload.png" data-mark="2" onclick="imgOnclick(this)"  onmousemove="changeImgFileColor(this,0)" onmouseout="changeImgFileColor(this,1)">
+                                        </div>
+                                        <div id="imgDiv1">
+                                            <input type="hidden" value="" id="img1" name="img1">
+                                            <div class="deleteImg" onclick="deleteImg(this)" delete-mark="1"><img src="./img/delete1.png" width="25px" height="25px"></div>
+                                            <img src="./img/upload.png" data-mark="1" onclick="imgOnclick(this)"  onmousemove="changeImgFileColor(this,0)" onmouseout="changeImgFileColor(this,1)">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft">备注</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="4"  id="remark" name="remark" th:text="${shop.remark}"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <input type="button" value="返回列表" onclick="javascript:window.location.href = 'shop/shopPage'" class="btn btn-info">
+                    <input type="button" value="保存并继续添加" class="btn btn-success btn-save" data-mark="1" th:if="${shop.shopId == null || shop.shopId == 0}">
+                    <input type="button" value="保存" class="btn btn-success btn-save" data-mark="0">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<!-- layerDate plugin javascript -->
+<script src="js/plugins/layer/laydate/laydate.js"></script>
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- Data picker -->
+<script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<!-- 自定义js -->
+<script src="js/common.js" th:inline="javascript"></script>
+<script src="js/imgUtils.js" th:inline="javascript"></script>
+
+
+<script th:inline="javascript">
+    $(".btn-save").on("click",function (e) {
+        var shopId = $("#shopId").val();
+        var shopName = $("#shopName").val();
+        var shopCode = $("#shopCode").val();
+        var dataIndex = $("#dataIndex").val();
+        var status = $("#status").val();
+        var shopLng = $("#shopLng").val();
+        var shopLat = $("#shopLat").val();
+        var shopTel1 = $("#shopTel1").val();
+        var shopTel2 = $("#shopTel2").val();
+        var shopMoney = $("#shopMoney").val();
+        var deposit = $("#deposit").val();
+        var enterEndTime = $("#enterEndTime").val();
+        var depositTime = $("#depositTime").val();
+        var isOutShop = $("#isOutShop").val();
+        var introduce = $("#introduce").val();
+        var address = $("#address").val();
+        var toway = $("#toway").val();
+        var remark = $("#remark").val();
+        //介绍图片
+        var img0 = $("#img").val();//主图
+        var img1 = $("#img1").val();
+        var img2 = $("#img2").val();
+        var img3 = $("#img3").val();
+        var img4 = $("#img4").val();
+
+        if(shopName == ''){
+            $("#shopName").focus();
+            return myAlertSimple("店铺名称不能为空");
+        }
+        if(shopCode == ''){
+            $("#shopCode").focus();
+            return myAlertSimple("店铺编码不能为空");
+        }
+        if(enterEndTime == ''){
+            return myAlertSimple("到期时间不能为空");
+        }
+        if(shopTel1 == ''){
+            $("#shopTel1").focus();
+            return myAlertSimple("电话不能为空");
+        }
+        if(isOutShop == -1){
+            $("#isOutShop").focus();
+            return myAlertSimple("请选择店铺归属");
+        }
+
+        var regNum=/^[0-9]*$/;
+        if(!regNum.test($.trim(dataIndex))){
+            $("#dataIndex").focus();
+            return myAlertSimple("非法权重");
+        }
+
+        var mark = $(this).attr("data-mark");//1保存并继续添加
+        var data = {
+            "shop.shopId":shopId,
+            "shop.shopName":shopName.trim(),
+            "shop.shopLogo":img0,
+            "shop.shopCode":shopCode.trim(),
+            "shop.weight":dataIndex,
+            "shop.status":status,
+            "shop.shopLng":shopLng.trim(),
+            "shop.shopLat":shopLat.trim(),
+            "shop.shopTel1":shopTel1.trim(),
+            "shop.shopTel2":shopTel2.trim(),
+            "shop.shopMoney":shopMoney,
+            "shop.deposit":deposit,
+            "shop.enterEndTime":enterEndTime,
+            "shop.depositTime":depositTime,
+            "shop.isOutShop":isOutShop,
+            "shop.introduce":introduce.trim(),
+            "shop.address":address.trim(),
+            "shop.toway":toway.trim(),
+            "shop.remark":remark.trim(),
+            "img1":img1,
+            "img2":img2,
+            "img3":img3,
+            "img4":img4
+        }
+        //上传完得到id 或者路径 标志上传成功
+        $.ajax({
+            url: "shop/saveShopData",
+            type: 'POST',
+            data: data,// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple(data.msg);
+                if (code == "5" || code == '6') {
+                    if(mark == 1){
+                        setTimeout("javascript:window.location.href = 'shop/addShopPage'",1000);
+                    }else {
+                        setTimeout("javascript:window.location.href = 'shop/shopPage'",1000);
+                    }
+                }
+            }
+        });
+    })
+</script>
+<script th:inline="javascript">
+    $('#enterEndTime').datepicker({
+        todayBtn: "linked",
+        keyboardNavigation: false,
+        forceParse: false,
+        todayHighlight:true,
+        clearBtn:true,
+        autoclose: true
+    });
+    $('#depositTime').datepicker({
+        todayBtn: "linked",
+        keyboardNavigation: false,
+        forceParse: false,
+        todayHighlight:true,
+        clearBtn:true,
+        autoclose: true
+    });
+
+    //图片设置
+    setShopInfoImg();
+    function setShopInfoImg(){
+        var shopId = [[${shop.shopId}]];
+        if (!shopId > 0) {
+            return;
+        }
+        var webImg = [[${webImg}]];//图片访问前缀
+
+        var img0 = [[${shop.shopLogo}]];
+        if (null != img0 && img0 != '') {
+            setPageImg(webImg + img0, img0, 0)
+        }
+        var img1 = [[${img1}]];
+        if (null != img1 && img1 != '') {
+            setPageImg(webImg + img1, img1, 1)
+        }
+        var img2 = [[${img2}]];
+        if (null != img2 && img2 != '') {
+            setPageImg(webImg + img2, img2, 2)
+        }
+        var img3 = [[${img3}]];
+        if (null != img3 && img3 != '') {
+            setPageImg(webImg + img3, img3, 3)
+        }
+        var img4 = [[${img4}]];
+        if (null != img4 && img4 != '') {
+            setPageImg(webImg + img4, img4, 4)
+        }
+    }
+
+</script>
+
+</body>
+</html>

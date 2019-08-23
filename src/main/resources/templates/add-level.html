@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <title>增加分类</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <base th:href="@{/}">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+    <style>
+        table td{
+            text-align: center;
+        }
+        .tableLeft{
+            background-color: #f5f5f5;
+        }
+        .deleteImg{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            top: 27px;
+            right: 2px;
+            text-align: right;
+        }
+        textarea{
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <input type="hidden" id="levelId" th:value="${categoryLevel.levelId}">
+    <input type="hidden" th:value="${categoryLevel.levelImg}" name="img" id="img">
+    <div class="row">
+        <table class="table table-hover table-bordered">
+            <tbody>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>一级分类名称</td>
+                <td><input type="text" placeholder="请输入一级分类名称" class="form-control" name="levelName" id="levelName" th:value="${categoryLevel.levelName}"></td>
+                <td rowspan="2" class="tableLeft"><span style="color: red;font-weight: bold"> </span>图片</td>
+                <td rowspan="2" style="text-align: left">
+                    <div id = "imgShowDiv">
+                        <div class="deleteImg" onclick="deleteImg()"><img src="./img/delete.png" width="25px" height="25px"></div>
+                        <img style="border: 1px solid #ccc"  width="80px" height="80px"  th:src="${imgWebUrl == null || imgWebUrl == ''?'./img/null.jpg':imgWebUrl}">
+                    </div>
+                    <form id="fileForm" method="post" enctype="multipart/form-data" action="image/uploadFile">
+                        <input style="border: none" type="file" class="form-control" name="file" multiple="multiple"  onchange="uploadFile(this)">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>一级分类编码</td>
+                <td><input type="text" placeholder="请输入一级分类编码" class="form-control" name="levelCode" id="levelCode" th:value="${categoryLevel.levelCode}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>权重</td>
+                <td>
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <input type="text" placeholder="请输入权重" class="form-control input-width-auto" id="dataIndex" name="dataIndex" th:value="${categoryLevel.dataIndex}" >
+                        </div>
+                        <div style="color: red;padding-left: 10px;line-height: 45px">数值越大越靠前</div>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>状态</td>
+                <td>
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <select  class="form-control" name="status" id="status" >
+                                <option value="1">有效</option>
+                                <option value="0" th:selected="${categoryLevel.status == 0}">无效</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+               <td colspan="4">
+                   <table class="table table-hover table-bordered">
+                       <tr>
+                           <td>类目列表</td>
+                           <td>
+                               <div style="display: flex">
+                                       <input class="form-control input-width100" style="width: 260px" value="" id="categoryName" name="categoryName" placeholder="类目关键词">
+                                       <input type="button" value="查询全陪类目" class="btn btn-success" onclick="searchCategoryList(0)">
+                                       <input type="button" value="查询已关联的类目" class="btn btn-success" onclick="searchCategoryList(1)">
+                               </div>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td><span style="color: red">是否保留当前已存在且类目为正常状态下的一级分类与类目关联</span></td>
+                           <td style="text-align: left">
+                               <label><input type="checkbox" value="1" name="retain" checked > <i></i> 保留</label>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td colspan="2" style="text-align: left">
+                               <div id="categoryDiv">
+                                   <label th:each="ca:${allCategoryListMapOut}" style="margin-left: 15px"><input name="categoryItems" type="checkbox" th:value="${ca.category_id}" th:checked="${ca.rel == 1}"> <i></i>&nbsp;<span th:text="${ca.category_name+'('+ca.category_code+')'}"></span></label>
+                               </div>
+                           </td>
+                       </tr>
+                   </table>
+               </td>
+            </tr>
+            <tr>
+                <td class="tableLeft">备注</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none"  rows="6"  id="remark" name="remark" th:text="${categoryLevel.remark}"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <input type="button" value="返回列表" onclick="javascript:window.location.href = 'category/levelPage'" class="btn btn-info">
+                    <input type="button" value="保存并继续添加" class="btn btn-success btn-save" data-mark="1" th:if="${categoryLevel.levelId == null || categoryLevel.levelId == 0}">
+                    <input type="button" value="保存" class="btn btn-success btn-save" data-mark="0">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<!-- Data picker -->
+<script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<!-- layerDate plugin javascript -->
+<script src="js/plugins/layer/laydate/laydate.js"></script>
+
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- Clock picker -->
+<script src="js/plugins/clockpicker/clockpicker.js"></script>
+<!-- 自定义js -->
+<script src="js/common.js" th:inline="javascript"></script>
+<script th:inline="javascript">
+    $(".btn-save").on("click",function (e) {
+        var levelId = $("#levelId").val();
+        var levelName = $("#levelName").val();
+        var img = $("#img").val();
+        var levelCode = $("#levelCode").val();
+        var status = $("#status").val();
+        var dataIndex = $("#dataIndex").val();
+        var remark = $("#remark").val();
+
+        var retain = 0;//1保留
+        if($("input[name='retain']").prop("checked")){
+            retain = 1;
+        }
+
+        if(levelName == ''){
+            $("#levelName").focus();
+            return myAlertSimple("一级分类名称不能为空");
+        }
+        if(levelCode == ''){
+            $("#levelCode").focus();
+            return myAlertSimple("一级分类编码不能为空");
+        }
+
+        var regNum=/^[0-9]*$/;
+        if(dataIndex == '' ||!regNum.test($.trim(dataIndex))){
+            $("#dataIndex").focus();
+            return myAlertSimple("非法权重");
+        }
+
+        var categoryIdsHasRel = [[${categoryIdsHasRel}]];//已关联的类目
+
+        //选中要关联的类目
+        var categoryIds = "";
+        var categoryItems = $("input[name='categoryItems']");
+        categoryItems.each(function () {
+            if($(this).prop("checked")){
+                var categoryId = $(this).val();
+                categoryIds = categoryIds + categoryId +",";
+            }
+        })
+        var mark = $(this).attr("data-mark");//1保存并继续添加
+
+        var data = {
+            "categoryLevel.levelId":levelId,
+            "categoryLevel.levelCode":levelCode.trim(),
+            "categoryLevel.levelName":levelName.trim(),
+            "categoryLevel.levelImg":img,
+            "categoryLevel.dataIndex":dataIndex,
+            "categoryLevel.status":status,
+            "categoryLevel.remark":remark.trim(),
+            "retain":retain,
+            "categoryIds":categoryIds,
+            "categoryIdsHasRel":categoryIdsHasRel
+        }
+        //上传完得到id 或者路径 标志上传成功
+        $.ajax({
+            url: "category/saveLevel",
+            type: 'POST',
+            data: data,// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple(data.msg);
+                if (code == "5" || code == '6') {
+                    if(mark == 1){
+                        setTimeout("javascript:window.location.href = 'category/addLevelPage'",1000);
+                    }else {
+                        setTimeout("javascript:window.location.href = 'category/levelPage'",1000);
+                    }
+                }
+            }
+        });
+    })
+
+    function searchCategoryList(index) {
+        var categoryNameS = $("#categoryName").val();
+        var allCategoryListMapOut = [[${allCategoryListMapOut}]];
+        var html = "";
+        for (var i = 0; i < allCategoryListMapOut.length; i++) {
+            var categoryId = allCategoryListMapOut[i].category_id;
+            var categoryName = allCategoryListMapOut[i].category_name;
+            var categoryCode = allCategoryListMapOut[i].category_code;
+            var rel = allCategoryListMapOut[i].rel;//1关联
+            if(1 == index && rel == '0'){
+                //查询已关联的类目
+                continue;
+            }
+
+            if (categoryNameS != '') {
+                categoryNameS = categoryNameS.trim();
+                if (categoryName.indexOf(categoryNameS) >= 0) {
+                    var checked = "";
+                    if (rel == '1') {
+                        checked = 'checked';
+                    }
+                    html = html + "<label style='margin-left: 15px'><input name='categoryItems' type='checkbox' " + checked + " value='" + categoryId + "'> <i></i>&nbsp;" + categoryName + "(" + categoryCode + ")</label>";
+                }
+
+            } else {
+                var checked = "";
+                if (rel == '1') {
+                    checked = 'checked';
+                }
+                html = html + "<label style='margin-left: 15px'><input name='categoryItems' type='checkbox' "+checked+" value='"+categoryId+"'> <i></i>&nbsp;"+categoryName+"("+categoryCode+")</label>";
+            }
+        }
+
+        $("#categoryDiv").html(html);
+    }
+
+    //上传图片
+    function uploadFile() {
+        //上传完得到id 或者路径 标志上传成功
+        var data = new FormData($('#fileForm')[0]);
+        $.ajax({
+            url: "image/uploadFile",
+            type: 'POST',
+            data: data,
+            dataType: 'JSON',
+            cache: false,
+            processData: false,
+            contentType: false
+        }).done(function (ret) {
+            if(ret.code == 12){
+                $("#img").val(ret.imgfdfsUrl)
+                var html = "<div class='deleteImg' onclick='deleteImg()'><img src='./img/delete.png' width='25px' height='25px'></div>"+
+                    "<img style='border: 1px solid #ccc' src='"+ret.imgWebUrl+"' width='80px' height='80px'>";
+                $("#imgShowDiv").html(html)
+            }else{
+                return myAlertSimple(ret.msg);
+            }
+        });
+        $("#fileForm").html("<input style=\"border: none\" type=\"file\" class=\"form-control\" name=\"file\" multiple=\"multiple\"  onchange=\"uploadFile(this)\">")
+    }
+
+   /* $(".deleteImg").on("click",function () {
+        $("#img").val("")
+        $("#imgShowDiv").html("<img src='"+ret.imgWebUrl+"' width='100px' height='100px'>")
+    })*/
+
+   //删除图片
+   function deleteImg() {
+       $("#img").val("");
+       var html = "<div class='deleteImg' onclick='deleteImg()'><img src='./img/delete.png' width='25px' height='25px'></div>"+
+           "<img style='border: 1px solid #ccc' src='./img/null.jpg' width='80px' height='80px'>";
+       $("#imgShowDiv").html(html)
+   }
+   
+</script>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+package com.yufan.bean;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+/**
+ * 创建人: lirf
+ * 创建时间:  2019/8/11 21:16
+ * 功能介绍:
+ */
+@Setter
+@Getter
+public class GoodsCondition {
+
+    private Integer goodsId;
+    private String goodsName;
+    private Integer isYuding;
+    private Integer getWay;
+    private Integer isPutaway;
+    private Integer categoryId;
+    private Integer property;
+    private String goodsCode;
+    private Integer isSingle;
+    private Integer couponId;
+    private Integer status;
+    private Integer goodsType;
+    private Integer isPayOnline;
+    private Integer isTimeGoods;
+    private Integer levelId;
+    private Integer shopId;
+
+}

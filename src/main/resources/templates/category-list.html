@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title></title>
+    <base th:href="@{/}">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-param" content="uhuibao_csrf">
+    <meta name="csrf-token" content="Y19seUpBYjAaG1oaBA07HSoTAjcmBxhpADMOEX4NC0M1PFkdKBgrXQ==">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <!-- Data Tables -->
+    <script src="js/layer.js"></script>
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <style>
+        label {
+            float: right;
+            margin-top: 9px;
+        }
+        label i {
+            color: red;
+            margin-right: 7px;
+            vertical-align: middle;
+        }
+        .form-control-common{
+            width: auto;
+        }
+        .input-width40{
+            width: 40px;
+        }
+        .input-width60{
+            width: 60px;
+        }
+        .input-width80{
+            width: 80px;
+        }
+        .input-width100{
+            width: 100px;
+        }
+        .row{
+            width: 100%;
+        }
+        #divLeft{
+            float: left;
+            width: 35%;
+        }
+        #divRight{
+            float: left;
+            width: 65%;
+        }
+        table td{
+            text-align: center;
+        }
+        .tableLeft{
+            background-color: #f5f5f5;
+            width: 30%;
+        }
+        .tableLeft2{
+            background-color: #f5f5f5;
+        }
+
+        .imgDiv{
+            width: 80px;
+            height: 80px;
+        }
+        .deleteImg{
+            position: relative;
+            top: 2px;
+            right: 2px;
+            text-align: right;
+            z-index: 1000;
+            height: 25px;
+        }
+        .imgDiv>img{
+            width: 100%;
+            height: 100%;
+            position: relative;
+            top: -25px;
+        }
+
+    </style>
+</head>
+
+<body>
+<div style="left: 0px;width: 100%;height: 10px">
+</div>
+<!--选择的类目-->
+<input type="hidden" id="categoryId" value="">
+<input type="hidden" id="propId" value="">
+
+<div class="container-fluid fluid-pading">
+    <div id="divLeft" style="height: 10px;" >
+        <div align="center">
+            <table class="table" style="border: none">
+                <tr>
+                    <td style="text-align: right;border: none" >一级分类: </td>
+                    <td style="border: none">
+                        <select  class="form-control form-control-common" name="levelId" id="levelId" onchange="categoryPage()">
+                            <option value="">--选择一级分类--</option>
+                            <option th:each="l:${levelListMap}" th:selected="${levelId == l.level_id}" th:text="${l.level_name}" th:value="${l.level_id}"></option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="border: 1px solid #ddd;border-radius:6px;padding: 10px 10px;" >
+            <table class="table table-striped table-bordered table-hover display" style="table-layout:fixed;word-break: break-all; overflow:hidden;">
+                <thead>
+                <tr>
+                    <th>类目标识</th>
+                    <th>类目名称</th>
+                    <th>编码</th>
+                    <th>图片</th>
+                    <th>排序</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody class="text-center">
+                    <div th:each="ca:${categoryObjList}">
+                        <tr  style="cursor:pointer" th:data-id="${ca.categoryId}">
+                            <td th:text="${ca.categoryId}"  onclick="showItemList(this)" ></td>
+                            <td th:text="${ca.categoryName}"  onclick="showItemList(this)" ></td>
+                            <td th:text="${ca.categoryCode}"  onclick="showItemList(this)" ></td>
+                            <td onclick="showItemList(this)"><img th:src="${ca.categoryWebImg}" width="50px" height="50px"></td>
+                            <td th:text="${ca.dataIndex}"  onclick="showItemList(this)" ></td>
+                            <td th:id="${'caStatus'+ca.categoryId}"  onclick="showItemList(this)" >
+                                <span th:if="${ca.status == 1}">有效</span>
+                                <span th:if="${ca.status == 0}" style="color: red">无效</span>
+                            </td>
+                            <td th:id="${'caBtn'+ca.categoryId}">
+                                <button class='btn btn-info btn-danger' data-status="0" th:data-category-id="${ca.categoryId}"  type='button' th:if="${ca.status == 1}" onclick="updateCategoryStatus(this)"><i class='fa fa-warning'></i> 删除</button>
+                                <button class='btn btn-info' data-status="1" th:data-category-id="${ca.categoryId}" type='button' th:if="${ca.status == 0}" onclick="updateCategoryStatus(this)"><i class='fa fa-check'></i> 启用</button>
+                            </td>
+                        </tr>
+                        <tr th:id="${'item'+ca.categoryId}" style="display: none">
+                            <td colspan="7">
+                                <table class="table table-striped table-bordered table-hover display" style="table-layout:fixed;word-break: break-all; overflow:hidden;">
+                                    <thead>
+                                    <tr>
+                                        <th>属性名称</th>
+                                        <th>图片</th>
+                                        <th>是否销售属性</th>
+                                        <th>排序</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        <tr th:each="p:${ca.itempropObjList}" style="cursor:pointer" th:data-prop-id="${p.propId}" th:data-category-id="${ca.categoryId}" >
+                                            <td th:text="${p.propName}" onclick="onclickPropTr(this)"></td>
+                                            <td onclick="onclickPropTr(this)"><img th:src="${p.propWebImg}" width="50px" height="50px"></td>
+                                            <td onclick="onclickPropTr(this)">
+                                                <span th:if="${p.isSales == 1}">是</span>
+                                                <span th:if="${p.isSales == 0}">否</span>
+                                            </td>
+                                            <td th:text="${p.dataIndex}" onclick="onclickPropTr(this)"></td>
+                                            <td th:id="${'pStatus'+p.propId}" onclick="onclickPropTr(this)">
+                                                <span th:if="${p.status == 1}">有效</span>
+                                                <span th:if="${p.status == 0}" style="color: red">无效</span>
+                                            </td>
+                                            <td th:id="${'pBtn'+p.propId}">
+                                                <button class='btn btn-info btn-danger'  type='button' data-status="0" th:data-propId-id="${p.propId}" th:if="${p.status == 1}" onclick="updateCategoryPropStatus(this)" ><i class='fa fa-warning' ></i> 删除</button>
+                                                <button class='btn btn-info'  type='button' data-status="1" th:data-propId-id="${p.propId}" th:if="${p.status == 0}" onclick="updateCategoryPropStatus(this)"><i class='fa fa-check'></i> 启用</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </div>
+                </tbody>
+            </table>
+            <div style="height: 20px"></div>
+        </div>
+        <div style="height: 50px"></div>
+            <!-- 当上面div过长时树会顶住页面底部,影响视觉,固加上这个div留一些空白 -->
+        </div>
+        <div id="divRight" style="height: 10px;">
+            <table class="table">
+                <tr>
+                    <td style="border: none">
+                        <div style="text-align: center" align="center">
+                            <button class="btn btn-success" type="button" onclick="addCategoryDiv(0)" ><i class=""></i><span class="bold">新增类目</span></button>&nbsp;&nbsp;
+                            <button class="btn btn-success" type="button" onclick="clickAddProp()"><i class=""></i><span class="bold">新增类目属性</span></button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="mianmenu" style="border: 1px solid #ddd;border-radius:6px;padding: 10px 10px;margin-left: 10px" >
+                <div id="categoryDiv" style="border: none"><!--style="display: none"-->
+                    <!--<div>
+                        <table id="caTitle" class="table table-hover table-bordered" style="table-layout:fixed;word-break: break-all; overflow:hidden;">
+                            <th>修改类目</th>
+                        </table>
+                    </div>
+                    <table class="table table-hover table-bordered" style="table-layout:fixed;word-break: break-all; overflow:hidden;">
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>类目名称</td>
+                            <td><input type="text" placeholder="请输入类目名称" class="form-control" name="categoryName" id="categoryName" value="" ></td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>类目编码</td>
+                            <td><input type="text" placeholder="请输入类目编码" class="form-control" name="categoryCode" id="categoryCode" value="" ></td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>图片:<br><span style="color: red;padding-top: 3px">建议尺寸:80*80</span></td>
+                            <td style="text-align: left">
+                                <div class="imgDiv" id="imgDiv0">
+                                    <input type="hidden" value="" id="categoryImg" name="categoryImg">
+                                    <div class="deleteImg" onclick="deleteImg(this)" delete-mark="0"><img src="./img/delete.png" width="25px" height="25px"></div>
+                                    <img style="border: 1px solid #ccc" src="./img/null.jpg" width="80px" height="80px" >
+                                </div>
+                                <form id="form0" method="post" enctype="multipart/form-data" action="image/uploadFile">
+                                    <input style="border: none" type="file" class="form-control" name="file" id="file0" multiple="multiple"  data-mark="0" onchange="uploadFile(this)">
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>外部标识</td>
+                            <td><input type="text" placeholder="请输入外部标识" class="form-control" name="caOuteId" id="caOuteId"  value="" ></td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>排序</td>
+                            <td>
+                                <div style="display: flex">
+                                    <input type="text" placeholder="请输入排序" class="form-control form-control-common" id="caDataIndex" name="caDataIndex" value="">
+                                    <div style="color: red;padding-left: 10px;line-height: 45px">数值越大越靠前</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft">备注</td>
+                            <td tyle="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="4"  id="caRemark" name="caRemark"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="button" value="保存" class="btn btn-success btn-save" onclick="submitAddCategory()" >
+                            </td>
+                        </tr>
+                    </table>-->
+                </div>
+                <div id="propDiv" style="border: none" ><!--style="display: none"-->
+                    <!--<div>
+                        <table id="pTitle" class="table table-hover table-bordered" style="table-layout:fixed;word-break: break-all; overflow:hidden;">
+                            <th>修改类目属性</th>
+                        </table>
+                    </div>
+                    <table class="table table-hover table-bordered" style="table-layout:fixed;word-break: break-all; overflow:hidden;">
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>所属类目</td>
+                            <td><input type="text" readonly  class="form-control" name="pCategoryName"  value="" ></td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>属性名称</td>
+                            <td><input type="text" onkeydown="updatePropNameDiv(this)" onkeyup="updatePropNameDiv(this)" placeholder="请输入属性名称" class="form-control" name="propName" id="propName"  value="" ></td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>属性编码</td>
+                            <td><input type="text" placeholder="请输入属性名称" class="form-control" name="propCode"  value="" id="propCode" ></td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>图片:<br><span style="color: red;padding-top: 3px">建议尺寸:80*80</span></td>
+                            <td style="text-align: left">
+                                <div  class="imgDiv" id="imgDiv1">
+                                    <input type="hidden" value="" id="propImg" name="propImg">
+                                    <div class="deleteImg" onclick="deleteImg(this)" delete-mark="0"><img src="./img/delete.png" width="25px" height="25px"></div>
+                                    <img style="border: 1px solid #ccc" src="./img/null.jpg" width="80px" height="80px" >
+                                </div>
+                                <form id="form1" method="post" enctype="multipart/form-data" action="image/uploadFile">
+                                    <input style="border: none" type="file" class="form-control" name="file" id="file1" multiple="multiple"  data-mark="1"  onchange="uploadFile(this)">
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>外部标识</td>
+                            <td><input type="text" placeholder="请输入外部标识" class="form-control" name="pOuteId" id="pOuteId" value="" ></td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>排序</td>
+                            <td>
+                                <div style="display: flex">
+                                    <input type="text" placeholder="请输入排序" class="form-control form-control-common" id="pDataIndex" name="pDataIndex" value="">
+                                    <div style="color: red;padding-left: 10px;line-height: 45px">数值越大越靠前</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>是否销售属性</td>
+                            <td>
+                                <select  class="form-control form-control-common" name="isSales" id="isSales">
+                                    <option value="1">是销售属性</option>
+                                    <option value="0">不是销售属性</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>显示类型</td>
+                            <td>
+                                <select  class="form-control form-control-common" id="showView" name="showView">
+                                    <option value="select">下拉</option>
+                                    <option value="checkbox">多选</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tableLeft">备注</td>
+                            <td tyle="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="4" id="pRemark" name="pRemark"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table class="table" style="border: none">
+                                    <tr>
+                                        <td style="border: none">
+                                            <div style="text-align: center;" align="center">
+                                                <span>属性名称:</span><span id="propNameDiv" style="color: blue;padding: 0px 10px 0 3px;font-weight: bold"></span>
+                                                <button class="btn btn-success" type="button" onclick="addPropValueDiv()"><i class=""></i><span class="bold">新增属性值</span></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div id="propValueDiv">
+                                    <div>
+                                        <table class="table table-hover table-bordered" id="propValueTable">
+                                            <tr>
+                                                <td class="tableLeft2"><span style="color: red;font-weight: bold">* </span>值名称</td>
+                                                <td>
+                                                    <input type="hidden" name="valueId" value="">
+                                                    <input type="text" placeholder="值名称" class="form-control form-control-common" name="valueName"  value="" >
+                                                </td>
+                                                <td class="tableLeft2"><span style="color: red;font-weight: bold"> </span>外部标识</td>
+                                                <td><input type="text" placeholder="外部标识" class="form-control form-control-common input-width100" name="vOuteId"  value="" ></td>
+                                                <td class="tableLeft2"><span style="color: red;font-weight: bold">* </span>属性值</td>
+                                                <td><input type="text" placeholder="属性值" class="form-control form-control-common" name="vValue"  value="" ></td>
+                                                <td class="tableLeft2"><span style="color: red;font-weight: bold">* </span>排序</td>
+                                                <td><input type="text" placeholder="排序" class="form-control form-control-common input-width60" name="vDataIndex"  value="" ></td>
+                                                <td><input type="button" value="移除" class="btn btn-danger" onclick="removePropValueTr(this)"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="button" value="保存" class="btn btn-success btn-save" onclick="submitAddCategoryProp()" >
+                            </td>
+                        </tr>
+                    </table>-->
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- 自定义js -->
+<script src="js/common.js" th:inline="javascript"></script>
+<script src="js/category.js" th:inline="javascript"></script>
+<script th:inline="javascript" type="text/javascript">
+    //类目列表
+    var categoryList = [[${categoryObjList}]];
+    //重置
+    $("#categoryDiv").html("");
+    $("#propDiv").html("");
+
+    //选择一级分类
+    function categoryPage() {
+        var levelId = $("#levelId").val();
+        window.location.href = "category/categoryPage?levelId="+levelId;
+    }
+
+    //点击类目
+    function showItemList(obj) {
+        var categoryId = $(obj).parent().attr("data-id");
+        $("#item"+categoryId).toggle();
+        addCategoryDiv(categoryId);//
+    }
+
+    //更新类目状态
+    function updateCategoryStatus(obj) {
+        var status = $(obj).attr("data-status");
+        var categoryId = $(obj).attr("data-category-id");
+        $.ajax({
+            url: "category/updateCategoryStatus",
+            type: 'POST',
+            data: {
+                "categoryId":categoryId,
+                "status":status
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple(data.msg);
+                if (code == "3" || code == '4') {
+                    if(status == 1){
+                        //启用
+                        $("#caStatus"+categoryId).html("有效");
+                        $("#caBtn"+categoryId).html("<button class='btn btn-info btn-danger' data-status='0' data-category-id='"+categoryId+"'  type='button' onclick='updateCategoryStatus(this)'><i class='fa fa-warning'></i> 删除</button>");
+                    }else{
+                        //删除
+                        $("#caStatus"+categoryId).html(" <span style='color: red'>无效</span>");
+                        $("#caBtn"+categoryId).html("<button class='btn btn-info' data-status='1' data-category-id='"+categoryId+"' type='button' onclick='updateCategoryStatus(this)'><i class='fa fa-check'></i> 启用</button>");
+                    }
+                }
+            }
+        });
+    }
+
+    //更新类目属性状态
+    function updateCategoryPropStatus(obj) {
+        var status = $(obj).attr("data-status");
+        var propId = $(obj).attr("data-propId-id");
+        $.ajax({
+            url: "category/updateCategoryPropStatus",
+            type: 'POST',
+            data: {
+                "propId":propId,
+                "status":status
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple(data.msg);
+                if (code == "3" || code == '4') {
+                    if(status == 1){
+                        //启用
+                        $("#pStatus"+propId).html("有效");
+                        $("#pBtn"+propId).html("<button class='btn btn-info btn-danger'  type='button' data-status='0' data-propId-id='"+propId+"'  onclick='updateCategoryPropStatus(this)' ><i class='fa fa-warning' ></i> 删除</button>");
+                    }else{
+                        //删除
+                        $("#pStatus"+propId).html(" <span style='color: red'>无效</span>");
+                        $("#pBtn"+propId).html("<button class='btn btn-info'  type='button' data-status='1' data-propId-id='"+propId+"'  onclick='updateCategoryPropStatus(this)'><i class='fa fa-check'></i> 启用</button>");
+                    }
+                }
+            }
+        });
+    }
+
+    //修改增加属性值名称
+    function updatePropNameDiv(obj) {
+        $("#propNameDiv").html( $(obj).val());
+    }
+
+    //移除属性值
+    function removePropValueTr(obj) {
+        $(obj).parent().parent().remove();
+    }
+
+    //增加类目
+    function submitAddCategory() {
+        var levelId = $("#levelId").val();
+        var categoryId = $("#categoryId").val();
+        if(categoryId == ''){
+            categoryId = 0;
+        }
+        var categoryName = $("#categoryName").val();
+        var dataIndex = $("#caDataIndex").val();
+        var outeId = $("#caOuteId").val();
+        var categoryImg = $("#categoryImg").val();
+        var categoryCode = $("#categoryCode").val();
+        var remark = $("#caRemark").val();
+        if(categoryName == ''){
+            $("#categoryName").focus();
+            return myAlertSimple("类目名称不能为空");
+        }
+        if(dataIndex =='' || !checknumber(dataIndex)){
+            $("#dataIndex").focus();
+            return myAlertSimple("非法排序");
+        }
+        if(categoryCode == ''){
+            $("#categoryCode").focus();
+            return myAlertSimple("类目编码不能为空");
+        }
+        $.ajax({
+            url: "category/saveCategory",
+            type: 'POST',
+            data: {
+                "categoryId":categoryId,
+                "categoryName":categoryName,
+                "dataIndex":dataIndex,
+                "outeId":outeId,
+                "categoryImg":categoryImg,
+                "categoryCode":categoryCode,
+                "remark":remark
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple(data.msg);
+                if (code == "5" || code == '6') {
+                    setTimeout("javascript:window.location.href = 'category/categoryPage?levelId=" + levelId + "'", 1000);
+                }
+            }
+        });
+    }
+
+    //增加属性和属性值
+    function submitAddCategoryProp() {
+        var levelId = $("#levelId").val();
+        var categoryId = $("#categoryId").val();
+        var propId = $("#propId").val();
+        var propName = $("#propName").val();
+        var propCode = $("#propCode").val();
+        var propImg = $("#propImg").val();
+        var outeId = $("#pOuteId").val();
+        var dataIndex = $("#pDataIndex").val();
+        var isSales = $("#isSales").val();
+        var showView = $("#showView").val();
+        var remark = $("#pRemark").val();
+
+        if(categoryId == ''){
+            return myAlertSimple("类目不能为空");
+        }
+        if(propName == ''){
+            $("#propName").focus();
+            return myAlertSimple("属性名称不能为空");
+        }
+        if(propCode == ''){
+            $("#propCode").focus();
+            return myAlertSimple("属性编码不能为空");
+        }
+        if(dataIndex =='' || !checknumber(dataIndex)){
+            $("#dataIndex").focus();
+            return myAlertSimple("非法属性排序");
+        }
+        //属性值
+        var flag = false;
+
+        var valueIdObj = $("input[name='valueId']");
+        var valueIds = "";
+        valueIdObj.each(function () {
+            var value = $(this).val() == null || $(this).val()==''?'0':$(this).val();
+            valueIds = valueIds + value+"``";
+        });
+
+        var outeIdObj = $("input[name='vOuteId']");
+        var outeIds = "";
+        outeIdObj.each(function () {
+            var value = $(this).val() == null || $(this).val()==''?'0':$(this).val();
+            outeIds = outeIds + value+"``";
+        });
+
+        var valueNameObj = $("input[name='valueName']");
+        var valueNames = "";
+        valueNameObj.each(function () {
+            valueNames = valueNames + $(this).val()+"``";
+            if($(this).val().trim() == ''){
+                flag = true;
+                $(this).focus();
+                return false;
+            }
+        });
+        if(flag){
+            return myAlertSimple("值名称不能为空");
+        }
+
+        var valueObj = $("input[name='vValue']");
+        var values = "";
+        valueObj.each(function () {
+            values = values + $(this).val()+"``";
+            if($(this).val().trim() == ''){
+                flag = true;
+                $(this).focus();
+                return false;
+            }
+        });
+        if(flag){
+            return myAlertSimple("属性值不能为空");
+        }
+        var dataIndexObj = $("input[name='vDataIndex']");
+        var dataIndexs = "";
+        dataIndexObj.each(function () {
+            dataIndexs = dataIndexs + $(this).val()+"``";
+            if(!checknumber($(this).val())){
+                flag = true;
+                $(this).focus();
+                return false;
+            }
+        });
+        if(flag){
+            return myAlertSimple("非法属性值排序");
+        }
+
+        $.ajax({
+            url: "category/saveCategoryProp",
+            type: 'POST',
+            data: {
+                "categoryId":categoryId,
+                "propId":propId,
+                "propName":propName,
+                "propCode":propCode,
+                "propImg":propImg,
+                "outeId":outeId,
+                "dataIndex":dataIndex,
+                "isSales":isSales,
+                "showView":showView,
+                "remark":remark,
+                "valueIds":valueIds,
+                "outeIds":outeIds,
+                "valueNames":valueNames,
+                "values":values,
+                "dataIndexs":dataIndexs
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple(data.msg);
+                if (code == "5" || code == '6') {
+                    setTimeout("javascript:window.location.href = 'category/categoryPage?levelId=" + levelId + "'", 1000);
+                }
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>
