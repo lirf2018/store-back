@@ -31,7 +31,7 @@ public class GoodsDaoImpl implements IGoodsDao {
 
     @Override
     public void updateGoodsToTimeGoods(int goodsId, int isTimeGoods) {
-        String sql = " update tb_goods set is_time_goods = ? where   goods_id=? ";
+        String sql = " update tb_goods set is_time_goods = ?,lastaltertime=now() where   goods_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, isTimeGoods, goodsId);
     }
 
@@ -117,13 +117,13 @@ public class GoodsDaoImpl implements IGoodsDao {
 
     @Override
     public void updateGoodsSingle(int goodsId, int isSingle) {
-        String sql = " update tb_goods set is_single=? where  goods_id=? ";
+        String sql = " update tb_goods set is_single=? ,lastaltertime=now() where  goods_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, isSingle, goodsId);
     }
 
     @Override
     public void updateGoodsStatus(int goodsId, int status) {
-        String sql = " update tb_goods set `status`=? where  goods_id=? ";
+        String sql = " update tb_goods set `status`=?,lastaltertime=now()  where  goods_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, status, goodsId);
     }
 
@@ -145,7 +145,7 @@ public class GoodsDaoImpl implements IGoodsDao {
 
     @Override
     public void updateGoodsOnSell(int goodsId, int isPutway) {
-        String sql = " update tb_goods set is_putaway=? where goods_id=? ";
+        String sql = " update tb_goods set is_putaway=?,lastaltertime=now()  where goods_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, isPutway, goodsId);
     }
 
