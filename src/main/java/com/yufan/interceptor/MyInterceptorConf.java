@@ -20,7 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MyInterceptorConf implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        System.out.println("------------------------->MyInterceptorConf");
+//        System.out.println("------------------------->MyInterceptorConf");
         // addPathPatterns - 用于添加拦截规则
         // excludePathPatterns - 用户排除拦截
         registry.addInterceptor(new MyInterceptor())

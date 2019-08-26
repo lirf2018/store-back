@@ -107,7 +107,7 @@ public class BannerController {
 
 
     /**
-     * 新增加活动页面
+     * 新增加banner页面
      */
     @RequestMapping("addBannerPage")
     public ModelAndView addBannerPage(HttpServletRequest request, HttpServletResponse response, Integer bannerId) {
@@ -121,7 +121,7 @@ public class BannerController {
         modelAndView.addObject("webImg", Constants.IMG_URL);
         modelAndView.addObject("nowDate", DatetimeUtil.getNow("yyyy-MM-dd"));
         modelAndView.addObject("banner", banner);
-        modelAndView.setViewName("add-Banner");
+        modelAndView.setViewName("add-banner");
         return modelAndView;
     }
 
