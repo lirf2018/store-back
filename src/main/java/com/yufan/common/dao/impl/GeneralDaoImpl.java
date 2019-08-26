@@ -107,7 +107,7 @@ public class GeneralDaoImpl implements IGeneralDao {
         Session session = getSession();
         try {
             String sqlQuery = pageInfo.getSqlQuery();
-            int currePage = pageInfo.getCurrePage();//查询页
+            int currePage = pageInfo.getCurrePage() == 0 ? 1 : pageInfo.getCurrePage();//查询页
             int pageSize = pageInfo.getPageSize();
             // 分页查询结果
             NativeQuery query = session.createNativeQuery(sqlQuery);

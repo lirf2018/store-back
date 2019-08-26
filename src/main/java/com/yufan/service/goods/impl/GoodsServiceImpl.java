@@ -152,7 +152,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 TbGoods old = iGoodsJapDao.getOne(goods.getGoodsId());
                 goods.setCreatetime(old.getCreatetime());
                 goods.setCreateman(old.getCreateman());
-                goods.setSellCount(old.getSellCount());
+                goods.setSellCount(old.getSellCount() == null ? 0 : old.getSellCount());
                 goods.setLastalterman(goodsDataObj.getCreateman());
                 goods.setLastaltertime(new Timestamp(new Date().getTime()));
                 goods.setIsTimeGoods(old.getIsTimeGoods());

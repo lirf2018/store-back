@@ -95,9 +95,4 @@ public  class MD5 {
         }
         return buf.toString();
     }
-
-    public static void main(String[] args) {
-        System.out.println(MD5.enCodeStandard("1"));
-    }
-
 }
