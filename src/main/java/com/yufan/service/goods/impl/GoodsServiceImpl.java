@@ -78,6 +78,8 @@ public class GoodsServiceImpl implements IGoodsService {
                 iCommonRelDao.deletRelImg(goods.getGoodsId(), null, 0);
                 //删除商品属性
                 iGoodsDao.deleteGoodsAttribute(goods.getGoodsId());
+                goods.setLastaltertime(new Timestamp(new Date().getTime()));
+                goods.setLastalterman(goodsDataObj.getCreateman());
             }
             List<TbImg> listImg = new ArrayList<>();
             //bannel图片
@@ -160,6 +162,8 @@ public class GoodsServiceImpl implements IGoodsService {
                 //增加
                 goods.setCreateman(goodsDataObj.getCreateman());
                 goods.setCreatetime(new Timestamp(new Date().getTime()));
+                goods.setLastalterman(goodsDataObj.getCreateman());
+                goods.setLastaltertime(new Timestamp(new Date().getTime()));
             }
             iGoodsJapDao.save(goods);
 
