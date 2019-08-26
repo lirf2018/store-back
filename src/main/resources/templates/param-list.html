@@ -157,7 +157,7 @@
     });
 
     //订单条件查询
-    function searchOrder() {
+    function searchData() {
         table.draw({
             start: 0
         });
@@ -193,7 +193,7 @@
                     if (code == "1") {
                         myAlertSimple(data.msg);
                         // setTimeout("javascript:window.location.href = 'param/paramPage'",1000);
-                        searchOrder();
+                        searchData();
                     }
                 }
             });

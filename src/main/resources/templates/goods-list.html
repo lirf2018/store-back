@@ -480,7 +480,7 @@
                     if (code == "21") {
                         myAlertSimple(data.msg);
                         // setTimeout("javascript:window.location.href = 'goods/goodsPage'",1000);
-                        searchOrder();
+                        searchData();
                     }else{
                         myAlertSimple("取消失败");
                     }
@@ -507,7 +507,7 @@
                 myAlertSimple(data.msg);
                 if (code == "3" || code == '4') {
                     // setTimeout("javascript:window.location.href = 'goods/goodsPage'",1000);
-                    searchOrder();
+                    searchData();
                 }
             }
         });
@@ -535,7 +535,7 @@
                 myAlertSimple(data.msg);
                 if (code == "20" || code == '19') {
                     // setTimeout("javascript:window.location.href = 'goods/goodsPage'",1000);
-                    searchOrder();
+                    searchData();
                 }
             }
         });
