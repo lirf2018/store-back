@@ -362,8 +362,4 @@ public class CategoryDaoImpl implements ICategoryDao {
         return iGeneralDao.getBySQLListMap(sql, categoryId).get(0);
     }
 
-    @Override
-    public Map<String, Object> loadCategoryPropMap(int categoryId) {
-        return null;
-    }
 }

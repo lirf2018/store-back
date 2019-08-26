@@ -203,5 +203,4 @@ public interface ICategoryDao {
 
     Map<String,Object> loadCategoryMap(int categoryId);
 
-    Map<String,Object> loadCategoryPropMap(int categoryId);
 }
