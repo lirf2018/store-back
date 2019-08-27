@@ -315,7 +315,7 @@ public class CategoryServiceImpl implements ICategoryService {
                     iCategoryDao.updateObject(propsValue);
                 }
             }
-            if (!hasValueObj) {
+            if (!hasValueObj && itempropObj.getPropId() != null) {
                 iCategoryDao.deletePropValue(itempropObj.getPropId(), null);
             }
 
