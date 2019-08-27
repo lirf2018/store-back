@@ -126,7 +126,7 @@ public class CategoryDaoImpl implements ICategoryDao {
 
     @Override
     public void deleteLevelCategoryRelByLevelId(int levelId) {
-        String sql = " DELETE from tb_category_level where level_id=? ";
+        String sql = " DELETE from tb_level_category_rel where level_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, levelId);
     }
 
