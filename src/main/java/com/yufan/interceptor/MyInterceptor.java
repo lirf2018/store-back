@@ -28,7 +28,7 @@ public class MyInterceptor implements HandlerInterceptor {
             return true;
         }
         if (user == null) {
-            LOG.info("未登录,拦截");
+            LOG.info("------未登录,拦截-----");
             PrintWriter pw = response.getWriter();
             response.setContentType("text/html;charset=UTF-8");
             pw.print("<script language=javascript>alert('会话结束');</script>");
