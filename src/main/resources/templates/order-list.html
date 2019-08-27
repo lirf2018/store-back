@@ -29,6 +29,9 @@
                     <div class="ibox-content">
                         <div class="form-inline">
                             <div>
+                                <label>订单标识:</label>
+                                <input class="form-control input-width100" id="orderId" name="orderId" type="text" value="">
+
                                 <label>订单号:</label>
                                 <input class="form-control input-width200" id="orderNo" name="orderNo" type="text" value="">
 
@@ -172,6 +175,7 @@
                         d.endPayDate = $('#endPayDate').val();
                         d.businessType = $('#businessType').val();
                         d.postWay = $('#postWay').val();
+                        d.orderId = $('#orderId').val();
                     }
                 }
                 ,columns:[

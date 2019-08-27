@@ -68,6 +68,9 @@ public class OrderDaoImpl implements IOrderDao {
         if (!StringUtils.isEmpty(orderCondition.getEndPayDate())) {
             sql.append(" and o.pay_time <= '").append(orderCondition.getEndPayDate()).append(" 23:59:59' ");
         }
+        if (null != orderCondition.getOrderId()) {
+            sql.append(" and o.order_id=").append(orderCondition.getOrderId()).append(" ");
+        }
         sql.append(" ORDER BY o.order_id desc ");
         PageInfo pageInfo = new PageInfo();
         pageInfo.setCurrePage(currePage);
