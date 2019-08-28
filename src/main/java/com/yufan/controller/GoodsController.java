@@ -357,6 +357,9 @@ public class GoodsController {
                 ItempropObj obj = outItempropList.get(i);
                 List<PropValueObj> propValueObjList = new ArrayList<>();
                 for (int j = 0; j < listItemPropRelAll.size(); j++) {
+                    if (null == listItemPropRelAll.get(j).get("pv_prop_id")) {
+                        continue;
+                    }
                     Integer propId = Integer.parseInt(listItemPropRelAll.get(j).get("pv_prop_id").toString());
                     Integer valueId = Integer.parseInt(listItemPropRelAll.get(j).get("pv_value_id").toString());
                     String valueName = String.valueOf(listItemPropRelAll.get(j).get("pv_value_name"));
