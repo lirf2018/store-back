@@ -31,7 +31,7 @@ public class AddrDaoImpl implements IAddrDao {
     public PageInfo loadPlatformAddrPage(int currePage, TbPlatformAddr platformAddr) {
         StringBuffer sql = new StringBuffer();
         sql.append(" select id,detail_addr,responsible_man,responsible_phone,CONCAT(freight,'') as freight,sort_char,addr_prefix,status,remark,addr_sort,addr_type,addr_desc,");
-        sql.append(" addr_name,shop_id,date_format(createtime,'%Y-%m-%d %T') as createtime");
+        sql.append(" addr_name,shop_id,date_format(createtime,'%Y-%m-%d %T') as createtime,addr_lng,addr_lat");
         sql.append(" from tb_platform_addr where status=1 ");
         if (0 != platformAddr.getId()) {
             sql.append(" and id = ").append(platformAddr.getId()).append(" ");

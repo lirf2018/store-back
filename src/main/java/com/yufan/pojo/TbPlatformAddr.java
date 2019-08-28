@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /**
  * 创建人: lirf
- * 创建时间:  2019/7/8 15:37
+ * 创建时间:  2019/8/28 9:35
  * 功能介绍:
  */
 @Entity
@@ -29,6 +29,8 @@ public class TbPlatformAddr {
     private String addrDesc;
     private String addrName;
     private Integer shopId;
+    private String addrLng;
+    private String addrLat;
 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
@@ -191,6 +193,26 @@ public class TbPlatformAddr {
         this.shopId = shopId;
     }
 
+    @Basic
+    @Column(name = "addr_lng", nullable = true, length = 50)
+    public String getAddrLng() {
+        return addrLng;
+    }
+
+    public void setAddrLng(String addrLng) {
+        this.addrLng = addrLng;
+    }
+
+    @Basic
+    @Column(name = "addr_lat", nullable = true, length = 50)
+    public String getAddrLat() {
+        return addrLat;
+    }
+
+    public void setAddrLat(String addrLat) {
+        this.addrLat = addrLat;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -211,12 +233,14 @@ public class TbPlatformAddr {
                 Objects.equals(addrType, that.addrType) &&
                 Objects.equals(addrDesc, that.addrDesc) &&
                 Objects.equals(addrName, that.addrName) &&
-                Objects.equals(shopId, that.shopId);
+                Objects.equals(shopId, that.shopId) &&
+                Objects.equals(addrLng, that.addrLng) &&
+                Objects.equals(addrLat, that.addrLat);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, detailAddr, responsibleMan, responsiblePhone, freight, sortChar, addrPrefix, createman, createtime, status, remark, addrSort, addrType, addrDesc, addrName, shopId);
+        return Objects.hash(id, detailAddr, responsibleMan, responsiblePhone, freight, sortChar, addrPrefix, createman, createtime, status, remark, addrSort, addrType, addrDesc, addrName, shopId, addrLng, addrLat);
     }
 }

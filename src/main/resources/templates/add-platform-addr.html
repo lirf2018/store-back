@@ -44,22 +44,22 @@
             <tbody>
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>地址前缀</td>
-                <td><input type="text" placeholder="请输入参数名称,如:广西柳州" class="form-control input-width-auto" id="addrPrefix" name="addrPrefix" th:value="${addr.addrPrefix}"></td>
+                <td><input type="text" placeholder="请输入地址前缀,如:广西柳州" class="form-control input-width-auto" id="addrPrefix" name="addrPrefix" th:value="${addr.addrPrefix}"></td>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>负责人</td>
-                <td><input type="text" placeholder="请输入参数编码" class="form-control input-width-auto" id="responsibleMan" name="responsibleMan" th:value="${addr.responsibleMan}"></td>
+                <td><input type="text" placeholder="请输入负责人" class="form-control input-width-auto" id="responsibleMan" name="responsibleMan" th:value="${addr.responsibleMan}"></td>
             </tr>
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>运费</td>
-                <td><input type="text" placeholder="请输入参数名称" class="form-control input-width-auto" id="freight" name="freight" th:value="${addr.freight}"></td>
+                <td><input type="text" placeholder="请输入运费" class="form-control input-width-auto" id="freight" name="freight" th:value="${addr.freight}"></td>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>负责人电话</td>
-                <td><input type="text" placeholder="请输入参数编码" class="form-control input-width-auto" id="responsiblePhone" name="responsiblePhone" th:value="${addr.responsiblePhone}"></td>
+                <td><input type="text" placeholder="请输入负责人电话" class="form-control input-width-auto" id="responsiblePhone" name="responsiblePhone" th:value="${addr.responsiblePhone}"></td>
             </tr>
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>地址排序字母</td>
                 <td>
                     <div style="display: flex">
                         <div class="form-group">
-                            <input type="text" placeholder="请输入参数名称" class="form-control input-width-auto" id="sortChar" name="sortChar" th:value="${addr.sortChar}">
+                            <input type="text" placeholder="请输入地址排序字母" class="form-control input-width-auto" id="sortChar" name="sortChar" th:value="${addr.sortChar}">
                         </div>
                         <div style="color: red;padding-left: 10px;line-height: 45px">优先排序</div>
                     </div>
@@ -72,7 +72,7 @@
                 <td>
                     <div style="display: flex">
                         <div class="form-group">
-                            <input type="text" placeholder="请输入参数名称" class="form-control input-width-auto" id="addrSort" name="addrSort" th:value="${addr.addrSort}">
+                            <input type="text" placeholder="请输入地址排序" class="form-control input-width-auto" id="addrSort" name="addrSort" th:value="${addr.addrSort}">
                         </div>
                         <div style="color: red;padding-left: 10px;line-height: 45px">地址排序,数据越大越靠前</div>
                     </div>
@@ -96,6 +96,12 @@
                        </div>
                    </div>
                 </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>经度</td>
+                <td><input type="text" placeholder="请输入经度" class="form-control input-width-auto" id="addrLng" name="addrLng" th:value="${addr.addrLng}"></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>纬度</td>
+                <td><input type="text" placeholder="请输入纬度" class="form-control input-width-auto" id="addrLat" name="addrLat" th:value="${addr.addrLat}"></td>
             </tr>
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>详细地址</td>
@@ -199,6 +205,10 @@
         if (id > 0) {
             mark = 0;
         }
+
+        var addrLng = $("#addrLng").val();
+        var addrLat = $("#addrLat").val();
+
         var data = {
             "addr.id":id,
             "addr.addrPrefix":addrPrefix.trim(),
@@ -211,7 +221,9 @@
             "addr.addrName":addrName.trim(),
             "addr.detailAddr":detailAddr.trim(),
             "addr.addrDesc":addrDesc.trim(),
-            "addr.remark":remark.trim()
+            "addr.remark":remark.trim(),
+            "addr.addrLng":addrLng.trim(),
+            "addr.addrLat":addrLat.trim()
         }
         //上传完得到id 或者路径 标志上传成功
         $.ajax({

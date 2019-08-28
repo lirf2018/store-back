@@ -157,10 +157,12 @@ public class AddrController {
             String addrName = request.getParameter("addr.addrName");
             addr.setAddrName(addrName);
             addr.setShopId(0);
-            String remark = request.getParameter("paramObj.remark");
+            String remark = request.getParameter("addr.remark");
             addr.setRemark(remark);
-
-
+            String addrLng = request.getParameter("addr.addrLng");
+            addr.setAddrLng(addrLng);
+            String addrLat = request.getParameter("addr.addrLat");
+            addr.setAddrLat(addrLat);
             String addrTypes = request.getParameter("addrTypes");
             String[] addrTypesArray = addrTypes.split(",");
 
@@ -402,6 +404,7 @@ public class AddrController {
             e.printStackTrace();
         }
     }
+
     /**
      * 保存地址数据
      *
@@ -409,12 +412,12 @@ public class AddrController {
      * @param response
      */
     @PostMapping("updateGlobleAddrFreight")
-    public void updateGlobleAddrFreight(HttpServletRequest request, HttpServletResponse response, Integer regionId,String freight) {
+    public void updateGlobleAddrFreight(HttpServletRequest request, HttpServletResponse response, Integer regionId, String freight) {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
             JSONObject result = new JSONObject();
-            iAddrService.updateGlobleAddrFreight(regionId,freight);
+            iAddrService.updateGlobleAddrFreight(regionId, freight);
             result = CommonMethod.packagMsg("1");
             writer.print(result);
             writer.close();

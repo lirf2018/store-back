@@ -61,6 +61,8 @@
                             <th>排序</th>
                             <th>地址类型</th>
                             <th>详细地址</th>
+                            <th>经度</th>
+                            <th>纬度</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -168,6 +170,16 @@
                 {
                     data: function (obj) {
                         return obj.detail_addr==null?"":obj.detail_addr;
+                    }
+                }
+                ,{
+                    data: function (obj) {
+                        return obj.addr_lng==null?"":obj.addr_lng;
+                    }
+                }
+                ,{
+                    data: function (obj) {
+                        return obj.addr_lat==null?"":obj.addr_lat;
                     }
                 }
             ]
