@@ -288,7 +288,12 @@
                     data: function (obj) {
                         var html = "<input type='hidden' value='"+obj.is_single+"' id='isSingle"+obj.goods_id+"'>";
                         var str =  obj.is_single_name+" "+html;
-                        return str;
+                        if(obj.is_single == 0){
+                            return "<span style='color: #0e9aef'>"+str+"</span>";
+                        }else{
+                            return str;
+                        }
+
                     }
                 }
                 , {
