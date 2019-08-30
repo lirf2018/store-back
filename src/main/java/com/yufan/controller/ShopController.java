@@ -103,7 +103,6 @@ public class ShopController {
         shop.setWeight(0);
         if (null != shopId && shopId > 0) {
             shop = iShopService.loadShop(shopId);
-            modelAndView.addObject("shop", shop);
             //查询关联图片
             List<Map<String, Object>> listImg = iCommonRelService.queryTableRelImg(4, shopId, 2);
             if (listImg.size() > 0) {

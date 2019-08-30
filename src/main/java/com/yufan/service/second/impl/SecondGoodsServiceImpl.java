@@ -25,7 +25,7 @@ public class SecondGoodsServiceImpl implements ISecondGoodsService {
 
     @Override
     public PageInfo loadDataPage(int currePage, TbSecondGoods secondGoods) {
-        return null;
+        return iSecondGoodsDao.loadDataPage(currePage,secondGoods);
     }
 
     @Override
@@ -40,6 +40,6 @@ public class SecondGoodsServiceImpl implements ISecondGoodsService {
 
     @Override
     public void updateSecondGoodsStatus(int id, int status) {
-
+        iSecondGoodsDao.updateSecondGoodsStatus(id,status);
     }
 }

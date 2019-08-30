@@ -3,6 +3,8 @@ package com.yufan.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.pojo.TbSecondGoods;
 import com.yufan.service.second.ISecondGoodsService;
+import com.yufan.utils.CommonMethod;
+import com.yufan.utils.Constants;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 
 /**
  * 创建人: lirf
@@ -68,18 +71,28 @@ public class SecondGoodsController {
     }
 
 
-
-
     /**
      * 增加
      *
      * @return
      */
     @RequestMapping("addSecondGoodsPage")
-    public ModelAndView addSecondGoodsPage(HttpServletRequest request, HttpServletResponse response,Integer id) {
+    public ModelAndView addSecondGoodsPage(HttpServletRequest request, HttpServletResponse response, Integer id) {
         ModelAndView modelAndView = new ModelAndView();
-
-
+        TbSecondGoods goods = new TbSecondGoods();
+        goods.setDataIndex(0);
+        goods.setTruePrice(new BigDecimal(0));
+        goods.setPurchasePrice(new BigDecimal(0));
+        goods.setNowPrice(new BigDecimal(0));
+        if (id != null && id > 0) {
+            goods = iSecondGoodsService.loadSecondGoods(id);
+            modelAndView.addObject("img4", goods.getImg4());
+            modelAndView.addObject("img3", goods.getImg3());
+            modelAndView.addObject("img2", goods.getImg2());
+            modelAndView.addObject("img1", goods.getImg1());
+        }
+        modelAndView.addObject("webImg", Constants.IMG_URL);
+        modelAndView.addObject("goods", goods);
         modelAndView.setViewName("add-second-goods");
         return modelAndView;
     }
@@ -115,7 +128,9 @@ public class SecondGoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-//            writer.print(out);
+            JSONObject out = CommonMethod.packagMsg("1");
+            iSecondGoodsService.updateSecondGoodsStatus(id, status);
+            writer.print(out);
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();

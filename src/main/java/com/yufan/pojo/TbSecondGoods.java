@@ -11,10 +11,11 @@ import java.util.Objects;
  * 功能介绍:
  */
 @Entity
-@Table(name = "tb_second_goods", schema = "testlirf", catalog = "")
+@Table(name = "tb_second_goods", schema = "store-db", catalog = "")
 public class TbSecondGoods {
     private int id;
     private String goodsName;
+    private String goodsImg;
     private BigDecimal truePrice;
     private BigDecimal nowPrice;
     private BigDecimal purchasePrice;
@@ -33,6 +34,17 @@ public class TbSecondGoods {
     private String img1;
     private String goodsCode;
     private String goodsShopCode;
+    private Integer dataIndex;
+
+    @Basic
+    @Column(name = "goods_img", nullable = true, length = 50)
+    public String getGoodsImg() {
+        return goodsImg;
+    }
+
+    public void setGoodsImg(String goodsImg) {
+        this.goodsImg = goodsImg;
+    }
 
     @Id
     @Column(name = "id", nullable = false)
@@ -164,6 +176,16 @@ public class TbSecondGoods {
         this.status = status;
     }
 
+    @Basic
+    @Column(name = "data_index", nullable = true)
+    public Integer getDataIndex() {
+        return dataIndex;
+    }
+
+    public void setDataIndex(Integer dataIndex) {
+        this.dataIndex = dataIndex;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -181,13 +203,14 @@ public class TbSecondGoods {
                 Objects.equals(aboutPrice, that.aboutPrice) &&
                 Objects.equals(superLike, that.superLike) &&
                 Objects.equals(goodsInfo, that.goodsInfo) &&
-                Objects.equals(status, that.status);
+                Objects.equals(status, that.status)&&
+                Objects.equals(dataIndex, that.dataIndex);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, goodsName, truePrice, nowPrice, purchasePrice, readNum, likeNum, newInfo, isPost, aboutPrice, superLike, goodsInfo, status);
+        return Objects.hash(id, goodsName, truePrice, nowPrice, purchasePrice, readNum, likeNum, newInfo, isPost, aboutPrice, superLike, goodsInfo, status,dataIndex);
     }
 
     @Basic
