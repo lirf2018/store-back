@@ -36,6 +36,7 @@ public class ImageController {
      */
     @RequestMapping("uploadFile")
     public void uploadFile(HttpServletRequest request, HttpServletResponse response, String from, MultipartFile file) {
+        System.out.printf("--文件上传--");
         PrintWriter writer = null;
         try {
             writer = response.getWriter();

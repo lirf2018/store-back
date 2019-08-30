@@ -139,28 +139,30 @@ public class SecondGoodsController {
 
 }
 
-    /*CREATE TABLE `tb_second_goods` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
-        `goods_name` varchar(100) DEFAULT NULL COMMENT '商品名称',
-        `goods_img` varchar(50) DEFAULT NULL COMMENT '商品主图',
-        `true_price` decimal(10,2) DEFAULT '0.00' COMMENT '商品原价',
-        `now_price` decimal(10,2) DEFAULT '0.00' COMMENT '商品现价',
-        `purchase_price` decimal(10,2) DEFAULT '0.00' COMMENT '商品进货价',
-        `read_num` int(11) DEFAULT '0' COMMENT '浏览数',
-        `like_num` int(11) DEFAULT '0' COMMENT '意向(想要的人数)',
-        `new_info` int(11) DEFAULT '0' COMMENT '新旧 0全新 1到9成新 ',
-        `is_post` int(11) DEFAULT '0' COMMENT '是否邮寄 1 邮寄  0 不邮寄',
-        `about_price` int(11) DEFAULT '0' COMMENT '是否议价0不议价 1议价',
-        `super_like` int(11) DEFAULT '0' COMMENT '超赞数()',
-        `goods_info` text COMMENT '详情',
-        `status` int(11) DEFAULT '2' COMMENT '状态 0已删除 1上架 2 下架 3 备货中',
-        `data_index` int(11) DEFAULT '0' COMMENT '排序,数值越大越靠前',
-        `create_time` datetime DEFAULT NULL,
-        `img4` varchar(50) DEFAULT NULL COMMENT '图片4(排第1位)',
-        `img3` varchar(50) DEFAULT NULL COMMENT '图片3(排第2位)',
-        `img2` varchar(50) DEFAULT NULL COMMENT '图片2(排第3位)',
-        `img1` varchar(50) DEFAULT NULL COMMENT '图片1(排第4位)',
-        `goods_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '商品编码',
-        `goods_shop_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '商品店铺编码',
-        PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;*/
+    /*
+    CREATE TABLE `tb_second_goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_name` varchar(100) DEFAULT NULL COMMENT '商品名称',
+  `goods_img` varchar(50) DEFAULT NULL COMMENT '商品主图',
+  `true_price` decimal(10,2) DEFAULT '0.00' COMMENT '商品原价',
+  `now_price` decimal(10,2) DEFAULT '0.00' COMMENT '商品现价',
+  `purchase_price` decimal(10,2) DEFAULT '0.00' COMMENT '商品进货价',
+  `read_num` int(11) DEFAULT '0' COMMENT '浏览数',
+  `like_num` int(11) DEFAULT '0' COMMENT '意向(想要的人数)',
+  `new_info` int(11) DEFAULT '0' COMMENT '新旧 0全新 1到9成新 ',
+  `is_post` int(11) DEFAULT '0' COMMENT '是否邮寄 1 邮寄  0 不邮寄',
+  `about_price` int(11) DEFAULT '0' COMMENT '是否议价0不议价 1议价',
+  `super_like` int(11) DEFAULT '0' COMMENT '超赞数()',
+  `goods_info` text COMMENT '详情',
+  `status` int(11) DEFAULT '2' COMMENT '状态 0已删除 1上架 2 下架 3 备货中',
+  `data_index` int(11) DEFAULT '0' COMMENT '排序,数值越大越靠前',
+  `create_time` datetime DEFAULT NULL,
+  `img4` varchar(50) DEFAULT NULL COMMENT '图片4(排第1位)',
+  `img3` varchar(50) DEFAULT NULL COMMENT '图片3(排第2位)',
+  `img2` varchar(50) DEFAULT NULL COMMENT '图片2(排第3位)',
+  `img1` varchar(50) DEFAULT NULL COMMENT '图片1(排第4位)',
+  `goods_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '商品编码',
+  `goods_shop_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '商品店铺编码(唯一)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    * */
