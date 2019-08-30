@@ -31,6 +31,8 @@ public class TbSecondGoods {
     private String img3;
     private String img2;
     private String img1;
+    private String goodsCode;
+    private String goodsShopCode;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -236,5 +238,25 @@ public class TbSecondGoods {
 
     public void setImg1(String img1) {
         this.img1 = img1;
+    }
+
+    @Basic
+    @Column(name = "goods_code", nullable = true, length = 50)
+    public String getGoodsCode() {
+        return goodsCode;
+    }
+
+    public void setGoodsCode(String goodsCode) {
+        this.goodsCode = goodsCode;
+    }
+
+    @Basic
+    @Column(name = "goods_shop_code", nullable = true, length = 50)
+    public String getGoodsShopCode() {
+        return goodsShopCode;
+    }
+
+    public void setGoodsShopCode(String goodsShopCode) {
+        this.goodsShopCode = goodsShopCode;
     }
 }
