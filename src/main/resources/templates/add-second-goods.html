@@ -10,15 +10,10 @@
     <base th:href="@{/}">
     <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
-
-    <!-- Data Tables -->
-    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
-
-    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
-
     <link href="css/animate.css" rel="stylesheet">
+    <link href="css/plugins/summernote/dist/summernote.css" rel="stylesheet">
+    <link href="css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
-
     <!-- Sweet Alert -->
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
@@ -79,11 +74,11 @@
     </style>
 </head>
 <body>
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated">
     <input type="hidden" id="goodsId" th:value="${goods.id}">
     <input type="hidden" id="img" th:value="${goods.goodsImg}">
 
-    <div class="row">
+    <div>
         <table class="table table-hover table-bordered">
             <tbody>
             <tr>
@@ -135,15 +130,15 @@
                     <select class="form-control form-control-common" name="newInfo" id="newInfo">
                         <option value="-1">-- 选择新旧程度 --</option>
                         <option value="0" th:selected="${goods.newInfo == 0}">全新</option>
-                        <option value="1" th:selected="${goods.newInfo == 1}">1成新</option>
-                        <option value="2" th:selected="${goods.newInfo == 2}">2成新</option>
-                        <option value="3" th:selected="${goods.newInfo == 3}">3成新</option>
-                        <option value="4" th:selected="${goods.newInfo == 4}">4成新</option>
-                        <option value="5" th:selected="${goods.newInfo == 5}">5成新</option>
-                        <option value="6" th:selected="${goods.newInfo == 6}">6成新</option>
-                        <option value="7" th:selected="${goods.newInfo == 7}">7成新</option>
-                        <option value="8" th:selected="${goods.newInfo == 8}">8成新</option>
                         <option value="9" th:selected="${goods.newInfo == 9}">9成新</option>
+                        <option value="8" th:selected="${goods.newInfo == 8}">8成新</option>
+                        <option value="7" th:selected="${goods.newInfo == 7}">7成新</option>
+                        <option value="6" th:selected="${goods.newInfo == 6}">6成新</option>
+                        <option value="5" th:selected="${goods.newInfo == 5}">5成新</option>
+                        <option value="4" th:selected="${goods.newInfo == 4}">4成新</option>
+                        <option value="3" th:selected="${goods.newInfo == 3}">3成新</option>
+                        <option value="2" th:selected="${goods.newInfo == 2}">2成新</option>
+                        <option value="1" th:selected="${goods.newInfo == 1}">1成新</option>
                     </select>
                 </td>
             </tr>
@@ -164,11 +159,35 @@
                 </td>
             </tr>
             <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>商品店铺编码</td>
+                <td><input type="text" placeholder="请输入商品店铺编码" class="form-control" name="goodsShopCode" id="goodsShopCode" th:value="${goods.goodsShopCode}"></td>
+                <td class="tableLeft"></td>
+                <td></td>
+            </tr>
+            <tr>
                 <td colspan="10">
                     <table class="table table-hover table-bordered">
                         <thead>
                         <tr>
-                            <th>店铺介绍图片</th>
+                            <th>商品图文介绍</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td style="text-align: left">
+                                <div  class="summernote"  id="summernote"></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="10">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th>商品介绍图片</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -221,18 +240,56 @@
 <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
 <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
-<!-- layerDate plugin javascript -->
-<script src="js/plugins/layer/laydate/laydate.js"></script>
 <!-- Sweet alert -->
 <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
 <!-- Data picker -->
 <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <!-- 自定义js -->
 <script src="js/common.js" th:inline="javascript"></script>
+<script src="js/goods.js" th:inline="javascript"></script>
 <script src="js/imgUtils.js" th:inline="javascript"></script>
-
+<script src="js/laydate/laydate.js"></script>
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- SUMMERNOTE -->
+<script src="js/plugins/summernote/dist/summernote.js"></script>
+<script src="js/plugins/summernote/summernote-zh-CN.js"></script>
 
 <script th:inline="javascript">
+
+
+    //$(document).ready(function () {
+    var $summernote = $('.summernote').summernote({
+        lang: 'zh-CN'
+        ,height: 300
+        //调用图片上传
+        ,callbacks: {
+            onImageUpload: function (files) {
+                sendFile($summernote, files[0]);
+            }
+        }
+    });
+
+    //ajax上传图片
+    function sendFile($summernote, file) {
+        var formData = new FormData();
+        formData.append("file", file);
+
+        $.ajax({
+            url: "image/uploadFile",//路径是你控制器中上传图片的方法
+            data: formData,
+            dataType: 'JSON',
+            cache: false,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function (data) {
+                $('#summernote').summernote('insertImage', data.imgWebUrl, 'imageName');
+            }
+        });
+    }
+
+    $('#summernote').summernote('code', [[${goods.goodsInfo}]]);
     $(".btn-save").on("click",function (e) {
         var goodsId = $("#goodsId").val();
         var goodsName = $("#goodsName").val();
@@ -244,7 +301,9 @@
         var newInfo = $("#newInfo").val();
         var isPost = $("#isPost").val();
         var aboutPrice = $("#aboutPrice").val();
+        var goodsShopCode = $("#goodsShopCode").val();
         var status = $("#status").val();
+        var intro = $('#summernote').summernote('code');
         //介绍图片
         var img0 = $("#img").val();//主图
         var img1 = $("#img1").val();
@@ -281,7 +340,18 @@
         var data = {
             "id":goodsId,
             "goodsName":goodsName.trim(),
-            "goods.goodsImg":img0,
+            "goodsCode":goodsCode.trim(),
+            "dataIndex":dataIndex,
+            "nowPrice":nowPrice,
+            "truePrice":truePrice,
+            "purchasePrice":purchasePrice,
+            "newInfo":newInfo,
+            "isPost":isPost,
+            "aboutPrice":aboutPrice,
+            "status":status,
+            "goodsInfo":intro,
+            "goodsShopCode":goodsShopCode.trim(),
+            "goodsImg":img0,
             "img1":img1,
             "img2":img2,
             "img3":img3,

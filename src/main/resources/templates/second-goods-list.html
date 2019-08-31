@@ -204,7 +204,7 @@
                 }
                 ,{
                     data: function (obj) {
-                        if(obj.is_post == 1){
+                        if(obj.is_post == '1'){
                             return "可邮寄"
                         }
                         return "自取";
@@ -212,7 +212,7 @@
                 }
                 ,{
                     data: function (obj) {
-                        if(obj.is_post == 1){
+                        if(obj.about_price == 1){
                             return "可议价"
                         }
                         return "不议价";
@@ -257,7 +257,7 @@
                 targets: 14,
                 data: null,
                 render: function (data, type, row) {
-                    var html = "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData("+data.shop_id+")'><i class='fa fa-paste'></i> 编辑</button> ";
+                    var html = "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData("+data.id+")'><i class='fa fa-paste'></i> 编辑</button> ";
                     html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:delData("+data.id+",0)'><i class='fa fa-warning'></i> 删除</button>";
                     if(data.status == '1'){
                         html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.id+",2)'><i class='fa fa-warning'></i> 下架</button>";
@@ -297,7 +297,7 @@
             closeOnConfirm: false
         }, function () {
             $.ajax({
-                url: "second/updateStatus",
+                url: "second/updateSecondGoodsStatus",
                 type: 'POST',
                 data: {
                     "id":id,
@@ -318,7 +318,7 @@
     }
     function updateStatus(id,status) {
         $.ajax({
-            url: "second/updateStatus",
+            url: "second/updateSecondGoodsStatus",
             type: 'POST',
             data: {
                 "id":id,

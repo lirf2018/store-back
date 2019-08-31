@@ -15,4 +15,6 @@ public interface ISecondGoodsDao {
 
     public void updateSecondGoodsStatus(int id, int status);
 
+    public TbSecondGoods loadTbSecondGoods(int id);
+
 }

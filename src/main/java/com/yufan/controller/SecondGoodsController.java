@@ -8,6 +8,7 @@ import com.yufan.utils.Constants;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -110,7 +111,9 @@ public class SecondGoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-//            writer.print(out);
+            JSONObject out = secondGoods.getId() == 0 ? CommonMethod.packagMsg("6") : CommonMethod.packagMsg("5");
+            iSecondGoodsService.saveSecondGoods(secondGoods);
+            writer.print(out);
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();
