@@ -17,4 +17,10 @@ public interface ISecondGoodsDao {
 
     public TbSecondGoods loadTbSecondGoods(int id);
 
+    /**
+     * 获取最大编码
+     * @return
+     */
+    public int getGoodsShopCodeMax();
+
 }

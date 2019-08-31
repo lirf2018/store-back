@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 创建人: lirf
  * 创建时间:  2019/8/30 17:55
@@ -70,5 +73,19 @@ public class SecondGoodsDaoImpl implements ISecondGoodsDao {
     public TbSecondGoods loadTbSecondGoods(int id) {
         String hql = " from TbSecondGoods where id=?1 ";
         return iGeneralDao.queryUniqueByHql(hql, id);
+    }
+
+    @Override
+    public int getGoodsShopCodeMax() {
+        String sql = " SELECT goods_shop_code from tb_second_goods ORDER BY goods_shop_code desc LIMIT 1 ";
+        List<Map<String, Object>> list = iGeneralDao.getBySQLListMap(sql);
+        if (null != list && list.size() > 0) {
+            String goodsShopCode = list.get(0).get("goods_shop_code").toString();
+            return Integer.parseInt(goodsShopCode);
+        }
+        if (null != list && list.size() == 0) {
+            return 1;
+        }
+        return 0;
     }
 }

@@ -8,6 +8,7 @@ import com.yufan.service.second.ISecondGoodsService;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -39,22 +40,63 @@ public class SecondGoodsServiceImpl implements ISecondGoodsService {
     }
 
     @Override
-    public void saveSecondGoods(TbSecondGoods secondGoods) {
+    public boolean saveSecondGoods(TbSecondGoods secondGoods) {
         secondGoods.setCreateTime(new Timestamp(new Date().getTime()));
         secondGoods.setLikeNum(0);
         secondGoods.setReadNum(0);
         secondGoods.setSuperLike(0);
-        if (secondGoods.getId() > 0) {
-            TbSecondGoods s = iSecondGoodsDao.loadTbSecondGoods(secondGoods.getId());
-            secondGoods.setLikeNum(s.getLikeNum());
-            secondGoods.setReadNum(s.getReadNum());
-            secondGoods.setSuperLike(s.getSuperLike());
+        try {
+            if (secondGoods.getId() > 0) {
+                TbSecondGoods s = iSecondGoodsDao.loadTbSecondGoods(secondGoods.getId());
+                secondGoods.setLikeNum(s.getLikeNum());
+                secondGoods.setReadNum(s.getReadNum());
+                secondGoods.setSuperLike(s.getSuperLike());
+                secondGoods.setGoodsShopCode(s.getGoodsShopCode());
+            }
+            if(StringUtils.isEmpty(secondGoods.getGoodsShopCode())){
+                //生成商品店铺唯一码
+                int nowGoodsShopCode = iSecondGoodsDao.getGoodsShopCodeMax() ;
+                if(nowGoodsShopCode == 0){
+                    System.out.printf("-----查询失败---");
+                    return false;
+                }
+                String goodsShopCode = goodsShopCode(String.valueOf((nowGoodsShopCode+ 1)));
+                secondGoods.setGoodsShopCode(goodsShopCode);
+                if (StringUtils.isEmpty(secondGoods.getGoodsShopCode())) {
+                    System.out.printf("-----------生成店铺码失败--------------");
+                    return false;
+                }
+            }
+            iSecondGoodsJpaDao.save(secondGoods);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        iSecondGoodsJpaDao.save(secondGoods);
+        System.out.printf("---保存失败--");
+        return false;
+    }
+
+    private String goodsShopCode(String str) {
+        String goodsShopCode = "";
+        int len = 10;//编码长度
+        if (str.length() > len) {
+            System.out.printf("------长度已超----");
+            return "";
+        }
+        int strLen = str.length();
+        int eq = len - strLen;
+        String index = "";//补充0数
+        for (int i = 0; i < eq; i++) {
+            index = index + "0";
+        }
+        goodsShopCode = index + str;
+        return goodsShopCode;
+
     }
 
     @Override
     public void updateSecondGoodsStatus(int id, int status) {
         iSecondGoodsDao.updateSecondGoodsStatus(id, status);
     }
+
 }

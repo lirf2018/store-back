@@ -15,7 +15,7 @@ public interface ISecondGoodsService {
 
     public TbSecondGoods loadSecondGoods(int id);
 
-    public void saveSecondGoods(TbSecondGoods secondGoods);
+    public boolean saveSecondGoods(TbSecondGoods secondGoods);
 
     public void updateSecondGoodsStatus(int id, int status);
 }

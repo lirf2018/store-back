@@ -160,7 +160,7 @@
             </tr>
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>商品店铺编码</td>
-                <td><input type="text" placeholder="请输入商品店铺编码" class="form-control" name="goodsShopCode" id="goodsShopCode" th:value="${goods.goodsShopCode}"></td>
+                <td><input type="text" placeholder="商品店铺编码,系统自动生成" readonly="readonly" class="form-control" name="goodsShopCode" id="goodsShopCode" th:value="${goods.goodsShopCode}"></td>
                 <td class="tableLeft"></td>
                 <td></td>
             </tr>
@@ -313,7 +313,7 @@
 
         if(goodsName == ''){
             $("#goodsName").focus();
-            return myAlertSimple("店铺名称不能为空");
+            return myAlertSimple("商品名称不能为空");
         }
         var regNum=/^[0-9]*$/;
         if(!regNum.test($.trim(dataIndex))){
@@ -350,7 +350,6 @@
             "aboutPrice":aboutPrice,
             "status":status,
             "goodsInfo":intro,
-            "goodsShopCode":goodsShopCode.trim(),
             "goodsImg":img0,
             "img1":img1,
             "img2":img2,

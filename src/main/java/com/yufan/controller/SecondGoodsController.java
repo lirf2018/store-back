@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 /**
  * 创建人: lirf
  * 创建时间:  2019/8/30 18:02
- * 功能介绍:  只提供简单浏览的简单商品
+ * 功能介绍:  只提供简单浏览的简单商品（闲菜）
  */
 @Controller
 @RequestMapping(value = "/second/")
@@ -112,7 +112,10 @@ public class SecondGoodsController {
         try {
             writer = response.getWriter();
             JSONObject out = secondGoods.getId() == 0 ? CommonMethod.packagMsg("6") : CommonMethod.packagMsg("5");
-            iSecondGoodsService.saveSecondGoods(secondGoods);
+            boolean flag = iSecondGoodsService.saveSecondGoods(secondGoods);
+            if (!flag) {
+                out = CommonMethod.packagMsg("0");
+            }
             writer.print(out);
             writer.close();
         } catch (Exception e) {
@@ -143,7 +146,7 @@ public class SecondGoodsController {
 }
 
     /*
-    CREATE TABLE `tb_second_goods` (
+   CREATE TABLE `tb_second_goods` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `goods_name` varchar(100) DEFAULT NULL COMMENT '商品名称',
   `goods_img` varchar(50) DEFAULT NULL COMMENT '商品主图',
@@ -166,6 +169,7 @@ public class SecondGoodsController {
   `img1` varchar(50) DEFAULT NULL COMMENT '图片1(排第4位)',
   `goods_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '商品编码',
   `goods_shop_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '商品店铺编码(唯一)',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_goods_shop_code` (`goods_shop_code`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
     * */
