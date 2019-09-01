@@ -33,7 +33,6 @@ public class SecondGoodsController {
     @RequestMapping("secondGoodsPage")
     public ModelAndView secondGoodsPage(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
-
         modelAndView.setViewName("second-goods-list");
         return modelAndView;
     }
@@ -144,6 +143,10 @@ public class SecondGoodsController {
     }
 
 }
+
+
+
+
 
     /*
    CREATE TABLE `tb_second_goods` (

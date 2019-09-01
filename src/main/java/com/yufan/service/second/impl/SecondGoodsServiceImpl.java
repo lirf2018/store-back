@@ -1,6 +1,7 @@
 package com.yufan.service.second.impl;
 
 import com.sun.org.apache.bcel.internal.generic.DADD;
+import com.yufan.bean.GoodsCondition;
 import com.yufan.dao.second.ISecondGoodsDao;
 import com.yufan.dao.second.ISecondGoodsJpaDao;
 import com.yufan.pojo.TbSecondGoods;
@@ -98,5 +99,29 @@ public class SecondGoodsServiceImpl implements ISecondGoodsService {
     public void updateSecondGoodsStatus(int id, int status) {
         iSecondGoodsDao.updateSecondGoodsStatus(id, status);
     }
+
+    /************************手机端页面**********************************/
+    /**
+     * 更新浏览数
+     *
+     * @param goodsId
+     */
+    @Override
+    public void UpdateSecondGoodsReadCount(int goodsId){
+        iSecondGoodsDao.UpdateSecondGoodsReadCount(goodsId);
+    }
+
+
+    /**
+     * 查询商品列表
+     *
+     * @param
+     * @return
+     */
+    @Override
+    public PageInfo loadGoodsList(GoodsCondition condition){
+       return iSecondGoodsDao.loadGoodsList(condition);
+    }
+    /************************手机端页面**********************************/
 
 }

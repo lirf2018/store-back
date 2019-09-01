@@ -25,6 +25,7 @@ public class MyInterceptorConf implements WebMvcConfigurer {
         // excludePathPatterns - 用户排除拦截
         registry.addInterceptor(new MyInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/index.html", "/user/login", "/login/userLoginPage", "/login/checkLogin", "login/userExit", "/css/*", "/js/*", "/img/*", "/fonts/*");
+                .excludePathPatterns("/index.html", "/user/login", "/login/userLoginPage", "/login/checkLogin",
+                        "login/userExit", "/css/*", "/js/*", "/img/*", "/fonts/*","/xc/*","/web/*");
     }
 }

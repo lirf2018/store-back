@@ -21,10 +21,14 @@ public class MyInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        System.out.println("preHandle:请求前调用" + request.getRequestURL());
+        System.out.println("preHandle:请求前调用" + request.getRequestURL());
         TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
         if (request.getRequestURL().indexOf("sweetalert") > -1) {
 //            LOG.info("不拦截sweetalert");
+            return true;
+        }
+        //闲菜不拦截
+        if(request.getRequestURL().indexOf("/xc/")>-1||request.getRequestURL().indexOf("/web/")>-1){
             return true;
         }
         if (user == null) {

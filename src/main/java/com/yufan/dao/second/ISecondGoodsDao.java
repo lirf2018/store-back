@@ -1,5 +1,6 @@
 package com.yufan.dao.second;
 
+import com.yufan.bean.GoodsCondition;
 import com.yufan.pojo.TbSecondGoods;
 import com.yufan.utils.PageInfo;
 
@@ -19,8 +20,29 @@ public interface ISecondGoodsDao {
 
     /**
      * 获取最大编码
+     *
      * @return
      */
     public int getGoodsShopCodeMax();
+
+
+    /************************手机端页面**********************************/
+    /**
+     * 更新浏览数
+     *
+     * @param goodsId
+     */
+    public void UpdateSecondGoodsReadCount(int goodsId);
+
+
+    /**
+     * 查询商品列表
+     *
+     * @param
+     * @return
+     */
+    public PageInfo loadGoodsList(GoodsCondition condition);
+    /************************手机端页面**********************************/
+
 
 }

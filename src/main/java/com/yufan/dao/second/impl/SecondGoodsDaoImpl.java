@@ -1,5 +1,6 @@
 package com.yufan.dao.second.impl;
 
+import com.yufan.bean.GoodsCondition;
 import com.yufan.common.dao.IGeneralDao;
 import com.yufan.dao.second.ISecondGoodsDao;
 import com.yufan.pojo.TbSecondGoods;
@@ -54,7 +55,7 @@ public class SecondGoodsDaoImpl implements ISecondGoodsDao {
         if (-1 != secondGoods.getNewInfo()) {
             sql.append(" and new_info=").append(secondGoods.getNewInfo()).append(" ");
         }
-        sql.append(" order by data_index desc,id desc ");
+        sql.append(" order by data_index desc,read_num desc ");
 
         PageInfo pageInfo = new PageInfo();
         pageInfo.setCurrePage(currePage);
@@ -88,4 +89,30 @@ public class SecondGoodsDaoImpl implements ISecondGoodsDao {
         }
         return 0;
     }
+
+    /************************手机端页面**********************************/
+    @Override
+    public void UpdateSecondGoodsReadCount(int goodsId) {
+        String sql = " UPDATE tb_second_goods set read_num=read_num+1 where id=? ";
+        iGeneralDao.executeUpdateForSQL(sql, goodsId);
+    }
+
+    @Override
+    public PageInfo loadGoodsList(GoodsCondition condition) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" SELECT id,goods_name,goods_img,now_price,read_num from tb_second_goods where status=1 ");
+        if (StringUtils.isNotEmpty(condition.getGoodsName())) {
+            sql.append(" and goods_name like '%").append(condition.getGoodsName().trim()).append("%' ");
+        }
+        sql.append(" ORDER BY data_index desc,read_num desc ");
+
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setPageSize(condition.getPageSize() == null ? 20 : condition.getPageSize());
+        pageInfo.setCurrePage(condition.getCurrePage());
+        pageInfo.setSqlQuery(sql.toString());
+        pageInfo = iGeneralDao.loadPageInfoSQLListMap(pageInfo);
+        return pageInfo;
+    }
+/************************手机端页面**********************************/
+
 }

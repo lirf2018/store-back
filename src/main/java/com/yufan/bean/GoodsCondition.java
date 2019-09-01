@@ -1,5 +1,6 @@
 package com.yufan.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,5 +32,12 @@ public class GoodsCondition {
     private Integer isTimeGoods;
     private Integer levelId;
     private Integer shopId;
+
+
+    @JSONField(name = "curre_page")
+    private Integer currePage;
+
+    @JSONField(name = "page_size")
+    private Integer pageSize;
 
 }

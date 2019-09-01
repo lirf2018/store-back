@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /**
  * 创建人: lirf
- * 创建时间:  2019/8/30 17:51
+ * 创建时间:  2019/8/31 20:33
  * 功能介绍:
  */
 @Entity
@@ -27,6 +27,7 @@ public class TbSecondGoods {
     private Integer superLike;
     private String goodsInfo;
     private Integer status;
+    private Integer dataIndex;
     private Timestamp createTime;
     private String img4;
     private String img3;
@@ -34,17 +35,6 @@ public class TbSecondGoods {
     private String img1;
     private String goodsCode;
     private String goodsShopCode;
-    private Integer dataIndex;
-
-    @Basic
-    @Column(name = "goods_img", nullable = true, length = 50)
-    public String getGoodsImg() {
-        return goodsImg;
-    }
-
-    public void setGoodsImg(String goodsImg) {
-        this.goodsImg = goodsImg;
-    }
 
     @Id
     @Column(name = "id", nullable = false)
@@ -64,6 +54,16 @@ public class TbSecondGoods {
 
     public void setGoodsName(String goodsName) {
         this.goodsName = goodsName;
+    }
+
+    @Basic
+    @Column(name = "goods_img", nullable = true, length = 50)
+    public String getGoodsImg() {
+        return goodsImg;
+    }
+
+    public void setGoodsImg(String goodsImg) {
+        this.goodsImg = goodsImg;
     }
 
     @Basic
@@ -186,33 +186,6 @@ public class TbSecondGoods {
         this.dataIndex = dataIndex;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TbSecondGoods that = (TbSecondGoods) o;
-        return id == that.id &&
-                Objects.equals(goodsName, that.goodsName) &&
-                Objects.equals(truePrice, that.truePrice) &&
-                Objects.equals(nowPrice, that.nowPrice) &&
-                Objects.equals(purchasePrice, that.purchasePrice) &&
-                Objects.equals(readNum, that.readNum) &&
-                Objects.equals(likeNum, that.likeNum) &&
-                Objects.equals(newInfo, that.newInfo) &&
-                Objects.equals(isPost, that.isPost) &&
-                Objects.equals(aboutPrice, that.aboutPrice) &&
-                Objects.equals(superLike, that.superLike) &&
-                Objects.equals(goodsInfo, that.goodsInfo) &&
-                Objects.equals(status, that.status)&&
-                Objects.equals(dataIndex, that.dataIndex);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, goodsName, truePrice, nowPrice, purchasePrice, readNum, likeNum, newInfo, isPost, aboutPrice, superLike, goodsInfo, status,dataIndex);
-    }
-
     @Basic
     @Column(name = "create_time", nullable = true)
     public Timestamp getCreateTime() {
@@ -281,5 +254,39 @@ public class TbSecondGoods {
 
     public void setGoodsShopCode(String goodsShopCode) {
         this.goodsShopCode = goodsShopCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TbSecondGoods goods = (TbSecondGoods) o;
+        return id == goods.id &&
+                Objects.equals(goodsName, goods.goodsName) &&
+                Objects.equals(goodsImg, goods.goodsImg) &&
+                Objects.equals(truePrice, goods.truePrice) &&
+                Objects.equals(nowPrice, goods.nowPrice) &&
+                Objects.equals(purchasePrice, goods.purchasePrice) &&
+                Objects.equals(readNum, goods.readNum) &&
+                Objects.equals(likeNum, goods.likeNum) &&
+                Objects.equals(newInfo, goods.newInfo) &&
+                Objects.equals(isPost, goods.isPost) &&
+                Objects.equals(aboutPrice, goods.aboutPrice) &&
+                Objects.equals(superLike, goods.superLike) &&
+                Objects.equals(goodsInfo, goods.goodsInfo) &&
+                Objects.equals(status, goods.status) &&
+                Objects.equals(dataIndex, goods.dataIndex) &&
+                Objects.equals(createTime, goods.createTime) &&
+                Objects.equals(img4, goods.img4) &&
+                Objects.equals(img3, goods.img3) &&
+                Objects.equals(img2, goods.img2) &&
+                Objects.equals(img1, goods.img1) &&
+                Objects.equals(goodsCode, goods.goodsCode) &&
+                Objects.equals(goodsShopCode, goods.goodsShopCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, goodsName, goodsImg, truePrice, nowPrice, purchasePrice, readNum, likeNum, newInfo, isPost, aboutPrice, superLike, goodsInfo, status, dataIndex, createTime, img4, img3, img2, img1, goodsCode, goodsShopCode);
     }
 }

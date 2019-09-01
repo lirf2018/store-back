@@ -1,5 +1,6 @@
 package com.yufan.service.second;
 
+import com.yufan.bean.GoodsCondition;
 import com.yufan.pojo.TbSecondGoods;
 import com.yufan.utils.PageInfo;
 
@@ -18,4 +19,22 @@ public interface ISecondGoodsService {
     public boolean saveSecondGoods(TbSecondGoods secondGoods);
 
     public void updateSecondGoodsStatus(int id, int status);
+
+    /************************手机端页面**********************************/
+    /**
+     * 更新浏览数
+     *
+     * @param goodsId
+     */
+    public void UpdateSecondGoodsReadCount(int goodsId);
+
+
+    /**
+     * 查询商品列表
+     *
+     * @param
+     * @return
+     */
+    public PageInfo loadGoodsList(GoodsCondition condition);
+    /************************手机端页面**********************************/
 }
