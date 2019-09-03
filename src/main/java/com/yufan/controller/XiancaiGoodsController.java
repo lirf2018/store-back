@@ -73,7 +73,7 @@ public class XiancaiGoodsController {
                 map.put("goods_id", Integer.parseInt(listData.get(i).get("id").toString()));
                 map.put("goods_name", listData.get(i).get("goods_name"));
                 map.put("goods_img", Constants.IMG_URL + listData.get(i).get("goods_img"));
-                map.put("now_price", new BigDecimal(listData.get(i).get("now_price").toString()).setScale(2, BigDecimal.ROUND_HALF_UP));
+                map.put("now_price", listData.get(i).get("now_price").toString());
                 map.put("read_num", Integer.parseInt(listData.get(i).get("read_num").toString()));
                 outList.add(map);
             }
