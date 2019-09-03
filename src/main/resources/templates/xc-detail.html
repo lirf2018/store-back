@@ -47,7 +47,7 @@
             <div class="goods-name">
                 <h2><span class="goods-new" th:if="${new_info == 0}">【全新】</span><span th:text="${goods_name}"></span></h2>
             </div>
-            <div class="goods-info" th:text="${goods_info}" th:if="${goods_info != ''}">
+            <div class="goods-info"  th:if="${goods_info != ''}">
 
             </div>
             <div class="goods-info-img">
@@ -60,7 +60,7 @@
                 <div align="center" class="reminding">温馨提示：添加微信了解商品详细信息(长按图片识别添加)</div>
                 <div align="center" class="my-weixin">微信: g011316565</div>
                 <div class="weixin-img" align="center">
-                    <img src="web/img/wx02.jpg" />
+                    <img src="web/img/wx01.jpg" />
                 </div>
             </div>
             <div class="weixin" align="center">
@@ -77,4 +77,7 @@
 <script src="web/js/ydui.js"></script>
 <script src="web/js/ydui.flexible.js"></script>
 <script src="web/js/ydui.js"></script>
+<script th:inline="javascript">
+    $(".goods-info").html([[${goods_info}]]);
+</script>
 </html>

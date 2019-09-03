@@ -49,14 +49,14 @@ public class ImageController {
             out = CommonMethod.packagMsg("14");
 
             //测试
-            if(1==1){
-                out = CommonMethod.packagMsg("12");
-                out.put("imgfdfsUrl", "/1/1/"+Math.random());
-                out.put("imgWebUrl", Constants.IMG_URL + "" + Math.random());//图片访问地址
-                writer.print(out);
-                writer.close();
-                return;
-            }
+//            if(1==1){
+//                out = CommonMethod.packagMsg("12");
+//                out.put("imgfdfsUrl", "/1/1/"+Math.random());
+//                out.put("imgWebUrl", Constants.IMG_URL + "" + Math.random());//图片访问地址
+//                writer.print(out);
+//                writer.close();
+//                return;
+//            }
 
 
             String fdfsPath = fastdfsClient.uploadFile(file);

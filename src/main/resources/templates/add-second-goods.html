@@ -96,7 +96,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>商品编码</td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>商品编码</td>
                 <td><input type="text" placeholder="请输入商品编码" class="form-control" name="goodsCode" id="goodsCode" th:value="${goods.goodsCode}"></td>
             </tr>
             <tr>
@@ -146,8 +146,8 @@
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>是否邮寄</td>
                 <td>
                     <select class="form-control form-control-common" name="isPost" id="isPost">
-                        <option value="0">不邮寄</option>
-                        <option value="1" th:selected="${goods.isPost == 1}">可邮寄</option>
+                        <option value="0">自取</option>
+                        <option value="1" th:selected="${goods.isPost == 1}">其它</option>
                     </select>
                 </td>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>是否议价</td>
@@ -261,7 +261,7 @@
     //$(document).ready(function () {
     var $summernote = $('.summernote').summernote({
         lang: 'zh-CN'
-        ,height: 300
+        ,height: 450
         //调用图片上传
         ,callbacks: {
             onImageUpload: function (files) {
