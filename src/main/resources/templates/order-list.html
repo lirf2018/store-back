@@ -69,7 +69,11 @@
                                     <option value="">--收货方式--</option>
                                     <option  th:each="p : ${paramList}" th:value="${p.paramKey}" th:text="${p.paramValue}" th:if="${p.paramCode == 'post_way' && p.status == 1}"></option>
                                 </select>
-
+                                <label>店铺:</label>
+                                <select  class="form-control form-control-common" name="shopId" id="shopId" onchange="searchData()">
+                                    <option value="">--选择店铺--</option>
+                                    <option th:each="s:${shopList}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
+                                </select>
                                 <input type="button" class="btn btn-primary" value="查询" onclick="searchOrder()">
                             </div>
                         </div>
@@ -176,6 +180,7 @@
                         d.businessType = $('#businessType').val();
                         d.postWay = $('#postWay').val();
                         d.orderId = $('#orderId').val();
+                        d.shopId = $('#shopId').val();
                     }
                 }
                 ,columns:[

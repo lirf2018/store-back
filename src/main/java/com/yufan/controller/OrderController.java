@@ -5,8 +5,10 @@ import com.yufan.bean.OrderCondition;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbOrder;
 import com.yufan.pojo.TbParam;
+import com.yufan.pojo.TbShop;
 import com.yufan.service.order.IOrderService;
 import com.yufan.service.param.IParamCodeService;
+import com.yufan.service.shop.IShopService;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
 import com.yufan.utils.MD5;
@@ -14,6 +16,7 @@ import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -41,17 +44,28 @@ public class OrderController {
     @Autowired
     private IOrderService iOrderService;
 
+    @Autowired
+    private IShopService iShopService;
+
     /**
      * 跳转到订单管理页面
      *
      * @return
      */
     @RequestMapping("orderPage")
-    public ModelAndView toOrderPage() {
+    public ModelAndView toOrderPage(HttpServletRequest request) {
         List<TbParam> paramList = iParamCodeService.loadTbParamCodeList();
 
         ModelAndView modelAndView = new ModelAndView();
-
+        //查询店铺
+        List<TbShop> shopList = new ArrayList<>();
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        if ("admin".equals(user.getLoginName())) {
+            shopList = iShopService.findShopAll();
+        } else {
+            shopList = iShopService.findShopAll(user.getShopId());
+        }
+        modelAndView.addObject("shopList", shopList);
         modelAndView.addObject("paramList", paramList);
         modelAndView.setViewName("order-list");
         return modelAndView;
@@ -68,7 +82,11 @@ public class OrderController {
             int start = Integer.parseInt(request.getParameter("start"));//第一条数据的起始位置，比如0代表第一条数据
             int currePage = start / pageSize + 1; //当前页
 
-
+            TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+            if (!"admin".equals(user.getLoginName())) {
+                int shopId = user.getShopId();
+                orderCondition.setShopId(shopId);
+            }
             String orderNo = request.getParameter("orderNo");
             if (!StringUtils.isEmpty(orderNo.trim())) {
                 orderCondition.setOrderNo(orderNo.trim());
@@ -206,6 +224,14 @@ public class OrderController {
         List<Map<String, Object>> detailOutList = new ArrayList<>();
         //查询订单
         TbOrder order = iOrderService.loadOrderById(orderId);
+
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        if (!"admin".equals(user.getLoginName()) && order.getShopId() != user.getShopId()) {
+            modelAndView.setViewName("404");
+            return modelAndView;
+        }
+
+
         //查询订单状态日志
         List<Map<String, Object>> orderLog = iOrderService.queryOrderStatusLogByOrderNo(order.getOrderNo());
         //查询详情列表
@@ -225,12 +251,12 @@ public class OrderController {
         }
 
         //
-        modelAndView.addObject("order_status_name",paramMap.get("order_status-"+order.getOrderStatus()));
-        modelAndView.addObject("business_type_name",paramMap.get("business_type-"+order.getBusinessType()));
-        modelAndView.addObject("pay_way_name",paramMap.get("pay_way-"+order.getPayWay()));
-        modelAndView.addObject("advance_pay_way_name",paramMap.get("pay_way-"+order.getAdvancePayCode()));
-        modelAndView.addObject("post_way_name",paramMap.get("post_way-"+order.getPostWay()));
-        modelAndView.addObject("company_code_name",paramMap.get("company_code-"+order.getCompanyCode()));
+        modelAndView.addObject("order_status_name", paramMap.get("order_status-" + order.getOrderStatus()));
+        modelAndView.addObject("business_type_name", paramMap.get("business_type-" + order.getBusinessType()));
+        modelAndView.addObject("pay_way_name", paramMap.get("pay_way-" + order.getPayWay()));
+        modelAndView.addObject("advance_pay_way_name", paramMap.get("pay_way-" + order.getAdvancePayCode()));
+        modelAndView.addObject("post_way_name", paramMap.get("post_way-" + order.getPostWay()));
+        modelAndView.addObject("company_code_name", paramMap.get("company_code-" + order.getCompanyCode()));
 
 
         //标识关系名称
@@ -245,7 +271,7 @@ public class OrderController {
     /**
      * 修改详情状态
      */
-    @RequestMapping("updateDetailStatus")
+    @PostMapping("updateDetailStatus")
     public void updateDetailStatus(HttpServletRequest request, HttpServletResponse response, Integer detailId, Integer status) {
         PrintWriter writer = null;
         try {
@@ -262,7 +288,7 @@ public class OrderController {
     /**
      * 订单重置
      */
-    @RequestMapping("orderReset")
+    @PostMapping("orderReset")
     public void orderReset(HttpServletRequest request, HttpServletResponse response, Integer orderId) {
         PrintWriter writer = null;
         try {
@@ -310,7 +336,7 @@ public class OrderController {
      * @param request
      * @param response
      */
-    @RequestMapping("updateOrderStatus")
+    @PostMapping("updateOrderStatus")
     public void updateOrderInfo(HttpServletRequest request, HttpServletResponse response, Integer orderId, Integer orderStatus, String serviceRemark) {
         PrintWriter writer = null;
         try {

@@ -14,5 +14,6 @@ public class BannerCondition {
 
     private String bannerName;
     private Integer status;
+    private Integer shopId;
 
 }

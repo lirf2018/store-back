@@ -125,6 +125,17 @@
                 </td>
             </tr>
             <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>店铺</td>
+                <td>
+                    <select  class="form-control form-control-common" name="shopId" id="shopId" >
+                        <option value="">--选择店铺--</option>
+                        <option th:each="s:${shopList}" th:selected="${activity.shopId == s.shopId}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
+                    </select>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span></td>
+                <td></td>
+            </tr>
+            <tr>
                 <td class="tableLeft">链接</td>
                 <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="2"  id="activityLink" name="activityLink" th:text="${activity.activityLink}"></textarea></td>
             </tr>
@@ -186,6 +197,7 @@
         var startTime = $("#startTime").val();
         var endTime = $("#endTime").val();
         var remark = $("#remark").val();
+        var shopId = $("#shopId").val();
 
         var activityImg = $("#img").val();
 
@@ -200,6 +212,9 @@
             return myAlertSimple("非法权重");
         }
 
+        if(shopId == null || shopId == ''){
+            return myAlertSimple("店铺不能为空");
+        }
         if(startTime == null){
             return myAlertSimple("开始时间不能为空");
         }
@@ -222,6 +237,7 @@
             "startTime":startTime,
             "endTime":endTime,
             "activityImg":activityImg,
+            "shopId":shopId,
             "remark":remark.trim()
         }
         //上传完得到id 或者路径 标志上传成功

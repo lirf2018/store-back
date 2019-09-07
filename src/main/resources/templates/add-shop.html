@@ -169,8 +169,13 @@
                         <option value="2" th:selected="${shop.isOutShop == 2}">第三方店铺</option>
                     </select>
                 </td>
-                <td class="tableLeft"></td>
-                <td></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>店铺秘钥</td>
+                <td>
+                    <div style="display: flex">
+                        <input type="text" placeholder="店铺秘钥" class="form-control" id="secretKey" name="secretKey" th:value="${shop.secretKey}" readonly >
+                        <div style="color: red;padding-left: 10px;line-height: 45px"><input type="button" class="btn btn-info" onclick="generateShopSecretKey()" value="生成秘钥"></div>
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td class="tableLeft">店铺介绍</td>
@@ -277,6 +282,7 @@
         var address = $("#address").val();
         var toway = $("#toway").val();
         var remark = $("#remark").val();
+        var secretKey = $("#secretKey").val();
         //介绍图片
         var img0 = $("#img").val();//主图
         var img1 = $("#img1").val();
@@ -303,7 +309,10 @@
             $("#isOutShop").focus();
             return myAlertSimple("请选择店铺归属");
         }
-
+        if(secretKey == ''){
+            $("#secretKey").focus();
+            return myAlertSimple("店铺秘钥不能为空");
+        }
         var regNum=/^[0-9]*$/;
         if(!regNum.test($.trim(dataIndex))){
             $("#dataIndex").focus();
@@ -331,6 +340,7 @@
             "shop.address":address.trim(),
             "shop.toway":toway.trim(),
             "shop.remark":remark.trim(),
+            "secretKey":secretKey.trim(),
             "img1":img1,
             "img2":img2,
             "img3":img3,
@@ -357,6 +367,21 @@
             }
         });
     })
+    
+    function generateShopSecretKey() {
+        $.ajax({
+            url: "shop/generateShopSecretKey",
+            type: 'POST',
+            data: {},// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var uuid = data.uuid;
+                $("#secretKey").val(uuid);
+            }
+        });
+    }
 </script>
 <script th:inline="javascript">
     $('#enterEndTime').datepicker({

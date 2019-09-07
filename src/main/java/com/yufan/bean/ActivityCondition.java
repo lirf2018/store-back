@@ -13,4 +13,5 @@ import lombok.Setter;
 public class ActivityCondition {
     private String title;
     private Integer status;
+    private Integer shopId;
 }

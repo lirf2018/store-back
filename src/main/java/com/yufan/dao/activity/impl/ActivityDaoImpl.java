@@ -37,6 +37,9 @@ public class ActivityDaoImpl implements IActivityDao {
         if (null != activityCondition.getStatus() && activityCondition.getStatus() != -1) {
             sql.append(" and status = ").append(activityCondition.getStatus()).append(" ");
         }
+        if (activityCondition.getShopId() != null) {
+            sql.append(" and shop_id=").append(activityCondition.getShopId()).append(" ");
+        }
         sql.append(" ORDER BY data_index desc,activity_id desc ");
 
         PageInfo pageInfo = new PageInfo();

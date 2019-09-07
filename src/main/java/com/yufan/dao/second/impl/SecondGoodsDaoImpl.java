@@ -55,6 +55,9 @@ public class SecondGoodsDaoImpl implements ISecondGoodsDao {
         if (-1 != secondGoods.getNewInfo()) {
             sql.append(" and new_info=").append(secondGoods.getNewInfo()).append(" ");
         }
+        if (secondGoods.getShopId() != null) {
+            sql.append(" and shop_id=").append(secondGoods.getShopId()).append(" ");
+        }
         sql.append(" order by data_index desc,read_num desc ");
 
         PageInfo pageInfo = new PageInfo();

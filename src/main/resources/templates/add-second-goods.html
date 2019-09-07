@@ -161,8 +161,13 @@
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>商品店铺编码</td>
                 <td><input type="text" placeholder="商品店铺编码,系统自动生成" readonly="readonly" class="form-control" name="goodsShopCode" id="goodsShopCode" th:value="${goods.goodsShopCode}"></td>
-                <td class="tableLeft"></td>
-                <td></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>店铺</td>
+                <td>
+                    <select  class="form-control form-control-common" name="shopId" id="shopId" >
+                        <option value="">--选择店铺--</option>
+                        <option th:each="s:${shopList}" th:selected="${goods.shopId == s.shopId}" th:if="${s.status == 1}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td colspan="10">
@@ -300,6 +305,7 @@
         var purchasePrice = $("#purchasePrice").val();
         var newInfo = $("#newInfo").val();
         var isPost = $("#isPost").val();
+        var shopId = $("#shopId").val();
         var aboutPrice = $("#aboutPrice").val();
         var goodsShopCode = $("#goodsShopCode").val();
         var status = $("#status").val();
@@ -340,6 +346,10 @@
             $("#newInfo").focus();
             return myAlertSimple("选择商品新旧");
         }
+        if(shopId == ''){
+            $("#shopId").focus();
+            return myAlertSimple("选择店铺");
+        }
         var mark = $(this).attr("data-mark");//1保存并继续添加
         var data = {
             "id":goodsId,
@@ -355,6 +365,7 @@
             "status":status,
             "goodsInfo":intro,
             "goodsImg":img0,
+            "shopId":shopId,
             "img1":img1,
             "img2":img2,
             "img3":img3,

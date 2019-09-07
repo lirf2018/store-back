@@ -48,6 +48,9 @@ public class AddrDaoImpl implements IAddrDao {
         if (platformAddr.getAddrType() != null) {
             sql.append(" and addr_type = ").append(platformAddr.getAddrType()).append(" ");
         }
+        if (platformAddr.getShopId() != null) {
+            sql.append(" and shop_id=").append(platformAddr.getShopId()).append(" ");
+        }
         sql.append(" ORDER BY sort_char,addr_sort desc,createtime desc ");
 
         PageInfo pageInfo = new PageInfo();
@@ -110,7 +113,7 @@ public class AddrDaoImpl implements IAddrDao {
     }
 
     @Override
-    public List<Map<String, Object>> loadRegionListMap(Integer status,String regionName,String regionCode) {
+    public List<Map<String, Object>> loadRegionListMap(Integer status, String regionName, String regionCode) {
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT region_id,region_code,region_name,region_shortname,parent_id,region_level,region_order,region_name_en,region_shortname_en,region_type, ");
         sql.append(" createman,createtime,status,remark,CONCAT('',freight) as freight ");

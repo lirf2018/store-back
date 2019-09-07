@@ -47,6 +47,9 @@ public class ComplainDaoImpl implements IComplainDao {
         if (null != complainCondition.getComplainType() && -1 != complainCondition.getComplainType()) {
             sql.append(" and complain_type=").append(complainCondition.getComplainType()).append(" ");
         }
+        if (complainCondition.getShopId() != null) {
+            sql.append(" and shop_id=").append(complainCondition.getShopId()).append(" ");
+        }
         sql.append(" ORDER BY id desc ");
 
         PageInfo pageInfo = new PageInfo();

@@ -39,6 +39,10 @@ public class ShopServiceImpl implements IShopService {
     public List<TbShop> findShopAll() {
         return iShopJpaDao.findShopAll();
     }
+    @Override
+    public List<TbShop> findShopAll(int shopId) {
+        return iShopJpaDao.findShopAll(shopId);
+    }
 
     @Override
     public PageInfo loadDataPage(int currePage, ShopCondition shopCondition) {

@@ -32,5 +32,6 @@ public class OrderCondition {
     private String iccid;
     private Integer postWay;
     private Integer orderId;
+    private Integer shopId;
 
 }

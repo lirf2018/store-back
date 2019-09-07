@@ -5,7 +5,9 @@ import com.yufan.bean.RegionCondition;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbPlatformAddr;
 import com.yufan.pojo.TbRegion;
+import com.yufan.pojo.TbShop;
 import com.yufan.service.addr.IAddrService;
+import com.yufan.service.shop.IShopService;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
 import com.yufan.utils.PageInfo;
@@ -38,6 +40,9 @@ public class AddrController {
     @Autowired
     private IAddrService iAddrService;
 
+    @Autowired
+    private IShopService iShopService;
+
 
     /**
      * 跳转到管理页面
@@ -45,9 +50,18 @@ public class AddrController {
      * @return
      */
     @RequestMapping("platformAddrPage")
-    public ModelAndView toPlatformAddrPage() {
+    public ModelAndView toPlatformAddrPage(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
-
+        //查询店铺
+        List<TbShop> shopList = new ArrayList<>();
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        if("admin".equals(user.getLoginName())){
+            shopList = iShopService.findShopAll();
+        }else{
+            shopList = iShopService.findShopAll(user.getShopId());
+        }
+        modelAndView.addObject("shopList",shopList);
+        modelAndView.addObject("loginName",user.getLoginName());
         modelAndView.setViewName("platform-addr-list");
         return modelAndView;
     }
@@ -59,7 +73,7 @@ public class AddrController {
      * @param response
      */
     @PostMapping("loadPlatformAddrData")
-    public void loadPlatformAddrData(HttpServletRequest request, HttpServletResponse response) {
+    public void loadPlatformAddrData(HttpServletRequest request, HttpServletResponse response,TbPlatformAddr addr) {
         PrintWriter writer;
         try {
             writer = response.getWriter();
@@ -67,9 +81,12 @@ public class AddrController {
             int pageSize = pageInfo.getPageSize();
             int start = Integer.parseInt(request.getParameter("start"));//第一条数据的起始位置，比如0代表第一条数据
             int currePage = start / pageSize + 1; //当前页
-
+            TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+            if (!"admin".equals(user.getLoginName())) {
+                int shopId = user.getShopId();
+                addr.setShopId(shopId);
+            }
             //条件处理
-            TbPlatformAddr addr = new TbPlatformAddr();
             if (null != request.getParameter("addrId") && !StringUtils.isEmpty(request.getParameter("addrId").trim())) {
                 addr.setId(Integer.parseInt(request.getParameter("addrId").trim()));
             }
@@ -105,13 +122,27 @@ public class AddrController {
      * @return
      */
     @RequestMapping("addPlatformAddrPage")
-    public ModelAndView toAddPlatformAddrPage(Integer id) {
+    public ModelAndView toAddPlatformAddrPage(HttpServletRequest request, HttpServletResponse response,Integer id) {
 
         ModelAndView modelAndView = new ModelAndView();
         TbPlatformAddr distributionAddr = new TbPlatformAddr();
         if (null != id && id > 0) {
             distributionAddr = iAddrService.loadPlatformAddrById(id);
+            TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+            if(!"admin".equals(user.getLoginName())&&distributionAddr.getShopId()!=user.getShopId()){
+                modelAndView.setViewName("404");
+                return modelAndView;
+            }
         }
+        //查询店铺
+        List<TbShop> shopList = new ArrayList<>();
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        if("admin".equals(user.getLoginName())){
+            shopList = iShopService.findShopAll();
+        }else{
+            shopList = iShopService.findShopAll(user.getShopId());
+        }
+        modelAndView.addObject("shopList",shopList);
         modelAndView.addObject("addr", distributionAddr);
         modelAndView.setViewName("add-platform-addr");
         return modelAndView;
@@ -156,7 +187,6 @@ public class AddrController {
             addr.setAddrDesc(addrDesc);
             String addrName = request.getParameter("addr.addrName");
             addr.setAddrName(addrName);
-            addr.setShopId(0);
             String remark = request.getParameter("addr.remark");
             addr.setRemark(remark);
             String addrLng = request.getParameter("addr.addrLng");
@@ -346,6 +376,13 @@ public class AddrController {
     @RequestMapping("addGloblePage")
     public ModelAndView addGlobleAddrPage(HttpServletRequest request, HttpServletResponse response, Integer regionId) {
         ModelAndView modelAndView = new ModelAndView();
+
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        if(!"admin".equals(user.getLoginName())){
+            modelAndView.setViewName("404");
+            return modelAndView;
+        }
+
         TbRegion region = new TbRegion();
         region.setRegionOrder(0);
         region.setFreight(new BigDecimal("0").setScale(2, BigDecimal.ROUND_HALF_UP));

@@ -11,7 +11,7 @@ import java.util.Objects;
  * 功能介绍:
  */
 @Entity
-@Table(name = "tb_shop", schema = "testlirf", catalog = "")
+@Table(name = "tb_shop", schema = "store-db", catalog = "")
 public class TbShop {
     private int shopId;
     private String shopName;
@@ -37,6 +37,7 @@ public class TbShop {
     private Timestamp enterEndTime;
     private Integer isOutShop;
     private String shopCode;
+    private String secretKey;
 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
@@ -314,5 +315,15 @@ public class TbShop {
     public int hashCode() {
 
         return Objects.hash(shopId, shopName, shopLogo, shopTel1, shopTel2, shopLng, shopLat, weight, introduce, toway, adminId, address, areaId, deposit, depositTime, shopMoney, createman, createtime, status, remark, enterStartTime, enterEndTime, isOutShop, shopCode);
+    }
+
+    @Basic
+    @Column(name = "secret_key", nullable = true, length = 40)
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 }

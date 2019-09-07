@@ -29,11 +29,14 @@ public class BannerDaoimpl implements IBannerDao {
         sql.append(" select banner_id,banner_title,banner_name,CONCAT('").append(imgUrl).append("',banner_img) as banner_img,banner_link,DATE_FORMAT(start_time,'%Y-%m-%d %T') as start_time,status, ");
         sql.append(" DATE_FORMAT(end_time,'%Y-%m-%d %T') as end_time,data_index,DATE_FORMAT(createtime,'%Y-%m-%d %T') as createtime ");
         sql.append(" from tb_banner where 1=1 ");
-        if(StringUtils.isNotEmpty(bannerCondition.getBannerName())){
+        if (StringUtils.isNotEmpty(bannerCondition.getBannerName())) {
             sql.append(" and banner_name like '%").append(bannerCondition.getBannerName().trim()).append("%' ");
         }
-        if(null!=bannerCondition.getStatus()){
+        if (null != bannerCondition.getStatus()) {
             sql.append(" and status = ").append(bannerCondition.getStatus()).append(" ");
+        }
+        if (null != bannerCondition.getShopId()) {
+            sql.append(" and shop_id = ").append(bannerCondition.getShopId()).append(" ");
         }
         sql.append(" ORDER BY data_index desc,createtime desc ");
 
@@ -47,7 +50,7 @@ public class BannerDaoimpl implements IBannerDao {
     @Override
     public void updateBannerStatus(int bannerId, int status) {
         String sql = " UPDATE tb_banner set `status`=? where banner_id=? ";
-        iGeneralDao.executeUpdateForSQL(sql,status,bannerId);
+        iGeneralDao.executeUpdateForSQL(sql, status, bannerId);
     }
 
 }

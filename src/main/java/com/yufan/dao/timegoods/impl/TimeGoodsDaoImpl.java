@@ -38,6 +38,9 @@ public class TimeGoodsDaoImpl implements ITimeGoodsDao {
         if (timeGoodsCondition.getStatus() != null && timeGoodsCondition.getStatus() != -1) {
             sql.append(" and tg.`status`=").append(timeGoodsCondition.getStatus()).append(" ");
         }
+        if (timeGoodsCondition.getShopId() != null) {
+            sql.append(" and g.shop_id=").append(timeGoodsCondition.getShopId()).append(" ");
+        }
         sql.append(" ORDER BY tg.weight desc,tg.status desc,g.data_index desc,tg.createtime desc ");
 
         PageInfo pageInfo = new PageInfo();

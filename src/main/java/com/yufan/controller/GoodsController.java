@@ -70,8 +70,18 @@ public class GoodsController {
         //查询一级分类
         List<Map<String, Object>> listLevel = iCategoryService.loadLevelListMap(Constants.DATA_STATUS_YX);
 
+        //查询店铺
+        List<TbShop> shopList = new ArrayList<>();
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        if("admin".equals(user.getLoginName())){
+            shopList = iShopService.findShopAll();
+        }else{
+            shopList = iShopService.findShopAll(user.getShopId());
+        }
+
         modelAndView.addObject("listLevel", listLevel);
         modelAndView.addObject("listParam", listParam);
+        modelAndView.addObject("shopList", shopList);
         modelAndView.setViewName("goods-list");
         return modelAndView;
     }
@@ -93,6 +103,11 @@ public class GoodsController {
             int start = Integer.parseInt(request.getParameter("start"));//第一条数据的起始位置，比如0代表第一条数据
             int currePage = start / pageSize + 1; //当前页
 
+            TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+            if (!"admin".equals(user.getLoginName())) {
+                int shopId = user.getShopId();
+                goodsCondition.setShopId(shopId);
+            }
 
             pageInfo = iGoodsService.loadDataPage(currePage, goodsCondition);
             //处理数据
@@ -234,7 +249,7 @@ public class GoodsController {
 
 
     /**
-     * 新增加活动页面
+     * 新增加商品页面
      */
     @RequestMapping("addGoodsPage")
     public ModelAndView addGoodsPage(HttpServletRequest request, HttpServletResponse response, Integer goodsId) {
@@ -244,8 +259,15 @@ public class GoodsController {
         List<TbParam> listParam = iParamCodeService.loadTbParamCodeList(Constants.DATA_STATUS_YX);
         //查询一级分类
         List<Map<String, Object>> listLevel = iCategoryService.loadLevelListMap(Constants.DATA_STATUS_YX);
+
         //查询店铺
-        List<TbShop> shopList = iShopService.findShopAll();
+        List<TbShop> shopList = new ArrayList<>();
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        if("admin".equals(user.getLoginName())){
+            shopList = iShopService.findShopAll();
+        }else{
+            shopList = iShopService.findShopAll(user.getShopId());
+        }
 
         //商品skuList
         List<Map<String, Object>> skuList = new ArrayList<>();
@@ -274,7 +296,14 @@ public class GoodsController {
                 skuList = iGoodsService.loadGoodsSkuListMap(goodsId);
             }
 
+            if (!"admin".equals(user.getLoginName()) && user.getShopId() != goods.getShopId()) {
+                modelAndView.setViewName("404");
+                return modelAndView;
+            }
+
+
         }
+
         modelAndView.addObject("webImg", Constants.IMG_URL);
         modelAndView.addObject("nowDate", DatetimeUtil.getNow("yyyy-MM-dd"));
         modelAndView.addObject("goods", goods);

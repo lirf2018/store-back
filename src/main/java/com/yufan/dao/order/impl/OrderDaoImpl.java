@@ -71,6 +71,9 @@ public class OrderDaoImpl implements IOrderDao {
         if (null != orderCondition.getOrderId()) {
             sql.append(" and o.order_id=").append(orderCondition.getOrderId()).append(" ");
         }
+        if (null != orderCondition.getShopId()) {
+            sql.append(" and o.shop_id = ").append(orderCondition.getShopId()).append(" ");
+        }
         sql.append(" ORDER BY o.order_id desc ");
         PageInfo pageInfo = new PageInfo();
         pageInfo.setCurrePage(currePage);

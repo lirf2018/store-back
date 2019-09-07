@@ -7915,6 +7915,12 @@ body.skin-3 {
     .form-inline .form-control.input-width200 {
         width: 200px;
     }
+    .form-inline .form-control.input-width250 {
+        width: 250px;
+    }
+    .form-inline .form-control.input-width300 {
+        width: 300px;
+    }
     .form-inline .form-control.input-width-auto {
         width: auto;
     }

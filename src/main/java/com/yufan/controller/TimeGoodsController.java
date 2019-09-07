@@ -2,12 +2,10 @@ package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.bean.TimeGoodsCondition;
-import com.yufan.pojo.TbAdmin;
-import com.yufan.pojo.TbGoods;
-import com.yufan.pojo.TbParam;
-import com.yufan.pojo.TbTimeGoods;
+import com.yufan.pojo.*;
 import com.yufan.service.goods.IGoodsService;
 import com.yufan.service.param.IParamCodeService;
+import com.yufan.service.shop.IShopService;
 import com.yufan.service.timegoods.ITimeGoodsService;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
@@ -43,6 +41,8 @@ public class TimeGoodsController {
     @Autowired
     private IParamCodeService iParamCodeService;
 
+    @Autowired
+    private IShopService iShopService;
 
     /**
      * 管理页面
@@ -52,7 +52,15 @@ public class TimeGoodsController {
     @RequestMapping("timeGoodsPage")
     public ModelAndView toTimeGoodsPage(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
-
+        //查询店铺
+        List<TbShop> shopList = new ArrayList<>();
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        if("admin".equals(user.getLoginName())){
+            shopList = iShopService.findShopAll();
+        }else{
+            shopList = iShopService.findShopAll(user.getShopId());
+        }
+        modelAndView.addObject("shopList",shopList);
         modelAndView.setViewName("timegoods-list");
         return modelAndView;
     }
@@ -73,6 +81,11 @@ public class TimeGoodsController {
             int start = Integer.parseInt(request.getParameter("start"));//第一条数据的起始位置，比如0代表第一条数据
             int currePage = start / pageSize + 1; //当前页
 
+            TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+            if (!"admin".equals(user.getLoginName())) {
+                int shopId = user.getShopId();
+                timeGoodsCondition.setShopId(shopId);
+            }
 
             pageInfo = iTimeGoodsService.loadDataPage(currePage, timeGoodsCondition);
             //处理数据
@@ -131,7 +144,16 @@ public class TimeGoodsController {
     public ModelAndView addDataPage(HttpServletRequest request, HttpServletResponse response, Integer timeGoodsId, Integer goodsId, Integer fromPage) {
         ModelAndView modelAndView = new ModelAndView();
 
+
+
         TbGoods goods = iGoodsService.loadGoods(goodsId);
+
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        if(!"admin".equals(user.getLoginName())&&user.getShopId()!= goods.getShopId()){
+            modelAndView.setViewName("404");
+            return modelAndView;
+        }
+
         //查询商品是否有设置抢购
         TbTimeGoods timeGoods = new TbTimeGoods();
         timeGoods.setWeight(0);

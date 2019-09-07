@@ -15,4 +15,6 @@ public class ShopCondition {
     private String shopName;//店铺名称
     private Integer isInOrOut;
     private Integer status;
+    private Integer shopId;
+    private String secretKey;//
 }

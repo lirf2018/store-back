@@ -32,6 +32,7 @@
                     <div class="form-inline">
                         <div>
                             <label>店铺名称:</label><input class="form-control input-width190" id="shopName" name="shopName" type="text" value="" onkeyup="searchData()" onkeydown="searchData()">
+                            <label>店铺秘钥:</label><input class="form-control input-width300" id="secretKey" name="secretKey" type="text" value="" onkeyup="searchData()" onkeydown="searchData()">
                             <label>店铺归属:</label>
                             <select class="form-control" name="isInOrOut" id="isInOrOut" onchange="searchData()">
                                 <option value="-1">-- 选择店铺归属 --</option>
@@ -45,7 +46,7 @@
                                 <option value="0">无效</option>
                             </select>
                             <input type="button" class="btn btn-primary" value="查询" onclick="searchData()">
-                            <button class="btn btn-success" type="button" onclick="addOrUpdateData(0)"><i class=""></i><span class="bold">新增</span></button>
+                            <button class="btn btn-success" type="button" onclick="addOrUpdateData(0)" th:if="${'admin' == loginName}"><i class=""></i><span class="bold">新增</span></button>
                         </div>
                     </div>
                     <div>&nbsp;</div>
@@ -63,6 +64,7 @@
                             <th>权重</th>
                             <th>店铺归属</th>
                             <th>到期时间</th>
+                            <th>秘钥</th>
                             <th>状态</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -115,6 +117,7 @@
                         d.shopName = $("#shopName").val();
                         d.isInOrOut = $("#isInOrOut").val();
                         d.status = $("#status").val();
+                        d.secretKey = $("#secretKey").val();
                 }
             },
             columns:[
@@ -173,6 +176,11 @@
                 }
                 ,{
                     data: function (obj) {
+                        return obj.secret_key==null?"":obj.secret_key;
+                    }
+                }
+                ,{
+                    data: function (obj) {
                         var status = obj.status;
                         return status == '1'?'有效':"<span style='color: red'>无效</span>";
                     }
@@ -184,7 +192,7 @@
                 }
             ]
             ,columnDefs: [{
-                targets: 13,
+                targets: 14,
                 data: null,
                 render: function (data, type, row) {
                     var html = "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData("+data.shop_id+")'><i class='fa fa-paste'></i> 编辑</button> ";

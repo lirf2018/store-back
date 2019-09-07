@@ -22,10 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 创建人: lirf
@@ -50,7 +47,8 @@ public class ShopController {
     @RequestMapping("shopPage")
     public ModelAndView toShopPage(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
-
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        modelAndView.addObject("loginName", user.getLoginName());
         modelAndView.setViewName("shop-list");
         return modelAndView;
     }
@@ -70,6 +68,12 @@ public class ShopController {
             int pageSize = pageInfo.getPageSize();
             int start = Integer.parseInt(request.getParameter("start"));//第一条数据的起始位置，比如0代表第一条数据
             int currePage = start / pageSize + 1; //当前页
+
+            TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+            if (!"admin".equals(user.getLoginName())) {
+                int shopId = user.getShopId();
+                shopCondition.setShopId(shopId);
+            }
 
             pageInfo = iShopService.loadDataPage(currePage, shopCondition);
             //处理数据
@@ -101,7 +105,13 @@ public class ShopController {
         shop.setShopMoney(new BigDecimal(0));
         shop.setDeposit(new BigDecimal(0));
         shop.setWeight(0);
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
         if (null != shopId && shopId > 0) {
+            if (!"admin".equals(user.getLoginName()) && shopId != user.getShopId()) {
+                modelAndView.setViewName("404");
+                return modelAndView;
+            }
+
             shop = iShopService.loadShop(shopId);
             //查询关联图片
             List<Map<String, Object>> listImg = iCommonRelService.queryTableRelImg(4, shopId, 2);
@@ -112,7 +122,15 @@ public class ShopController {
                     modelAndView.addObject("img" + imgSort, imgUrl);
                 }
             }
+        } else {
+            if (!"admin".equals(user.getLoginName())) {
+                //只有admin账号才能添加店铺
+                modelAndView.setViewName("404");
+                return modelAndView;
+            }
         }
+
+
         modelAndView.addObject("webImg", Constants.IMG_URL);
         modelAndView.addObject("shop", shop);
         modelAndView.setViewName("add-shop");
@@ -229,6 +247,25 @@ public class ShopController {
             writer = response.getWriter();
             JSONObject out = status == 1 ? CommonMethod.packagMsg("4") : CommonMethod.packagMsg("3");
             iShopService.updateShopStatus(shopId, status);
+            writer.print(out);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 生成秘钥
+     */
+    @RequestMapping("generateShopSecretKey")
+    public void generateShopSecretKey(HttpServletRequest request, HttpServletResponse response) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            String uuid = UUID.randomUUID().toString().replace("-", "");
+
+            JSONObject out = new JSONObject();
+            out.put("uuid", uuid);
             writer.print(out);
             writer.close();
         } catch (Exception e) {

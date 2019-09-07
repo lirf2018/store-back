@@ -15,6 +15,7 @@ import java.util.List;
 public interface IShopService {
 
     List<TbShop> findShopAll();
+    List<TbShop> findShopAll(int shopId);
 
     PageInfo loadDataPage(int currePage, ShopCondition shopCondition);
 

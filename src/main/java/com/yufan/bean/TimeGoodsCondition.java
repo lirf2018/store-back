@@ -17,5 +17,6 @@ public class TimeGoodsCondition {
     private String goodsName;
 
     private Integer status;
+    private Integer shopId;
 
 }

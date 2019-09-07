@@ -42,7 +42,11 @@
                                 <option value="5" >配送</option>
                                 <option value="6" >还货</option>
                             </select>
-
+                            <label>店铺:</label>
+                            <select  class="form-control form-control-common" name="shopId" id="shopId" onchange="searchData()">
+                                <option value="">--选择店铺--</option>
+                                <option th:each="s:${shopList}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
+                            </select>
                             <input type="button" class="btn btn-primary" value="查询" onclick="searchData()">
                             <button class="btn btn-success" type="button" onclick="addOrUpdateData(0)"><i class=""></i><span class="bold">新增</span></button>
                         </div>
@@ -115,6 +119,7 @@
                     d.addrDetail = $('#addrDetail').val().trim();
                     d.responsible = $('#responsible').val().trim();
                     d.addrType = $('#addrType').val();
+                    d.shopId = $('#shopId').val();
                 }
             },
             columns:[

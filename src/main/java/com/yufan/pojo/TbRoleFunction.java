@@ -17,6 +17,7 @@ public class TbRoleFunction {
     private Integer functionId;
     private Timestamp createtime;
 
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
     @Column(name = "role_function_id", nullable = false)
     public int getRoleFunctionId() {

@@ -35,7 +35,9 @@ public class TbSecondGoods {
     private String img1;
     private String goodsCode;
     private String goodsShopCode;
+    private Integer shopId;
 
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {
@@ -288,5 +290,15 @@ public class TbSecondGoods {
     @Override
     public int hashCode() {
         return Objects.hash(id, goodsName, goodsImg, truePrice, nowPrice, purchasePrice, readNum, likeNum, newInfo, isPost, aboutPrice, superLike, goodsInfo, status, dataIndex, createTime, img4, img3, img2, img1, goodsCode, goodsShopCode);
+    }
+
+    @Basic
+    @Column(name = "shop_id", nullable = true)
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 }

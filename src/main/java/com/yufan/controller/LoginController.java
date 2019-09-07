@@ -6,6 +6,9 @@ import com.yufan.pojo.TbFunctions;
 import com.yufan.service.func.IMenuService;
 import com.yufan.service.user.IUserService;
 import com.yufan.utils.CommonMethod;
+import com.yufan.utils.Constants;
+import com.yufan.utils.DatetimeUtil;
+import com.yufan.utils.MD5;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,40 +62,47 @@ public class LoginController {
     public void checkLogin(HttpServletRequest request, HttpServletResponse response) {
         try {
             PrintWriter writer = response.getWriter();
-            JSONObject obj = CommonMethod.packagMsg("8");
-//            String loginName = request.getParameter("loginName").trim();
-//            String loginPasswd = request.getParameter("loginPasswd").trim();
+            JSONObject obj = new JSONObject();
+            String loginName = request.getParameter("loginName").trim();
+            String loginPasswd = request.getParameter("loginPasswd").trim();
 
             //查询登录用户
-//            TbAdmin admin = iUserService.findByUserLoginName(loginName);
+            TbAdmin admin = iUserService.findByUserLoginName(loginName);
             //如果是系统管理员,则密码固定规则(密码-实时时间)
-//            if ("admin".equals(loginName)) {
-//                if (loginPasswd.length() < 13) {
-//                    obj = ComomMethod.packagMsg("10");
-//                    writer.print(obj);
-//                    writer.close();
-//                    return;
-//                }
-//                String sysAdminPasswd = Constants.ADMINPASSWORD + DatetimeUtil.getNow("yyyyMMddHHmm");
-//                String psMD5 = MD5.enCodeStandard("admin" + loginPasswd.substring(0, loginPasswd.length() - 11)) + loginPasswd.substring(loginPasswd.length() - 12, loginPasswd.length());
-//                if (!sysAdminPasswd.equals(psMD5)) {
-//                    obj = ComomMethod.packagMsg("10");
-//                    writer.print(obj);
-//                    writer.close();
-//                    return;
-//                }
-//            } else {
-//                String loginPasswdMd5 = MD5.enCodeStandard(loginName + loginPasswd);
-//                if (null == admin || !loginPasswdMd5.equals(admin.getLoginPassword())) {
-//                    obj = ComomMethod.packagMsg("10");
-//                    writer.print(obj);
-//                    writer.close();
-//                    return;
-//                }
-//            }
+            /*if ("admin".equals(loginName)) {
+                if (loginPasswd.length() < 13) {
+                    obj = CommonMethod.packagMsg("10");
+                    writer.print(obj);
+                    writer.close();
+                    return;
+                }
+                String sysAdminPasswd = Constants.ADMINPASSWORD + DatetimeUtil.getNow("yyyyMMddHHmm");
+                String psMD5 = MD5.enCodeStandard("admin" + loginPasswd.substring(0, loginPasswd.length() - 11)) + loginPasswd.substring(loginPasswd.length() - 12, loginPasswd.length());
+                if (!sysAdminPasswd.equals(psMD5)) {
+                    obj = CommonMethod.packagMsg("10");
+                    writer.print(obj);
+                    writer.close();
+                    return;
+                }
+            } else {
+                String loginPasswdMd5 = MD5.enCodeStandard(loginName + loginPasswd);
+                if (null == admin || !loginPasswdMd5.equals(admin.getLoginPassword())) {
+                    obj = CommonMethod.packagMsg("10");
+                    writer.print(obj);
+                    writer.close();
+                    return;
+                }
+            }*/
+            String loginPasswdMd5 = MD5.enCodeStandard(loginName + loginPasswd);
+            if (null == admin || !loginPasswdMd5.equals(admin.getLoginPassword())) {
+                obj = CommonMethod.packagMsg("10");
+                writer.print(obj);
+                writer.close();
+                return;
+            }
 
             //测试
-            TbAdmin admin = iUserService.findByUserLoginName("admin");
+            //TbAdmin admin = iUserService.findByUserLoginName("admin");
 
             request.getSession().setAttribute("user", admin);
 
@@ -164,6 +174,11 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("welcome-page");
         return modelAndView;
+    }
+
+    public static void main(String[] args) {
+        String str = "admin123456";
+        System.out.printf(MD5.enCodeStandard(str));
     }
 
 

@@ -19,4 +19,7 @@ public interface IShopJpaDao extends JpaRepository<TbShop, Integer> {
 
     @Query(value = "SELECT * from tb_shop s  where s.status=1", nativeQuery = true)
     List<TbShop> findShopAll();
+
+    @Query(value = "SELECT * from tb_shop s  where s.status=1 and s.shop_id=?1 ", nativeQuery = true)
+    List<TbShop> findShopAll(int shopId);
 }

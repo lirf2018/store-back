@@ -18,4 +18,5 @@ public class ComplainCondition {
     private Integer status;
     private Integer isRead;
     private Integer complainType; //类型 0 投诉  1建议
+    private Integer shopId;
 }

@@ -95,6 +95,9 @@ public class GoodsDaoImpl implements IGoodsDao {
         if (goodsCondition.getCouponId() != null) {
             sql.append(" and g.coupon_id=").append(goodsCondition.getCouponId()).append(" ");
         }
+        if (goodsCondition.getShopId() != null) {
+            sql.append(" and g.shop_id=").append(goodsCondition.getShopId()).append(" ");
+        }
         sql.append(" ORDER BY g.data_index DESC,g.goods_id desc ");
         PageInfo pageInfo = new PageInfo();
         pageInfo.setCurrePage(currePage);
