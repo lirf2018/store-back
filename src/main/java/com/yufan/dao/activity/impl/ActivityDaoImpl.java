@@ -21,7 +21,7 @@ public class ActivityDaoImpl implements IActivityDao {
 
     @Autowired
     private IGeneralDao iGeneralDao;
-    private String imgUrl = Constants.IMG_URL;
+    private String imgUrl = Constants.IMG_WEB_URL;
 
 
     @Override

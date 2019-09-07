@@ -37,23 +37,23 @@ public class ImageUtil {
     }
 
     /**
-     * 根据byte数组，生成文件
+     * 根据byte数组，生成本地文件
      *
      * @param bfile
      * @param filePath
      * @param fileName
      */
-    public boolean getFile(byte[] bfile, String filePath, String fileName) {
+    public boolean saveFile(byte[] bfile, String savePath, String fileName) {
         try {
             BufferedOutputStream bos = null;
             FileOutputStream fos = null;
             File file = null;
             try {
-                File dir = new File(filePath);
+                File dir = new File(savePath);
                 if (!dir.exists() && !dir.isDirectory()) {// 判断文件目录是否存在
                     dir.mkdirs();
                 }
-                file = new File(filePath + "/" + fileName);
+                file = new File(savePath + "/" + fileName);
                 fos = new FileOutputStream(file);
                 bos = new BufferedOutputStream(fos);
                 bos.write(bfile);
@@ -84,23 +84,25 @@ public class ImageUtil {
 
 
     /**
-     * 根据 InputStream 数组，生成文件
+     * 根据 InputStream 数组，生成本地文件
      *
      * @param in
-     * @param filePath
+     * @param savePath
      * @param fileName
      */
-    public void getFile(InputStream in, String filePath, String fileName) {
+    public boolean saveFile(InputStream in, String savePath, String fileName) {
         try {
             BufferedOutputStream bos = null;
             FileOutputStream fos = null;
             File file = null;
             try {
-                File dir = new File(filePath);
-                if (!dir.exists() && dir.isDirectory()) {// 判断文件目录是否存在
+                File dir = new File(savePath);
+                if (!dir.exists() && !dir.isDirectory()) {// 判断文件目录是否存在
                     dir.mkdirs();
                 }
-                file = new File(filePath + "/" + fileName);
+                System.out.printf(dir.exists()+"");
+                System.out.printf(dir.isDirectory()+"");
+                file = new File(savePath + "/" + fileName);
                 fos = new FileOutputStream(file);
                 bos = new BufferedOutputStream(fos);
                 byte[] buffer = new byte[1024];
@@ -111,6 +113,7 @@ public class ImageUtil {
                     // 所以这里buffer好象是连接inputStream和outputStream的一个东西
                     bos.write(buffer, 0, len);
                 }
+                return true;
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -129,9 +132,11 @@ public class ImageUtil {
                     }
                 }
             }
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     // 获得指定文件的byte数组

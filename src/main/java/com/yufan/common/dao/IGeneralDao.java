@@ -48,4 +48,6 @@ public interface IGeneralDao {
 	public PageInfo loadPageInfoSQLListMap(PageInfo page);
 
 	public List<Map<String,Object>> getBySQLListMap(String sql,Object ...values);
+
+
 }

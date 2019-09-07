@@ -54,4 +54,34 @@ public class CommonRelDaoImpl implements ICommonRelDao {
     public void saveObject(Object obj) {
         iGeneralDao.save(obj);
     }
+
+    @Override
+    public List<Map<String, Object>> queryShopGoodsRel(int shopId, int goodsId, int relType) {
+        String sql = " SELECT id,goods_id,shop_id,rel_type,sale_price from tb_shop_goods_rel where shop_id=? and goods_id=? and rel_type=? ";
+        return iGeneralDao.getBySQLListMap(sql, shopId, goodsId,relType);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryShopGoodsRel(int shopId, int goodsId) {
+        String sql = " SELECT id,goods_id,shop_id,rel_type,sale_price from tb_shop_goods_rel where shop_id=? and goods_id=? ";
+        return iGeneralDao.getBySQLListMap(sql, shopId, goodsId);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryShopGoodsRelByShopId(int shopId) {
+        String sql = " SELECT id,goods_id,shop_id,rel_type,sale_price from tb_shop_goods_rel where shop_id=? ";
+        return iGeneralDao.getBySQLListMap(sql, shopId);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryShopGoodsRelByGoodsId(int goodsId) {
+        String sql = " SELECT id,goods_id,shop_id,rel_type,sale_price from tb_shop_goods_rel where goods_id=? ";
+        return iGeneralDao.getBySQLListMap(sql, goodsId);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryShopGoodsRel() {
+        String sql = " SELECT id,goods_id,shop_id,rel_type,sale_price from tb_shop_goods_rel ";
+        return iGeneralDao.getBySQLListMap(sql);
+    }
 }

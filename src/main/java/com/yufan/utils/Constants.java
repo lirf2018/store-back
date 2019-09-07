@@ -34,10 +34,13 @@ public class Constants {
     public static Integer DATA_STATUS_SHZ = 10;//10审核中
 
     /**
-     * 图片访问路径
+     * 图片web访问路径 http://127.0.0.1:8080/
      */
-//    public static String IMG_URL = "http://192.168.3.39:8888/";
-    public static String IMG_URL = "http://lirf-shop.51vip.biz:30978/";
+    public static String IMG_WEB_URL = "";
+    /**
+     * 图片本地保存根路径 E:\img
+     */
+    public static String IMG_SAVE_ROOT_PATH = "";
 
 
     /**

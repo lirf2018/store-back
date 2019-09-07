@@ -23,6 +23,7 @@
                     <a></a>
                 </div>
                 <div>
+                    <input type="hidden" th:value="${secretKey}" id="secretKey" name="secretKey">
                     <input type="text" placeholder="输入搜索内容" id="goodsName" name="goodsName" th:value="${goodsName}"/>
                 </div>
                 <div>
@@ -85,7 +86,8 @@
                 type: 'POST',
                 data: {
                     "currePage":page,
-                    "goodsName":$("#goodsName").val()
+                    "goodsName":$("#goodsName").val(),
+                    "secretKey":$("#secretKey").val()
                 },// 要提交的表单 ,
                 async: false,
                 cache: false,
@@ -145,8 +147,8 @@
         $("#myForm").submit();
     }
 
-    function goodsDetail(id){
-        window.location.href = "xc/xcDetailPage?id="+id;
+    function goodsDetail(goodsId){
+        window.location.href = "xc/xcDetailPage?goodsId="+goodsId+"&secretKey="+$("#secretKey").val();
     };
 </script>
 </html>

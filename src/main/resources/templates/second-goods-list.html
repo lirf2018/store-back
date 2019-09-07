@@ -153,7 +153,7 @@
                 }
             },
             columns:[
-                {data: 'id'}
+                {data: 'goods_id'}
                 ,{
                     data: function (obj) {
                         return obj.goods_name==null?"":obj.goods_name;
@@ -269,17 +269,17 @@
                 targets: 15,
                 data: null,
                 render: function (data, type, row) {
-                    var html = "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData("+data.id+")'><i class='fa fa-paste'></i> 编辑</button> ";
-                    html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:delData("+data.id+",0)'><i class='fa fa-warning'></i> 删除</button>";
+                    var html = "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData("+data.goods_id+")'><i class='fa fa-paste'></i> 编辑</button> ";
+                    html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:delData("+data.goods_id+",0)'><i class='fa fa-warning'></i> 删除</button>";
                     if(data.status == '1'){
-                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.id+",2)'><i class='fa fa-warning'></i> 下架</button>";
-                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.id+",3)'><i class='fa fa-warning'></i> 备货</button>";
+                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.goods_id+",2)'><i class='fa fa-warning'></i> 下架</button>";
+                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.goods_id+",3)'><i class='fa fa-warning'></i> 备货</button>";
                     }else if(data.status == '2'){
-                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-primary' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.id+",1)'><i class='fa fa-check'></i> 上架</button>";
-                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.id+",3)'><i class='fa fa-warning'></i> 备货</button>";
+                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-primary' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.goods_id+",1)'><i class='fa fa-check'></i> 上架</button>";
+                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.goods_id+",3)'><i class='fa fa-warning'></i> 备货</button>";
                     }else if(data.status == '3'){
-                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-primary' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.id+",1)'><i class='fa fa-check'></i> 上架</button>";
-                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.id+",2)'><i class='fa fa-warning'></i> 下架</button>";
+                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-primary' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.goods_id+",1)'><i class='fa fa-check'></i> 上架</button>";
+                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:updateStatus("+data.goods_id+",2)'><i class='fa fa-warning'></i> 下架</button>";
                     }
                     return html;
                 }
@@ -294,11 +294,11 @@
         });
     }
 
-    function addOrUpdateData(id) {
-        window.location.href = "second/addSecondGoodsPage?id="+id;
+    function addOrUpdateData(goodsId) {
+        window.location.href = "second/addSecondGoodsPage?goodsId="+goodsId;
     }
 
-    function delData(id,status) {
+    function delData(goodsId,status) {
         swal({
             title: "您确定要删除这条信息吗",
             text: "删除后将无法恢复，请谨慎操作！",
@@ -312,7 +312,7 @@
                 url: "second/updateSecondGoodsStatus",
                 type: 'POST',
                 data: {
-                    "id":id,
+                    "goodsId":goodsId,
                     "status":status
                 },// 要提交的表单 ,
                 async: false,
@@ -328,12 +328,12 @@
             });
         });
     }
-    function updateStatus(id,status) {
+    function updateStatus(goodsId,status) {
         $.ajax({
             url: "second/updateSecondGoodsStatus",
             type: 'POST',
             data: {
-                "id":id,
+                "goodsId":goodsId,
                 "status":status
             },// 要提交的表单 ,
             async: false,

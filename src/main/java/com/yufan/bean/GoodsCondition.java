@@ -32,6 +32,7 @@ public class GoodsCondition {
     private Integer isTimeGoods;
     private Integer levelId;
     private Integer shopId;
+    private String secretKey;
 
 
     @JSONField(name = "curre_page")

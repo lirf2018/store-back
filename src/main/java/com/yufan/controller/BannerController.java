@@ -149,7 +149,7 @@ public class BannerController {
             shopList = iShopService.findShopAll(user.getShopId());
         }
         modelAndView.addObject("shopList",shopList);
-        modelAndView.addObject("webImg", Constants.IMG_URL);
+        modelAndView.addObject("webImg", Constants.IMG_WEB_URL);
         modelAndView.addObject("nowDate", DatetimeUtil.getNow("yyyy-MM-dd"));
         modelAndView.addObject("banner", banner);
         modelAndView.setViewName("add-banner");

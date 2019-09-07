@@ -21,7 +21,7 @@ public class BannerDaoimpl implements IBannerDao {
 
     @Autowired
     private IGeneralDao iGeneralDao;
-    private String imgUrl = Constants.IMG_URL;
+    private String imgUrl = Constants.IMG_WEB_URL;
 
     @Override
     public PageInfo loadDataPage(int currePage, BannerCondition bannerCondition) {

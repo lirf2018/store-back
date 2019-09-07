@@ -28,7 +28,9 @@ public class MyInterceptor implements HandlerInterceptor {
             return true;
         }
         //闲菜不拦截
-        if(request.getRequestURL().indexOf("/xc/")>-1||request.getRequestURL().indexOf("/web/")>-1){
+        LOG.info("--------xc-----" + request.getRequestURL().indexOf("/xc/"));
+        LOG.info("-------web------" + request.getRequestURL().indexOf("/web/"));
+        if (request.getRequestURL().indexOf("/xc/") > -1 || request.getRequestURL().indexOf("/web/") > -1) {
             return true;
         }
         if (user == null) {

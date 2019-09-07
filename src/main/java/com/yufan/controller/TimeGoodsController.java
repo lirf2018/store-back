@@ -167,13 +167,13 @@ public class TimeGoodsController {
         List<TbParam> listParam = iParamCodeService.loadTbParamCodeList(Constants.DATA_STATUS_YX, Constants.PARAM_CODE_LIMIT_WAY);//查询限购方式
 
 
-        modelAndView.addObject("webImg", Constants.IMG_URL);
+        modelAndView.addObject("webImg", Constants.IMG_WEB_URL);
         modelAndView.addObject("nowDate", DatetimeUtil.getNow("yyyy-MM-dd"));
         modelAndView.addObject("timeGoods", timeGoods);
         modelAndView.addObject("goods", goods);
         modelAndView.addObject("listParam", listParam);
         modelAndView.addObject("fromPage", fromPage == null ? 0 : fromPage);
-        modelAndView.addObject("webImgPath", StringUtils.isEmpty(goods.getGoodsImg()) ? "" : (Constants.IMG_URL + goods.getGoodsImg()));
+        modelAndView.addObject("webImgPath", StringUtils.isEmpty(goods.getGoodsImg()) ? "" : (Constants.IMG_WEB_URL + goods.getGoodsImg()));
         modelAndView.setViewName("add-timegoods");
         return modelAndView;
     }

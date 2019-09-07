@@ -27,7 +27,7 @@ public class GoodsDaoImpl implements IGoodsDao {
     @Autowired
     private IGeneralDao iGeneralDao;
 
-    private String imgUrl = Constants.IMG_URL;
+    private String imgUrl = Constants.IMG_WEB_URL;
 
     @Override
     public void updateGoodsToTimeGoods(int goodsId, int isTimeGoods) {

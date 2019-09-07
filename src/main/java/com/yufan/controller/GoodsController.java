@@ -304,7 +304,7 @@ public class GoodsController {
 
         }
 
-        modelAndView.addObject("webImg", Constants.IMG_URL);
+        modelAndView.addObject("webImg", Constants.IMG_WEB_URL);
         modelAndView.addObject("nowDate", DatetimeUtil.getNow("yyyy-MM-dd"));
         modelAndView.addObject("goods", goods);
         modelAndView.addObject("listParam", listParam);

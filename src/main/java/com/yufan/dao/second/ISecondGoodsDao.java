@@ -14,9 +14,9 @@ public interface ISecondGoodsDao {
 
     PageInfo loadDataPage(int currePage, TbSecondGoods secondGoods);
 
-    public void updateSecondGoodsStatus(int id, int status);
+    public void updateSecondGoodsStatus(int goodsId, int status);
 
-    public TbSecondGoods loadTbSecondGoods(int id);
+    public TbSecondGoods loadTbSecondGoods(int goodsId);
 
     /**
      * 获取最大编码

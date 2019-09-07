@@ -4,6 +4,10 @@ import com.yufan.bean.GoodsCondition;
 import com.yufan.pojo.TbSecondGoods;
 import com.yufan.utils.PageInfo;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * 创建人: lirf
  * 创建时间:  2019/8/30 17:53
@@ -14,11 +18,13 @@ public interface ISecondGoodsService {
     PageInfo loadDataPage(int currePage, TbSecondGoods secondGoods);
 
 
-    public TbSecondGoods loadSecondGoods(int id);
+    public TbSecondGoods loadSecondGoods(int goodsId);
 
     public boolean saveSecondGoods(TbSecondGoods secondGoods);
 
-    public void updateSecondGoodsStatus(int id, int status);
+    public void updateSecondGoodsStatus(int goodsId, int status);
+
+    public List<Map<String, Object>> queryShopGoodsRel(int shopId,int goodsId,int relType);
 
     /************************手机端页面**********************************/
     /**

@@ -2,6 +2,7 @@ package com.yufan.service.second.impl;
 
 import com.sun.org.apache.bcel.internal.generic.DADD;
 import com.yufan.bean.GoodsCondition;
+import com.yufan.dao.commonrel.ICommonRelDao;
 import com.yufan.dao.second.ISecondGoodsDao;
 import com.yufan.dao.second.ISecondGoodsJpaDao;
 import com.yufan.pojo.TbSecondGoods;
@@ -13,6 +14,8 @@ import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 创建人: lirf
@@ -28,6 +31,9 @@ public class SecondGoodsServiceImpl implements ISecondGoodsService {
 
     @Autowired
     private ISecondGoodsJpaDao iSecondGoodsJpaDao;
+
+    @Autowired
+    private ICommonRelDao iCommonRelDao;
 
 
     @Override
@@ -47,21 +53,21 @@ public class SecondGoodsServiceImpl implements ISecondGoodsService {
         secondGoods.setReadNum(0);
         secondGoods.setSuperLike(0);
         try {
-            if (secondGoods.getId() > 0) {
-                TbSecondGoods s = iSecondGoodsDao.loadTbSecondGoods(secondGoods.getId());
+            if (secondGoods.getGoodsId() > 0) {
+                TbSecondGoods s = iSecondGoodsDao.loadTbSecondGoods(secondGoods.getGoodsId());
                 secondGoods.setLikeNum(s.getLikeNum());
                 secondGoods.setReadNum(s.getReadNum());
                 secondGoods.setSuperLike(s.getSuperLike());
                 secondGoods.setGoodsShopCode(s.getGoodsShopCode());
             }
-            if(StringUtils.isEmpty(secondGoods.getGoodsShopCode())){
+            if (StringUtils.isEmpty(secondGoods.getGoodsShopCode())) {
                 //生成商品店铺唯一码
-                int nowGoodsShopCode = iSecondGoodsDao.getGoodsShopCodeMax() ;
-                if(nowGoodsShopCode == 0){
+                int nowGoodsShopCode = iSecondGoodsDao.getGoodsShopCodeMax();
+                if (nowGoodsShopCode == 0) {
                     System.out.printf("-----查询失败---");
                     return false;
                 }
-                String goodsShopCode = goodsShopCode(String.valueOf((nowGoodsShopCode+ 1)));
+                String goodsShopCode = goodsShopCode(String.valueOf((nowGoodsShopCode + 1)));
                 secondGoods.setGoodsShopCode(goodsShopCode);
                 if (StringUtils.isEmpty(secondGoods.getGoodsShopCode())) {
                     System.out.printf("-----------生成店铺码失败--------------");
@@ -96,8 +102,13 @@ public class SecondGoodsServiceImpl implements ISecondGoodsService {
     }
 
     @Override
-    public void updateSecondGoodsStatus(int id, int status) {
-        iSecondGoodsDao.updateSecondGoodsStatus(id, status);
+    public void updateSecondGoodsStatus(int goodsId, int status) {
+        iSecondGoodsDao.updateSecondGoodsStatus(goodsId, status);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryShopGoodsRel(int shopId, int goodsId, int relType) {
+        return iCommonRelDao.queryShopGoodsRel(shopId, goodsId, relType);
     }
 
     /************************手机端页面**********************************/
@@ -107,7 +118,7 @@ public class SecondGoodsServiceImpl implements ISecondGoodsService {
      * @param goodsId
      */
     @Override
-    public void UpdateSecondGoodsReadCount(int goodsId){
+    public void UpdateSecondGoodsReadCount(int goodsId) {
         iSecondGoodsDao.UpdateSecondGoodsReadCount(goodsId);
     }
 
@@ -119,8 +130,8 @@ public class SecondGoodsServiceImpl implements ISecondGoodsService {
      * @return
      */
     @Override
-    public PageInfo loadGoodsList(GoodsCondition condition){
-       return iSecondGoodsDao.loadGoodsList(condition);
+    public PageInfo loadGoodsList(GoodsCondition condition) {
+        return iSecondGoodsDao.loadGoodsList(condition);
     }
     /************************手机端页面**********************************/
 

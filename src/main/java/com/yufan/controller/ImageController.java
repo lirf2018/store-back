@@ -1,9 +1,10 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yufan.utils.CommonMethod;
-import com.yufan.utils.Constants;
-import com.yufan.utils.FastdfsClient;
+import com.yufan.pojo.TbParam;
+import com.yufan.service.param.IParamCodeService;
+import com.yufan.utils.*;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,8 @@ import java.io.PrintWriter;
 @Controller
 @RequestMapping(value = "/image/")
 public class ImageController {
+
+    private Logger LOG = Logger.getLogger(ImageController.class);
 
     @Autowired
     private FastdfsClient fastdfsClient;
@@ -57,14 +60,32 @@ public class ImageController {
 //                writer.close();
 //                return;
 //            }
+            String path = "";
 
 
-            String fdfsPath = fastdfsClient.uploadFile(file);
-            if (!StringUtils.isEmpty(fdfsPath)) {
-                out = CommonMethod.packagMsg("12");
-                out.put("imgfdfsUrl", fdfsPath);
-                out.put("imgWebUrl", Constants.IMG_URL + "" + fdfsPath);//图片访问地址
+            //保存到本地
+            String root = Constants.IMG_SAVE_ROOT_PATH;//本地根目录
+            LOG.info("----保存本地路径----" + path);
+            // 文件按 年/月/日    目录保存
+            String savePath = DatetimeUtil.getNow("yyyy/MM/dd");
+            String filename = DatetimeUtil.getNow("yyyyMMdd") + System.currentTimeMillis() + ".jpg";
+            String localSavePath = root + "\\" + savePath;//本地完整路径
+            localSavePath = localSavePath.replace("\\", "/").replace("\\\\", "/").replace("//","/");
+            LOG.info("----localSavePath---->" + localSavePath);
+            LOG.info("----filename---->" + filename);
+            boolean flag = ImageUtil.getInstance().saveFile(file.getInputStream(), localSavePath, filename);//保存到本地
+            if (flag) {
+                path = savePath + "/" + filename;
             }
+            //String path = fastdfsClient.uploadFile(file);//保存到hdfs中
+            if (!StringUtils.isEmpty(path)) {
+                path = path.replace("\\", "/");
+                out = CommonMethod.packagMsg("12");
+                out.put("imgfdfsUrl", path);
+                out.put("imgWebUrl", Constants.IMG_WEB_URL + "" + path);//图片访问地址
+                LOG.info("--------------响应结果" + out);
+            }
+
             writer.print(out);
             writer.close();
         } catch (Exception e) {

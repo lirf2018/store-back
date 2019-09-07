@@ -75,7 +75,7 @@
 </head>
 <body>
 <div class="wrapper wrapper-content animated">
-    <input type="hidden" id="goodsId" th:value="${goods.id}">
+    <input type="hidden" id="goodsId" th:value="${goods.goodsId}">
     <input type="hidden" id="img" th:value="${goods.goodsImg}">
 
     <div>
@@ -229,7 +229,7 @@
             <tr>
                 <td colspan="4">
                     <input type="button" value="返回列表" onclick="javascript:window.location.href = 'second/secondGoodsPage'" class="btn btn-info">
-                    <input type="button" value="保存并继续添加" class="btn btn-success btn-save" data-mark="1" th:if="${goods.id == null || goods.id == 0}">
+                    <input type="button" value="保存并继续添加" class="btn btn-success btn-save" data-mark="1" th:if="${goods.goodsId == null || goods.goodsId == 0}">
                     <input type="button" value="保存" class="btn btn-success btn-save" data-mark="0">
                 </td>
             </tr>
@@ -352,7 +352,7 @@
         }
         var mark = $(this).attr("data-mark");//1保存并继续添加
         var data = {
-            "id":goodsId,
+            "goodsId":goodsId,
             "goodsName":goodsName.trim(),
             "goodsCode":goodsCode.trim(),
             "dataIndex":dataIndex,

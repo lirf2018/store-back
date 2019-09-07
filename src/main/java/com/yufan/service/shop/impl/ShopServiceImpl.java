@@ -91,4 +91,9 @@ public class ShopServiceImpl implements IShopService {
     public TbShop loadShop(int shopId) {
         return iShopJpaDao.getOne(shopId);
     }
+
+    @Override
+    public TbShop loadShopBySecretKey(String secretKey) {
+        return iShopJpaDao.loadShopBySecretKey(secretKey);
+    }
 }

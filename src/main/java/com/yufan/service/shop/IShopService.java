@@ -26,5 +26,6 @@ public interface IShopService {
     boolean checkShopCode(Integer shopId,String shopCode);
 
     TbShop loadShop(int shopId);
+    TbShop loadShopBySecretKey(String secretKey);
 
 }

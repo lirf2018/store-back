@@ -1,11 +1,15 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.cache.LoadCacheService;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbParam;
 import com.yufan.service.param.IParamCodeService;
+import com.yufan.utils.CacheData;
 import com.yufan.utils.CommonMethod;
+import com.yufan.utils.Constants;
 import com.yufan.utils.PageInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +33,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/param/")
 public class ParamController {
-
+    private Logger LOG = Logger.getLogger(ParamController.class);
     @Autowired
     private IParamCodeService iParamCodeService;
 
@@ -106,14 +110,14 @@ public class ParamController {
     @PostMapping("saveParamCode")
     public void saveParamCode(TbParam paramCode, HttpServletRequest request, HttpServletResponse response) {
         PrintWriter writer = null;
-        try{
+        try {
             writer = response.getWriter();
             JSONObject result = CommonMethod.packagMsg("1");
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             paramCode.setCreateman(user.getLoginName());
             paramCode.setCreatetime(new Timestamp(new Date().getTime()));
 
-            if(!StringUtils.isEmpty(request.getParameter("paramObj.paramId"))){
+            if (!StringUtils.isEmpty(request.getParameter("paramObj.paramId"))) {
                 paramCode.setParamId(Integer.parseInt(request.getParameter("paramObj.paramId")));
             }
             String code = request.getParameter("paramObj.paramCode");
@@ -134,7 +138,8 @@ public class ParamController {
             iParamCodeService.saveParamCode(paramCode);
             writer.print(result);
             writer.close();
-        }catch (Exception e){
+            initParam();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -156,9 +161,28 @@ public class ParamController {
             iParamCodeService.updateParamCodeStatus(paramId, status);
             writer.print(result);
             writer.close();
-
+            initParam();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 初始化参数
+     */
+    private void initParam() {
+        LOG.info("-----开始初始华参数----");
+        CacheData.PARAMLIST = iParamCodeService.loadTbParamCodeList(1);
+        for (int i = 0; i < CacheData.PARAMLIST.size(); i++) {
+            TbParam param = CacheData.PARAMLIST.get(i);
+            if ("sys_code".equals(param.getParamCode()) && "img_save_root_path".equals(param.getParamKey())) {
+                Constants.IMG_SAVE_ROOT_PATH = param.getParamValue().endsWith("\\") ? param.getParamValue() : param.getParamValue() + "\\";
+            } else if ("sys_code".equals(param.getParamCode()) && "img_web_path".equals(param.getParamKey())) {
+                Constants.IMG_WEB_URL = param.getParamValue().endsWith("/") ? param.getParamValue() : param.getParamValue() + "/";
+            }
+        }
+        LOG.info("-------Constants.IMG_SAVE_ROOT_PATH-------" + Constants.IMG_SAVE_ROOT_PATH);
+        LOG.info("--------Constants.IMG_WEB_URL------" + Constants.IMG_WEB_URL);
+        LOG.info("-----结束初始华参数----" + CacheData.PARAMLIST.size());
     }
 }

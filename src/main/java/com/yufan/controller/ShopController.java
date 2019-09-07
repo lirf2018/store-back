@@ -131,7 +131,7 @@ public class ShopController {
         }
 
 
-        modelAndView.addObject("webImg", Constants.IMG_URL);
+        modelAndView.addObject("webImg", Constants.IMG_WEB_URL);
         modelAndView.addObject("shop", shop);
         modelAndView.setViewName("add-shop");
         return modelAndView;

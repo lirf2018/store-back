@@ -25,13 +25,14 @@ public class SecondGoodsDaoImpl implements ISecondGoodsDao {
 
     @Autowired
     private IGeneralDao iGeneralDao;
+    private String imgUrl = Constants.IMG_WEB_URL;
 
     @Override
     public PageInfo loadDataPage(int currePage, TbSecondGoods secondGoods) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT id,goods_name,CONCAT(true_price,'') as true_price,CONCAT(now_price,'') as now_price,CONCAT(purchase_price,'') as purchase_price,read_num,like_num,new_info,is_post, ");
-        sql.append(" about_price,super_like,`status`,img4,img3,img2,img1,goods_code,goods_shop_code,data_index,concat('" + Constants.IMG_URL + "',goods_img) as goods_web_img, ");
-        sql.append(" CONCAT('" + Constants.IMG_URL + "',img4) as web_img4,CONCAT('" + Constants.IMG_URL + "',img3) as web_img3,CONCAT('" + Constants.IMG_URL + "',img2) as web_img2,CONCAT('" + Constants.IMG_URL + "',img1) as web_img1 ");
+        sql.append(" SELECT goods_id,goods_name,CONCAT(true_price,'') as true_price,CONCAT(now_price,'') as now_price,CONCAT(purchase_price,'') as purchase_price,read_num,like_num,new_info,is_post, ");
+        sql.append(" about_price,super_like,`status`,img4,img3,img2,img1,goods_code,goods_shop_code,data_index,concat('" + imgUrl + "',goods_img) as goods_web_img, ");
+        sql.append(" CONCAT('" + imgUrl + "',img4) as web_img4,CONCAT('" + imgUrl + "',img3) as web_img3,CONCAT('" + imgUrl + "',img2) as web_img2,CONCAT('" + imgUrl + "',img1) as web_img1 ");
         sql.append(" from tb_second_goods ");
         sql.append(" where status !=0 ");
         if (StringUtils.isNotEmpty(secondGoods.getGoodsName())) {
@@ -68,15 +69,15 @@ public class SecondGoodsDaoImpl implements ISecondGoodsDao {
     }
 
     @Override
-    public void updateSecondGoodsStatus(int id, int status) {
-        String sql = " update tb_second_goods set `status`=? where id=? ";
-        iGeneralDao.executeUpdateForSQL(sql, status, id);
+    public void updateSecondGoodsStatus(int goodsId, int status) {
+        String sql = " update tb_second_goods set `status`=? where goods_id=? ";
+        iGeneralDao.executeUpdateForSQL(sql, status, goodsId);
     }
 
     @Override
-    public TbSecondGoods loadTbSecondGoods(int id) {
-        String hql = " from TbSecondGoods where id=?1 ";
-        return iGeneralDao.queryUniqueByHql(hql, id);
+    public TbSecondGoods loadTbSecondGoods(int goodsId) {
+        String hql = " from TbSecondGoods where goodsId=?1 ";
+        return iGeneralDao.queryUniqueByHql(hql, goodsId);
     }
 
     @Override
@@ -96,18 +97,31 @@ public class SecondGoodsDaoImpl implements ISecondGoodsDao {
     /************************手机端页面**********************************/
     @Override
     public void UpdateSecondGoodsReadCount(int goodsId) {
-        String sql = " UPDATE tb_second_goods set read_num=read_num+1 where id=? ";
+        String sql = " UPDATE tb_second_goods set read_num=read_num+1 where goods_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, goodsId);
     }
 
     @Override
     public PageInfo loadGoodsList(GoodsCondition condition) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT id,goods_name,goods_img,now_price,read_num from tb_second_goods where status=1 ");
+
+        sql.append(" SELECT t.goods_id,t.goods_name,t.goods_img,t.now_price,t.read_num,t.shop_id,t.data_index from ( ");
+
+        sql.append(" SELECT sg.goods_id,sg.goods_name,sg.goods_img,sg.now_price,sg.read_num,sg.shop_id,sg.data_index  ");
+        sql.append(" from tb_second_goods sg JOIN tb_shop s on s.shop_id=sg.shop_id where sg.status=1 and s.`status`=1 and  s.secret_key='").append(condition.getSecretKey()).append("' ");
         if (StringUtils.isNotEmpty(condition.getGoodsName())) {
-            sql.append(" and goods_name like '%").append(condition.getGoodsName().trim()).append("%' ");
+            sql.append(" and sg.goods_name like '%").append(condition.getGoodsName().trim()).append("%' ");
         }
-        sql.append(" ORDER BY data_index desc,read_num desc ");
+        sql.append(" UNION ");
+
+        sql.append(" SELECT sg.goods_id,sg.goods_name,sg.goods_img,rel.sale_price as now_price ,sg.read_num,sg.shop_id,rel.data_index from tb_shop_goods_rel rel  ");
+        sql.append(" JOIN tb_second_goods sg  on rel.goods_id=sg.goods_id where rel.rel_type=0 and rel.shop_id=(SELECT shop_id from tb_shop where `status`=1 and secret_key='").append(condition.getSecretKey()).append("') ");
+        if (StringUtils.isNotEmpty(condition.getGoodsName())) {
+            sql.append(" and sg.goods_name like '%").append(condition.getGoodsName().trim()).append("%' ");
+        }
+        sql.append(" ) t ");
+        sql.append(" ORDER BY t.data_index desc,t.read_num desc ");
+
 
         PageInfo pageInfo = new PageInfo();
         pageInfo.setPageSize(condition.getPageSize() == null ? 20 : condition.getPageSize());

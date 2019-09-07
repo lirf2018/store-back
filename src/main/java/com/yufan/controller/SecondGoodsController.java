@@ -101,15 +101,15 @@ public class SecondGoodsController {
      * @return
      */
     @RequestMapping("addSecondGoodsPage")
-    public ModelAndView addSecondGoodsPage(HttpServletRequest request, HttpServletResponse response, Integer id) {
+    public ModelAndView addSecondGoodsPage(HttpServletRequest request, HttpServletResponse response, Integer goodsId) {
         ModelAndView modelAndView = new ModelAndView();
         TbSecondGoods goods = new TbSecondGoods();
         goods.setDataIndex(0);
         goods.setTruePrice(new BigDecimal(0));
         goods.setPurchasePrice(new BigDecimal(0));
         goods.setNowPrice(new BigDecimal(0));
-        if (id != null && id > 0) {
-            goods = iSecondGoodsService.loadSecondGoods(id);
+        if (goodsId != null && goodsId > 0) {
+            goods = iSecondGoodsService.loadSecondGoods(goodsId);
             modelAndView.addObject("img4", goods.getImg4());
             modelAndView.addObject("img3", goods.getImg3());
             modelAndView.addObject("img2", goods.getImg2());
@@ -129,7 +129,7 @@ public class SecondGoodsController {
             shopList = iShopService.findShopAll(user.getShopId());
         }
         modelAndView.addObject("shopList", shopList);
-        modelAndView.addObject("webImg", Constants.IMG_URL);
+        modelAndView.addObject("webImg", Constants.IMG_WEB_URL);
         modelAndView.addObject("goods", goods);
         modelAndView.setViewName("add-second-goods");
         return modelAndView;
@@ -148,7 +148,7 @@ public class SecondGoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = secondGoods.getId() == 0 ? CommonMethod.packagMsg("6") : CommonMethod.packagMsg("5");
+            JSONObject out = secondGoods.getGoodsId() == 0 ? CommonMethod.packagMsg("6") : CommonMethod.packagMsg("5");
             boolean flag = iSecondGoodsService.saveSecondGoods(secondGoods);
             if (!flag) {
                 out = CommonMethod.packagMsg("0");
@@ -167,12 +167,12 @@ public class SecondGoodsController {
      * @param response
      */
     @RequestMapping("updateSecondGoodsStatus")
-    public void updateSecondGoodsStatus(HttpServletRequest request, HttpServletResponse response, Integer id, Integer status) {
+    public void updateSecondGoodsStatus(HttpServletRequest request, HttpServletResponse response, Integer goodsId, Integer status) {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
             JSONObject out = CommonMethod.packagMsg("1");
-            iSecondGoodsService.updateSecondGoodsStatus(id, status);
+            iSecondGoodsService.updateSecondGoodsStatus(goodsId, status);
             writer.print(out);
             writer.close();
         } catch (Exception e) {

@@ -132,7 +132,7 @@ public class CategroyController {
                 relMap.put(categoryId, categoryId);
             }
             if(!StringUtils.isEmpty(imgUrl)){
-                modelAndView.addObject("imgWebUrl", Constants.IMG_URL+imgUrl);//
+                modelAndView.addObject("imgWebUrl", Constants.IMG_WEB_URL+imgUrl);//
             }
         }
 
@@ -312,7 +312,7 @@ public class CategroyController {
         modelAndView.addObject("levelId", levelId);
         modelAndView.addObject("levelListMap", levelListMap);
         modelAndView.addObject("categoryObjList", categoryObjList);
-        modelAndView.addObject("webImg", Constants.IMG_URL);
+        modelAndView.addObject("webImg", Constants.IMG_WEB_URL);
 //        modelAndView.addObject("level", level);
         modelAndView.setViewName("category-list");
         return modelAndView;
