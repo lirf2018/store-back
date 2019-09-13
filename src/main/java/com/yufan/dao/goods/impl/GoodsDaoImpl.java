@@ -27,7 +27,6 @@ public class GoodsDaoImpl implements IGoodsDao {
     @Autowired
     private IGeneralDao iGeneralDao;
 
-    private String imgUrl = Constants.IMG_WEB_URL;
 
     @Override
     public void updateGoodsToTimeGoods(int goodsId, int isTimeGoods) {
@@ -39,7 +38,7 @@ public class GoodsDaoImpl implements IGoodsDao {
     public PageInfo loadDataPage(int currePage, GoodsCondition goodsCondition) {
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT g.goods_id,g.goods_name,g.title,CONCAT(g.true_money,'') as true_money,CONCAT(g.now_money,'') as now_money,g.intro,g.shop_id,g.is_yuding,g.get_way, ");
-        sql.append(" g.is_invoice,g.is_putaway,CONCAT('").append(imgUrl).append("',g.goods_img) as goods_img,g.data_index,g.category_id,g.area_id,g.property, ");
+        sql.append(" g.is_invoice,g.is_putaway,CONCAT('").append(Constants.IMG_WEB_URL).append("',g.goods_img) as goods_img,g.data_index,g.category_id,g.area_id,g.property, ");
         sql.append(" DATE_FORMAT(g.start_time,'%Y-%m-%d %T') as start_time,DATE_FORMAT(g.end_time,'%Y-%m-%d %T') as end_time, ");
         sql.append(" g.goods_code,g.goods_unit,g.is_single,g.goods_num,g.is_return,g.coupon_id,DATE_FORMAT(g.createtime,'%Y-%m-%d %T') as createtime, ");
         sql.append(" g.status,g.remark,g.goods_type,g.is_pay_online,g.out_code,CONCAT(g.deposit_money,'') as deposit_money,g.peisong_zc_desc,g.peisong_pei_desc, ");
@@ -140,7 +139,7 @@ public class GoodsDaoImpl implements IGoodsDao {
     public List<Map<String, Object>> loadGoodsSkuListMap(int goodsId) {
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT sku_id,goods_id,sku_name,CONCAT(true_money,'') as true_money,CONCAT(now_money,'') as now_money,sku_code,prop_code,sku_num, ");
-        sql.append(" CONCAT('").append(imgUrl).append("',sku_img) as sku_web_img,sku_img,CONCAT(purchase_price,'') as purchase_price,sell_count ");
+        sql.append(" CONCAT('").append(Constants.IMG_WEB_URL).append("',sku_img) as sku_web_img,sku_img,CONCAT(purchase_price,'') as purchase_price,sell_count ");
         sql.append(" from tb_goods_sku ");
         sql.append(" where goods_id=? and status=1 ");
         return iGeneralDao.getBySQLListMap(sql.toString(), goodsId);

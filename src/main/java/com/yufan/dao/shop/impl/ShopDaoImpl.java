@@ -25,13 +25,12 @@ public class ShopDaoImpl implements IShopDao {
     @Autowired
     private IGeneralDao iGeneralDao;
 
-    private String imgUrl = Constants.IMG_WEB_URL;
 
     @Override
     public PageInfo loadDataPage(int currePage, ShopCondition shopCondition) {
 
         StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT s.shop_id,s.shop_name,concat('").append(imgUrl).append("',s.shop_logo) as shop_logo,s.shop_tel1,s.shop_tel2,s.shop_lng,s.shop_lat,s.weight,s.introduce,s.toway,s.admin_id, ");
+        sql.append(" SELECT s.shop_id,s.shop_name,concat('").append(Constants.IMG_WEB_URL).append("',s.shop_logo) as shop_logo,s.shop_tel1,s.shop_tel2,s.shop_lng,s.shop_lat,s.weight,s.introduce,s.toway,s.admin_id, ");
         sql.append(" s.address,s.area_id,CONCAT(s.deposit,'') as deposit,DATE_FORMAT(s.deposit_time,'%Y-%m-%d') as deposit_time,CONCAT('',s.shop_money) as shop_money,s.shop_code, ");
         sql.append(" DATE_FORMAT(s.createtime,'%Y-%m-%d %T') as createtime,s.status,s.remark,DATE_FORMAT(s.enter_start_time,'%Y-%m-%d') as enter_start_time,DATE_FORMAT(s.enter_end_time,'%Y-%m-%d') as enter_end_time,s.is_out_shop, ");
         sql.append(" if(s.is_out_shop = 1,'内部店铺','第三方店铺') as is_out_shop_name,secret_key ");

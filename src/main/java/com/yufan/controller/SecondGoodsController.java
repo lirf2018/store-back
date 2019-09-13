@@ -128,6 +128,11 @@ public class SecondGoodsController {
         } else {
             shopList = iShopService.findShopAll(user.getShopId());
         }
+        if(goodsId == null || goodsId ==0){
+            //新增加
+            goods.setShopId(user.getShopId());
+            goods.setNewInfo(0);
+        }
         modelAndView.addObject("shopList", shopList);
         modelAndView.addObject("webImg", Constants.IMG_WEB_URL);
         modelAndView.addObject("goods", goods);

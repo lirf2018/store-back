@@ -34,7 +34,8 @@ public enum OutCode {
     cacel_success("21","取消成功"),
     setting_success("22","设置成功"),
     goods_exception_01("goods_exception_01","查询类目属性值数据异常"),
-    goods_exception_02("goods_exception_02","sku数据异常");
+    goods_exception_02("goods_exception_02","sku数据异常"),
+    file_out_size("23","文件大小超出规定大小");
 
 
     private String code;

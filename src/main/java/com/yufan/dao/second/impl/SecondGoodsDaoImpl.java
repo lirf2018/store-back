@@ -25,14 +25,13 @@ public class SecondGoodsDaoImpl implements ISecondGoodsDao {
 
     @Autowired
     private IGeneralDao iGeneralDao;
-    private String imgUrl = Constants.IMG_WEB_URL;
 
     @Override
     public PageInfo loadDataPage(int currePage, TbSecondGoods secondGoods) {
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT goods_id,goods_name,CONCAT(true_price,'') as true_price,CONCAT(now_price,'') as now_price,CONCAT(purchase_price,'') as purchase_price,read_num,like_num,new_info,is_post, ");
-        sql.append(" about_price,super_like,`status`,img4,img3,img2,img1,goods_code,goods_shop_code,data_index,concat('" + imgUrl + "',goods_img) as goods_web_img, ");
-        sql.append(" CONCAT('" + imgUrl + "',img4) as web_img4,CONCAT('" + imgUrl + "',img3) as web_img3,CONCAT('" + imgUrl + "',img2) as web_img2,CONCAT('" + imgUrl + "',img1) as web_img1 ");
+        sql.append(" about_price,super_like,`status`,img4,img3,img2,img1,goods_code,goods_shop_code,data_index,concat('" + Constants.IMG_WEB_URL + "',goods_img) as goods_web_img, ");
+        sql.append(" CONCAT('" + Constants.IMG_WEB_URL + "',img4) as web_img4,CONCAT('" + Constants.IMG_WEB_URL + "',img3) as web_img3,CONCAT('" + Constants.IMG_WEB_URL + "',img2) as web_img2,CONCAT('" + Constants.IMG_WEB_URL + "',img1) as web_img1 ");
         sql.append(" from tb_second_goods ");
         sql.append(" where status !=0 ");
         if (StringUtils.isNotEmpty(secondGoods.getGoodsName())) {

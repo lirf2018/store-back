@@ -70,8 +70,9 @@ public class XiancaiGoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
+            TbShop shop = iShopService.loadShopBySecretKey(secretKey);
             LOG.info("-------secretKey--------" + secretKey);
-            if (StringUtils.isEmpty(secretKey)) {
+            if (StringUtils.isEmpty(secretKey) || shop.getStatus() != 1) {
                 JSONObject data = new JSONObject();
                 data.put("has_next", false);
                 data.put("curre_page", (currePage == null || currePage == 0) ? 1 : currePage);
@@ -84,10 +85,12 @@ public class XiancaiGoodsController {
                 out.put("data", data);
                 writer.println(out);
                 writer.close();
+                if (shop.getStatus() != 1) {
+                    LOG.info("--------店铺无效---------");
+                }
                 return;
             }
 
-            TbShop shop = iShopService.loadShopBySecretKey(secretKey);
 
             GoodsCondition goodsCondition = new GoodsCondition();
             goodsCondition.setGoodsName(goodsName);
@@ -139,34 +142,35 @@ public class XiancaiGoodsController {
             modelAndView.setViewName("404");
             return modelAndView;
         }
-        //更新访问数
-        iSecondGoodsService.UpdateSecondGoodsReadCount(goodsId);
 
         TbSecondGoods secondGoods = iSecondGoodsService.loadSecondGoods(goodsId);
-        //查询店铺
+        //查询店铺（商品对应的店铺）
         TbShop shop = iShopService.loadShop(secondGoods.getShopId());
-        boolean flag = false;
-        System.out.printf("-------"+shop.getSecretKey());
-        if (shop.getSecretKey().equals(secretKey)) {
-            //非分销商品
-            flag = true;
+        boolean flag = true;
+        if (shop.getStatus() != 1) {
+            LOG.info("--------店铺无效---------");
+            flag = false;
         }
-        if (!flag) {
-            //检查是否是分销商品
-            shop = iShopService.loadShopBySecretKey(secretKey);
-            List<Map<String, Object>> mapList = iSecondGoodsService.queryShopGoodsRel(shop.getShopId(), goodsId, 0);
-            if (mapList.size() > 0) {
-                flag = true;
+        //如果商品店铺秘钥与传的秘钥一致,则为非分销链接,否则为分销商品
+        if (!shop.getSecretKey().equals(secretKey)) {
+            //访问地址秘钥与商品实际对应的店铺秘钥不一致,考虑是否为分销商品
+            //则要查看访问地址秘钥是否有权限查看商品详情
+            TbShop shop_ = iShopService.loadShopBySecretKey(secretKey);//查询链接秘钥所对应的实际店铺信息
+            List<Map<String, Object>> mapList = iSecondGoodsService.queryShopGoodsRel(shop_.getShopId(), goodsId, 0);//根据访问地址店铺查询是否存在分销情况
+            if (null == mapList || mapList.size() == 0) {
+                flag = false;
+                LOG.info("--------非分销商品-------链接店铺-secretKey:" + secretKey + " 商品对应店铺 secretKey:" + shop.getSecretKey());
             }
-
         }
-
         if (!flag) {
             //没权限访问
             modelAndView.setViewName("404");
             return modelAndView;
         }
 
+
+        //更新访问数
+        iSecondGoodsService.UpdateSecondGoodsReadCount(goodsId);
 
         modelAndView.addObject("goods_id", secondGoods.getGoodsId());
         modelAndView.addObject("goods_name", secondGoods.getGoodsName());

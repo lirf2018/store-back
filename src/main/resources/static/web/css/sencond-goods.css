@@ -79,7 +79,7 @@ body {
 	padding-top: 8px;
 	text-overflow: ellipsis;
 	display: -webkit-box;
-	-webkit-line-clamp: 2;
+	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	position: relative;

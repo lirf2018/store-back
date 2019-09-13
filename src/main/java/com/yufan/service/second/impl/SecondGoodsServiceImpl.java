@@ -42,8 +42,8 @@ public class SecondGoodsServiceImpl implements ISecondGoodsService {
     }
 
     @Override
-    public TbSecondGoods loadSecondGoods(int id) {
-        return iSecondGoodsJpaDao.getOne(id);
+    public TbSecondGoods loadSecondGoods(int goodsId) {
+        return iSecondGoodsJpaDao.getOne(goodsId);
     }
 
     @Override

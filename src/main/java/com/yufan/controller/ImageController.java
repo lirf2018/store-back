@@ -35,15 +35,20 @@ public class ImageController {
      * @param request
      * @param response
      * @param from     图片来源 用于控制不同图片大小和尺寸
+     *                 闲菜：from=xiancai
+     * @param imgType  图片类型 用于控制不同图片大小和尺寸
+     *                 闲菜：xiancaiGoodsImg(闲菜商品主图)  xiancaiGoodsInfoImg(闲菜商品介绍)
      * @param file     上传的文件名称
      */
     @RequestMapping("uploadFile")
-    public void uploadFile(HttpServletRequest request, HttpServletResponse response, String from, MultipartFile file) {
-        System.out.printf("--文件上传--");
+    public void uploadFile(HttpServletRequest request, HttpServletResponse response, String from, String imgType, MultipartFile file) {
+        LOG.info("------文件上传------");
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
             JSONObject out = CommonMethod.packagMsg("13");
+            out.put("from", from);
+            out.put("imgType", imgType);
             if (null == file) {
                 writer.print(out);
                 writer.close();
@@ -60,8 +65,27 @@ public class ImageController {
 //                writer.close();
 //                return;
 //            }
-            String path = "";
 
+            //控制上传大小
+//            if ("xiancai".equals(from)) {
+            //检查文件大小
+            LOG.info("--------检查文件大小-------");
+            int size = 300;
+            String unit = "K";
+            boolean flagImg = checkFileSize(file.getSize(), size, unit);
+            if (!flagImg) {
+                out = CommonMethod.packagMsg("23");
+                out.put("msg", out.getString("msg") + ";文件大小不能超过" + size + unit + "B");
+                out.put("msg", "图片大小不能超过" + size + unit + "B");
+                out.put("from", from);
+                out.put("imgType", imgType);
+                writer.print(out);
+                writer.close();
+                return;
+            }
+//            }
+
+            String path = "";
 
             //保存到本地
             String root = Constants.IMG_SAVE_ROOT_PATH;//本地根目录
@@ -70,7 +94,7 @@ public class ImageController {
             String savePath = DatetimeUtil.getNow("yyyy/MM/dd");
             String filename = DatetimeUtil.getNow("yyyyMMdd") + System.currentTimeMillis() + ".jpg";
             String localSavePath = root + "\\" + savePath;//本地完整路径
-            localSavePath = localSavePath.replace("\\", "/").replace("\\\\", "/").replace("//","/");
+            localSavePath = localSavePath.replace("\\", "/").replace("\\\\", "/").replace("//", "/");
             LOG.info("----localSavePath---->" + localSavePath);
             LOG.info("----filename---->" + filename);
             boolean flag = ImageUtil.getInstance().saveFile(file.getInputStream(), localSavePath, filename);//保存到本地
@@ -85,12 +109,39 @@ public class ImageController {
                 out.put("imgWebUrl", Constants.IMG_WEB_URL + "" + path);//图片访问地址
                 LOG.info("--------------响应结果" + out);
             }
-
+            out.put("from", from);
+            out.put("imgType", imgType);
             writer.print(out);
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 判断文件大小
+     *
+     * @param len  文件长度
+     * @param size 限制大小
+     * @param unit 限制单位（B,K,M,G）
+     * @return
+     */
+    public static boolean checkFileSize(Long len, int size, String unit) {
+//        long len = file.length();
+        double fileSize = 0;
+        if ("B".equals(unit.toUpperCase())) {
+            fileSize = (double) len;
+        } else if ("K".equals(unit.toUpperCase())) {
+            fileSize = (double) len / 1024;
+        } else if ("M".equals(unit.toUpperCase())) {
+            fileSize = (double) len / 1048576;
+        } else if ("G".equals(unit.toUpperCase())) {
+            fileSize = (double) len / 1073741824;
+        }
+        if (fileSize > size) {
+            return false;
+        }
+        return true;
     }
 
 }

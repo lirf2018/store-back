@@ -166,10 +166,10 @@
     //选择子级功能
     function selectFunSon(obj) {
         var ul = $(obj).parent().parent().parent().children("li");
-        var flag = true;
+        var flag = false;
         ul.each(function () {
-            if(!$(this).children("div").children().is(':checked')){
-                flag = false;
+            if($(this).children("div").children().is(':checked')){
+                flag = true;
                 return false;
             }
         });
