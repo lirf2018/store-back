@@ -27,7 +27,7 @@ public class ProjectSafeJob {
     private Logger LOG = Logger.getLogger(ProjectSafeJob.class);
 
 
-    private String expireDate = "2019-09-15";//过期时间
+    private String expireDate = "2019-11-15";//过期时间
 
 
     @Autowired
@@ -39,6 +39,7 @@ public class ProjectSafeJob {
      */
     @Scheduled(cron = "0 0 0/1 * * ?")
     public void sysSafe() {
+        LOG.info("------系统过期时间-----"+expireDate);
         String format = "yyyy-MM-dd";
         String nowDate = DatetimeUtil.getNow(format);
         if (DatetimeUtil.compareDate(nowDate, expireDate) > 0) {

@@ -334,9 +334,9 @@
             $("#nowPrice").focus();
             return myAlertSimple("非法销售价");
         }
-        if (truePrice < nowPrice) {
-            $("#purchasePrice").focus();
-            return myAlertSimple("价格不合理: 销售价不能大于原价");
+        if (Number(truePrice) < Number(nowPrice)) {
+            $("#nowPrice").focus();
+            return myAlertSimple("价格不合理: 销售价("+nowPrice+")不能大于原价("+truePrice+")");
         }
         if(!numAndpoint(purchasePrice)){
             $("#purchasePrice").focus();
