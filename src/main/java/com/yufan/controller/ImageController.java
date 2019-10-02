@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * 创建人: lirf
@@ -69,7 +70,7 @@ public class ImageController {
             //控制上传大小
 //            if ("xiancai".equals(from)) {
             //检查文件大小
-            LOG.info("--------检查文件大小-------");
+   /*         LOG.info("--------检查文件大小-------");
             int size = 300;
             String unit = "K";
             boolean flagImg = checkFileSize(file.getSize(), size, unit);
@@ -82,26 +83,47 @@ public class ImageController {
                 writer.print(out);
                 writer.close();
                 return;
-            }
+            }*/
 //            }
 
             String path = "";
+            //img_save_local
 
-            //保存到本地
-            String root = Constants.IMG_SAVE_ROOT_PATH;//本地根目录
-            LOG.info("----保存本地路径----" + path);
-            // 文件按 年/月/日    目录保存
-            String savePath = DatetimeUtil.getNow("yyyy/MM/dd");
-            String filename = DatetimeUtil.getNow("yyyyMMdd") + System.currentTimeMillis() + ".jpg";
-            String localSavePath = root + "\\" + savePath;//本地完整路径
-            localSavePath = localSavePath.replace("\\", "/").replace("\\\\", "/").replace("//", "/");
-            LOG.info("----localSavePath---->" + localSavePath);
-            LOG.info("----filename---->" + filename);
-            boolean flag = ImageUtil.getInstance().saveFile(file.getInputStream(), localSavePath, filename);//保存到本地
-            if (flag) {
-                path = savePath + "/" + filename;
+            boolean flagLocal = false;
+            List<TbParam> list = CacheData.PARAMLIST;
+            for (int i = 0; i < list.size(); i++) {
+                TbParam param = list.get(i);
+                String code = param.getParamCode();
+                String key = param.getParamKey();
+                String value = param.getParamValue();
+                if (!"sys_code".equals(code)) {
+                    continue;
+                }
+                if ("img_save_local".equals(key) && "1".equals(value)) {
+                    flagLocal = true;
+                    break;
+                }
             }
-            //String path = fastdfsClient.uploadFile(file);//保存到hdfs中
+
+            if (flagLocal) {
+                //保存到本地
+                String root = Constants.IMG_SAVE_ROOT_PATH;//本地根目录
+                LOG.info("----保存本地路径----" + path);
+                // 文件按 年/月/日    目录保存
+                String savePath = DatetimeUtil.getNow("yyyy/MM/dd");
+                String filename = DatetimeUtil.getNow("yyyyMMdd") + System.currentTimeMillis() + ".jpg";
+                String localSavePath = root + "\\" + savePath;//本地完整路径
+                localSavePath = localSavePath.replace("\\", "/").replace("\\\\", "/").replace("//", "/");
+                LOG.info("----localSavePath---->" + localSavePath);
+                LOG.info("----filename---->" + filename);
+                boolean flag = ImageUtil.getInstance().saveFile(file.getInputStream(), localSavePath, filename);//保存到本地
+                if (flag) {
+                    path = savePath + "/" + filename;
+                }
+            } else {
+                path = fastdfsClient.uploadFile(file);//保存到hdfs中
+            }
+
             if (!StringUtils.isEmpty(path)) {
                 path = path.replace("\\", "/");
                 out = CommonMethod.packagMsg("12");

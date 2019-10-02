@@ -279,6 +279,8 @@ public class GoodsController {
         goods.setAdvancePrice(new BigDecimal("0").setScale(2, BigDecimal.ROUND_HALF_UP));
         goods.setDepositMoney(new BigDecimal("0").setScale(2, BigDecimal.ROUND_HALF_UP));
         goods.setLimitWay(4);
+        goods.setGetWay(6);
+        goods.setGoodsType(0);
         goods.setLimitBeginTime(new Timestamp(new Date().getTime()));
         if (null != goodsId && goodsId > 0) {
             goods = iGoodsService.loadGoods(goodsId);
