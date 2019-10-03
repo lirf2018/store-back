@@ -233,7 +233,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 String[] deleteSkuIds = skuIds.split("``");
                 String strIds = "";
                 for (int i = 0; i < deleteSkuIds.length; i++) {
-                    if (StringUtils.isNotEmpty(deleteSkuIds[i]) && !"0".equals(deleteSkuIds[i])) {
+                    if (StringUtils.isNotEmpty(deleteSkuIds[i])) {
                         strIds = strIds + deleteSkuIds[i] + ",";
                     }
                 }
