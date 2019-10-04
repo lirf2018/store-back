@@ -602,6 +602,11 @@
             return myAlertSimple("非法预付款");
         }
 
+        if (Number(trueMoney) < Number(nowMoney)) {
+            $("#nowMoney").focus();
+            return myAlertSimple("销售价不能大于原价");
+        }
+
         //处理商品sku(销售属性) propValueArrays propNameArrays
         if (propNameArrays.length != propValueArrays.length || salesCount != propValueArrays.length) {
             $("#goodsName").focus();
@@ -718,6 +723,20 @@
             } else {
                 unsellPropId = unsellPropId + valueIdObj[0] + "``";
             }
+        }
+
+        //检验sku价格
+        if (skuNowMoney != "") {
+            var n = skuNowMoney.split("``");//现价
+            var t = skuTrueMoney.split("``");//原价
+            for (var i = 0; i < n.length; i++) {
+                if(skuNowMoney != ''&&Number(n[i])>Number(t[i])){
+                    myAlertSimple("商品sku销售价格不能大于sku原价");
+                    return;
+                }
+
+            }
+
         }
 
         var mark = $(this).attr("data-mark");//1保存并继续添加
