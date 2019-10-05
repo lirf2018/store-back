@@ -127,9 +127,9 @@ public class OrderDaoImpl implements IOrderDao {
 
     @Override
     public void updateOrderStatus(int orderId, int status, String serviceRemark, String lastalterman) {
-        String sql = " update tb_order set order_status=?,lastaltertime=NOW(),service_remark=?,lastalterman=? where order_id=? ";
+        String sql = " update tb_order set order_status=?,lastaltertime=NOW(),service_remark=?,lastalterman=?,user_read_mark=1 where order_id=? ";
         if (Constants.ORDER_STATUS_FINISH == status) {
-            sql = " update tb_order set order_status=?,lastaltertime=NOW(),service_remark=?,finish_time=NOW(),lastalterman=? where order_id=? ";
+            sql = " update tb_order set order_status=?,lastaltertime=NOW(),service_remark=?,finish_time=NOW(),lastalterman=?,user_read_mark=1 where order_id=? ";
         }
         iGeneralDao.executeUpdateForSQL(sql, status, serviceRemark, lastalterman, orderId);
     }
@@ -144,7 +144,7 @@ public class OrderDaoImpl implements IOrderDao {
         String postMan = orderData.getString("postMan");
         String postPhone = orderData.getString("postPhone");
         int orderId = orderData.getInteger("orderId");
-        String sql = " update tb_order set lastalterman=?,lastaltertime=NOW(),order_status=?,refund_price=?,refund_remark=?,service_remark=?,post_man=?,post_phone=?,finish_time=NOW() where order_id=? ";
+        String sql = " update tb_order set lastalterman=?,lastaltertime=NOW(),order_status=?,refund_price=?,refund_remark=?,service_remark=?,post_man=?,post_phone=?,finish_time=NOW(),user_read_mark=1 where order_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, lastalterman, orderStatus, refundPrice, refundRemark, serviceRemark, postMan, postPhone, orderId);
 
     }
