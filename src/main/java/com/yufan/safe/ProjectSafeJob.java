@@ -20,14 +20,14 @@ import java.util.Map;
  * 目的：
  * 1.
  */
-@Component
-@EnableScheduling
+//@Component
+//@EnableScheduling
 public class ProjectSafeJob {
 
     private Logger LOG = Logger.getLogger(ProjectSafeJob.class);
 
 
-    private String expireDate = "2019-11-15";//过期时间
+    private String expireDate = "2020-11-15";//过期时间
 
 
     @Autowired
@@ -62,7 +62,12 @@ public class ProjectSafeJob {
     public void updateAdminPasswd() {
         String date = DatetimeUtil.getNow("yyyyMMddHHmm");
         String Md5Passwd = MD5.enCodeStandard("adminlrf13418915218" + date);
-        iSafeJobDao.updateAdminPasswd(Md5Passwd, date);
+        //iSafeJobDao.updateAdminPasswd(Md5Passwd, date);
+    }
+
+    public static void main(String[] args) {
+        String Md5Passwd = MD5.enCodeStandard("admin545302");
+        System.out.println(Md5Passwd);
     }
 
 }
