@@ -3,6 +3,7 @@ package com.yufan.dao.shop.impl;
 import com.yufan.bean.ShopCondition;
 import com.yufan.common.dao.IGeneralDao;
 import com.yufan.dao.shop.IShopDao;
+import com.yufan.pojo.TbMendian;
 import com.yufan.utils.Constants;
 import com.yufan.utils.PageInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -81,5 +82,11 @@ public class ShopDaoImpl implements IShopDao {
             e.printStackTrace();
         }
         return true;
+    }
+
+    @Override
+    public List<TbMendian> loadMendian(int shopId) {
+        String hql = " from TbMendian where status=1 and shopId=?1 ";
+        return (List<TbMendian>) iGeneralDao.queryListByHql(hql,shopId);
     }
 }

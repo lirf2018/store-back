@@ -30,28 +30,37 @@ public class AddrDaoImpl implements IAddrDao {
     @Override
     public PageInfo loadPlatformAddrPage(int currePage, TbPlatformAddr platformAddr) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" select id,detail_addr,responsible_man,responsible_phone,CONCAT(freight,'') as freight,sort_char,addr_prefix,status,remark,addr_sort,addr_type,addr_desc,");
-        sql.append(" addr_name,shop_id,date_format(createtime,'%Y-%m-%d %T') as createtime,addr_lng,addr_lat");
-        sql.append(" from tb_platform_addr where status=1 ");
+        sql.append(" select pf.id,pf.detail_addr,pf.responsible_man,pf.responsible_phone,CONCAT(pf.freight,'') as freight,pf.sort_char,pf.addr_prefix,pf.status,pf.remark,pf.addr_sort,pf.addr_type,pf.addr_desc,");
+        sql.append(" pf.addr_name,pf.shop_id,date_format(pf.createtime,'%Y-%m-%d %T') as createtime,pf.addr_lng,pf.addr_lat ");
+        sql.append(" ,md.store_name ");
+        sql.append(" from tb_platform_addr pf  ");
+        sql.append(" LEFT JOIN tb_mendian md on md.store_id=pf.store_id ");
+        sql.append(" where 1=1 ");
         if (0 != platformAddr.getId()) {
-            sql.append(" and id = ").append(platformAddr.getId()).append(" ");
+            sql.append(" and pf.id = ").append(platformAddr.getId()).append(" ");
         }
         if (!StringUtils.isEmpty(platformAddr.getAddrPrefix())) {
-            sql.append(" and addr_prefix = '").append(platformAddr.getAddrPrefix()).append("' ");
+            sql.append(" and pf.addr_prefix = '").append(platformAddr.getAddrPrefix()).append("' ");
         }
         if (!StringUtils.isEmpty(platformAddr.getDetailAddr())) {
-            sql.append(" and detail_addr like '%").append(platformAddr.getDetailAddr()).append("%' ");
+            sql.append(" and pf.detail_addr like '%").append(platformAddr.getDetailAddr()).append("%' ");
         }
         if (!StringUtils.isEmpty(platformAddr.getResponsibleMan())) {
-            sql.append(" and (responsible_man = '").append(platformAddr.getResponsibleMan()).append("' or responsible_phone = '").append(platformAddr.getResponsibleMan()).append("') ");
+            sql.append(" and (pf.responsible_man = '").append(platformAddr.getResponsibleMan()).append("' or pf.responsible_phone = '").append(platformAddr.getResponsibleMan()).append("') ");
         }
         if (platformAddr.getAddrType() != null) {
-            sql.append(" and addr_type = ").append(platformAddr.getAddrType()).append(" ");
+            sql.append(" and pf.addr_type = ").append(platformAddr.getAddrType()).append(" ");
         }
         if (platformAddr.getShopId() != null) {
-            sql.append(" and shop_id=").append(platformAddr.getShopId()).append(" ");
+            sql.append(" and pf.shop_id=").append(platformAddr.getShopId()).append(" ");
         }
-        sql.append(" ORDER BY sort_char,addr_sort desc,createtime desc ");
+        if (null != platformAddr.getStatus() && -1 != platformAddr.getStatus()) {
+            sql.append(" and pf.status=").append(platformAddr.getStatus()).append(" ");
+        }
+        if (null != platformAddr.getStoreId() && -1 != platformAddr.getStoreId()) {
+            sql.append(" and pf.store_id=").append(platformAddr.getStoreId()).append(" ");
+        }
+        sql.append(" ORDER BY pf.sort_char,pf.addr_sort desc,pf.createtime desc ");
 
         PageInfo pageInfo = new PageInfo();
         pageInfo.setCurrePage(currePage);

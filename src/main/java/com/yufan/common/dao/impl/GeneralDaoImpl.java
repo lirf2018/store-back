@@ -170,5 +170,17 @@ public class GeneralDaoImpl implements IGeneralDao {
         Session session = getSession();
         session.saveOrUpdate(entity);
     }
+
+    @Override
+    public List<?> queryListByHql(String hql, Object... values) {
+        Session session = getSession();
+        org.hibernate.query.Query query = session.createQuery(hql);
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                query.setParameter((i + 1), values[i]);
+            }
+        }
+        return query.getResultList();
+    }
 }
 

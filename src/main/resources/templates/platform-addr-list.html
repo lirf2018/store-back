@@ -47,6 +47,17 @@
                                 <option value="">--选择店铺--</option>
                                 <option th:each="s:${shopList}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
                             </select>
+                            <label>门店:</label>
+                            <select  class="form-control form-control-common" name="storeId" id="storeId" onchange="searchData()">
+                                <option value="-1">--选择门店--</option>
+                                <option th:each="s:${mendianList}" th:value="${s.storeId}" th:text="${s.storeName}"></option>
+                            </select>
+                            <label>地址状态:</label>
+                            <select class="form-control" name="status" id="status" onchange="searchData()">
+                                <option value="-1">&#45;&#45; 选择状态 &#45;&#45;</option>
+                                <option value="1" >有效</option>
+                                <option value="0" >无效</option>
+                            </select>
                             <input type="button" class="btn btn-primary" value="查询" onclick="searchData()">
                             <button class="btn btn-success" type="button" onclick="addOrUpdateData(0)"><i class=""></i><span class="bold">新增</span></button>
                         </div>
@@ -67,6 +78,8 @@
                             <th>详细地址</th>
                             <th>经度</th>
                             <th>纬度</th>
+                            <th>自取门店</th>
+                            <th>状态</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -120,6 +133,8 @@
                     d.responsible = $('#responsible').val().trim();
                     d.addrType = $('#addrType').val();
                     d.shopId = $('#shopId').val();
+                    d.storeId = $('#storeId').val();
+                    d.status = $('#status').val();
                 }
             },
             columns:[
@@ -187,13 +202,34 @@
                         return obj.addr_lat==null?"":obj.addr_lat;
                     }
                 }
+                ,{
+                    data: function (obj) {
+                        return obj.store_name==null?"":obj.store_name;
+                    }
+                }
+                ,{
+                    data: function (obj) {
+                        var status = obj.status;
+                        if(status == '1'){
+                            return "有效";
+                        }else if(status == '0'){
+                            return "<span style='color: red;'>无效</span>";
+                        }
+                        return "";
+                    }
+                }
             ]
             ,columnDefs: [{
-                targets: 12,
+                targets: 14,
                 data: null,
                 render: function (data, type, row) {
                     var html = "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData("+data.id+")'><i class='fa fa-paste'></i> 编辑</button> ";
+                    if(data.status == '1'){
                         html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:delData("+data.id+",0)'><i class='fa fa-warning'></i> 删除</button>";
+                    }else{
+                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-primary' data-id='" + data + "' type='button' onclick='javascript:delData("+data.id+",1)'><i class='fa fa-check'></i> 启用</button>";
+                    }
+
                     return html;
                 }
             }]
@@ -219,7 +255,28 @@
     }
 
     function delData(id,status) {
-        swal({
+
+        $.ajax({
+            url: "addr/updatePlatformStatus",
+            type: 'POST',
+            data: {
+                "id":id,
+                "status":status
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                if (code == "1") {
+                    myAlertSimple(data.msg);
+                    // setTimeout("javascript:window.location.href = 'addr/platformAddrPage'",1000);
+                    searchData();
+                }
+            }
+        });
+
+        /*swal({
             title: "您确定要删除这条信息吗",
             text: "删除后将无法恢复，请谨慎操作！",
             type: "warning",
@@ -247,7 +304,7 @@
                     }
                 }
             });
-        });
+        });*/
     }
 
 </script>

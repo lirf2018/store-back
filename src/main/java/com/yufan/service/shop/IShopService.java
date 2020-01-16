@@ -2,6 +2,7 @@ package com.yufan.service.shop;
 
 import com.yufan.bean.ShopCondition;
 import com.yufan.pojo.TbImg;
+import com.yufan.pojo.TbMendian;
 import com.yufan.pojo.TbShop;
 import com.yufan.utils.PageInfo;
 
@@ -28,4 +29,11 @@ public interface IShopService {
     TbShop loadShop(int shopId);
     TbShop loadShopBySecretKey(String secretKey);
 
+    //----------------------门店--------------------------
+
+    /**
+     * 查询门店列表
+     * @return
+     */
+    public List<TbMendian> loadMendian(int shopId);
 }

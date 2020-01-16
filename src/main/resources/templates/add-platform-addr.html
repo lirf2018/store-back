@@ -114,8 +114,13 @@
                         <option th:each="s:${shopList}" th:selected="${addr.shopId == s.shopId}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
                     </select>
                 </td>
-                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span></td>
-                <td></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>门店</td>
+                <td>
+                    <select  class="form-control form-control-common" name="storeId" id="storeId" >
+                        <option value="0">--选择门店--</option>
+                        <option th:each="s:${mendianList}" th:selected="${addr.storeId == s.storeId}" th:value="${s.storeId}" th:text="${s.storeName}"></option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>详细地址</td>
@@ -222,6 +227,8 @@
             mark = 0;
         }
 
+        var storeId = $("#storeId").val();
+
         var addrLng = $("#addrLng").val();
         var addrLat = $("#addrLat").val();
 
@@ -240,6 +247,7 @@
             "addr.remark":remark.trim(),
             "addr.addrLng":addrLng.trim(),
             "addr.addrLat":addrLat.trim(),
+            "storeId":storeId,
             "shopId":shopId
         }
         //上传完得到id 或者路径 标志上传成功

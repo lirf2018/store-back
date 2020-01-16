@@ -2,10 +2,7 @@ package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.bean.RegionCondition;
-import com.yufan.pojo.TbAdmin;
-import com.yufan.pojo.TbPlatformAddr;
-import com.yufan.pojo.TbRegion;
-import com.yufan.pojo.TbShop;
+import com.yufan.pojo.*;
 import com.yufan.service.addr.IAddrService;
 import com.yufan.service.shop.IShopService;
 import com.yufan.utils.CommonMethod;
@@ -60,6 +57,9 @@ public class AddrController {
         } else {
             shopList = iShopService.findShopAll(user.getShopId());
         }
+        //查询门店列表
+        List<TbMendian> mendianList = iShopService.loadMendian(user.getShopId());
+        modelAndView.addObject("mendianList", mendianList);
         modelAndView.addObject("shopList", shopList);
         modelAndView.addObject("loginName", user.getLoginName());
         modelAndView.setViewName("platform-addr-list");
@@ -134,6 +134,7 @@ public class AddrController {
                 return modelAndView;
             }
         }
+
         //查询店铺
         List<TbShop> shopList = new ArrayList<>();
         TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
@@ -142,6 +143,9 @@ public class AddrController {
         } else {
             shopList = iShopService.findShopAll(user.getShopId());
         }
+        //查询门店列表
+        List<TbMendian> mendianList = iShopService.loadMendian(user.getShopId());
+        modelAndView.addObject("mendianList", mendianList);
         modelAndView.addObject("shopList", shopList);
         modelAndView.addObject("addr", distributionAddr);
         modelAndView.setViewName("add-platform-addr");

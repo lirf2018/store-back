@@ -5,6 +5,7 @@ import com.yufan.dao.commonrel.ICommonRelDao;
 import com.yufan.dao.shop.IShopDao;
 import com.yufan.dao.shop.IShopJpaDao;
 import com.yufan.pojo.TbImg;
+import com.yufan.pojo.TbMendian;
 import com.yufan.pojo.TbShop;
 import com.yufan.service.shop.IShopService;
 import com.yufan.utils.Constants;
@@ -39,6 +40,7 @@ public class ShopServiceImpl implements IShopService {
     public List<TbShop> findShopAll() {
         return iShopJpaDao.findShopAll();
     }
+
     @Override
     public List<TbShop> findShopAll(int shopId) {
         return iShopJpaDao.findShopAll(shopId);
@@ -96,4 +98,11 @@ public class ShopServiceImpl implements IShopService {
     public TbShop loadShopBySecretKey(String secretKey) {
         return iShopJpaDao.loadShopBySecretKey(secretKey);
     }
+
+    @Override
+    public List<TbMendian> loadMendian(int shopId) {
+        return iShopDao.loadMendian(shopId);
+    }
+
+
 }

@@ -7,11 +7,11 @@ import java.util.Objects;
 
 /**
  * 创建人: lirf
- * 创建时间:  2019/8/28 9:35
+ * 创建时间:  2020/1/16 13:17
  * 功能介绍:
  */
 @Entity
-@Table(name = "tb_platform_addr", schema = "testlirf", catalog = "")
+@Table(name = "tb_platform_addr", schema = "store_db", catalog = "")
 public class TbPlatformAddr {
     private int id;
     private String detailAddr;
@@ -31,6 +31,7 @@ public class TbPlatformAddr {
     private Integer shopId;
     private String addrLng;
     private String addrLat;
+    private Integer storeId;
 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
@@ -213,6 +214,16 @@ public class TbPlatformAddr {
         this.addrLat = addrLat;
     }
 
+    @Basic
+    @Column(name = "store_id", nullable = true)
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -235,12 +246,12 @@ public class TbPlatformAddr {
                 Objects.equals(addrName, that.addrName) &&
                 Objects.equals(shopId, that.shopId) &&
                 Objects.equals(addrLng, that.addrLng) &&
-                Objects.equals(addrLat, that.addrLat);
+                Objects.equals(addrLat, that.addrLat) &&
+                Objects.equals(storeId, that.storeId);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, detailAddr, responsibleMan, responsiblePhone, freight, sortChar, addrPrefix, createman, createtime, status, remark, addrSort, addrType, addrDesc, addrName, shopId, addrLng, addrLat);
+        return Objects.hash(id, detailAddr, responsibleMan, responsiblePhone, freight, sortChar, addrPrefix, createman, createtime, status, remark, addrSort, addrType, addrDesc, addrName, shopId, addrLng, addrLat, storeId);
     }
 }
