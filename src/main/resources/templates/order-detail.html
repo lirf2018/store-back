@@ -190,22 +190,16 @@
                    </div>
                    <!--1已付款 orderPrice>0-->
                    <div th:if="${order.orderStatus == 1 && order.orderPrice>0}">
-                       <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='4'  type='button' onclick="setNewClickOrderStatus(this)" >设置待发货</button>&nbsp;&nbsp;
+                       <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='5'  type='button' onclick="setNewClickOrderStatus(this)" >设置待收货</button>&nbsp;&nbsp;
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='9'  type='button' onclick="setNewClickOrderStatus(this)" >设置退款中</button>&nbsp;&nbsp;
                        <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>
                    </div>
                    <!--1已付款 orderPrice=0-->
                    <div th:if="${order.orderStatus == 1 && order.orderPrice==0}">
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='3'  type='button' onclick="setNewClickOrderStatus(this)" >设置已失败</button>&nbsp;&nbsp;
-                       <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='4'  type='button' onclick="setNewClickOrderStatus(this)" >设置待发货</button>&nbsp;&nbsp;
+                       <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='5'  type='button' onclick="setNewClickOrderStatus(this)" >设置待收货</button>&nbsp;&nbsp;
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='7'  type='button' onclick="setNewClickOrderStatus(this)" >设置已取消</button>&nbsp;&nbsp;
                        <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>
-                   </div>
-                   <!--4待发货-->
-                   <div th:if="${order.orderStatus == 4}">
-                       <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='5'  type='button' onclick="setNewClickOrderStatus(this)" >设置待收货</button>&nbsp;&nbsp;
-                       <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='9'  type='button' onclick="setNewClickOrderStatus(this)" >设置退款中</button>&nbsp;&nbsp;
-                       <button data-toggle="modal" class='btn btn-success' th:value="${order}" type='button' data-target="#resetOrderInfoModel" >修改订单信息</button>
                    </div>
                    <!--5待收货-->
                    <div th:if="${order.orderStatus == 5}">
@@ -340,7 +334,7 @@
                         <label>订单状态：</label>
                         <select class="form-control" name="orderStatus" id="orderStatus">
                             <option value="-1">-- 选择状态 --</option>
-                            <option th:each="item : ${paramList}" th:value="${item.paramKey}" th:selected="${item.paramKey == (''+order.orderStatus)}" th:text="${item.paramValue}" th:if="${item.status == 1 && item.paramCode == 'order_status'}"></option>
+                            <option th:each="item : ${paramList}" th:value="${item.paramKey}"  th:text="${item.paramValue}" th:if="${item.status == 1 && item.paramCode == 'order_status'}"></option>
                         </select>
                     </div>
                     <div class="form-group">

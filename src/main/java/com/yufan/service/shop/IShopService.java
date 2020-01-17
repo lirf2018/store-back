@@ -16,6 +16,7 @@ import java.util.List;
 public interface IShopService {
 
     List<TbShop> findShopAll();
+
     List<TbShop> findShopAll(int shopId);
 
     PageInfo loadDataPage(int currePage, ShopCondition shopCondition);
@@ -24,16 +25,20 @@ public interface IShopService {
 
     void updateShopStatus(int shopId, int status);
 
-    boolean checkShopCode(Integer shopId,String shopCode);
+    boolean checkShopCode(Integer shopId, String shopCode);
 
     TbShop loadShop(int shopId);
+
     TbShop loadShopBySecretKey(String secretKey);
 
     //----------------------门店--------------------------
 
     /**
      * 查询门店列表
+     *
      * @return
      */
     public List<TbMendian> loadMendian(int shopId);
+
+    public List<TbMendian> loadMendian();
 }

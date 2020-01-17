@@ -19,11 +19,14 @@ public interface IShopDao {
 
     public void updateShopStatus(int shopId, int status);
 
-    boolean checkShopCode(Integer shopId,String shopCode);
+    boolean checkShopCode(Integer shopId, String shopCode);
 
     /**
      * 查询门店列表
+     *
      * @return
      */
     public List<TbMendian> loadMendian(int shopId);
+
+    public List<TbMendian> loadMendian();
 }

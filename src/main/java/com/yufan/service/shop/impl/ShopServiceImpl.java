@@ -104,5 +104,10 @@ public class ShopServiceImpl implements IShopService {
         return iShopDao.loadMendian(shopId);
     }
 
+    @Override
+    public List<TbMendian> loadMendian() {
+        return iShopDao.loadMendian();
+    }
+
 
 }

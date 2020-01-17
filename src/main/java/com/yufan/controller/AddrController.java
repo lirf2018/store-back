@@ -51,14 +51,17 @@ public class AddrController {
         ModelAndView modelAndView = new ModelAndView();
         //查询店铺
         List<TbShop> shopList = new ArrayList<>();
+        //查询门店列表
+        List<TbMendian> mendianList = new ArrayList<>();
         TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
         if ("admin".equals(user.getLoginName())) {
             shopList = iShopService.findShopAll();
+            mendianList = iShopService.loadMendian();
         } else {
             shopList = iShopService.findShopAll(user.getShopId());
+            mendianList = iShopService.loadMendian(user.getShopId());
         }
-        //查询门店列表
-        List<TbMendian> mendianList = iShopService.loadMendian(user.getShopId());
+
         modelAndView.addObject("mendianList", mendianList);
         modelAndView.addObject("shopList", shopList);
         modelAndView.addObject("loginName", user.getLoginName());
@@ -137,14 +140,16 @@ public class AddrController {
 
         //查询店铺
         List<TbShop> shopList = new ArrayList<>();
+        //查询门店列表
+        List<TbMendian> mendianList = new ArrayList<>();
         TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
         if ("admin".equals(user.getLoginName())) {
             shopList = iShopService.findShopAll();
+            mendianList = iShopService.loadMendian();
         } else {
             shopList = iShopService.findShopAll(user.getShopId());
+            mendianList = iShopService.loadMendian(user.getShopId());
         }
-        //查询门店列表
-        List<TbMendian> mendianList = iShopService.loadMendian(user.getShopId());
         modelAndView.addObject("mendianList", mendianList);
         modelAndView.addObject("shopList", shopList);
         modelAndView.addObject("addr", distributionAddr);

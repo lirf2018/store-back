@@ -87,6 +87,12 @@ public class ShopDaoImpl implements IShopDao {
     @Override
     public List<TbMendian> loadMendian(int shopId) {
         String hql = " from TbMendian where status=1 and shopId=?1 ";
-        return (List<TbMendian>) iGeneralDao.queryListByHql(hql,shopId);
+        return (List<TbMendian>) iGeneralDao.queryListByHql(hql, shopId);
+    }
+
+    @Override
+    public List<TbMendian> loadMendian() {
+        String hql = " from TbMendian where status=1  ";
+        return (List<TbMendian>) iGeneralDao.queryListByHql(hql);
     }
 }
