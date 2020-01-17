@@ -39,6 +39,7 @@ public class InfoServiceImpl implements IInfoService {
             iInfoDao.updateInfo(info);
             return 1;
         } else {
+            info.setReadCount(0);
             return iInfoDao.saveInfo(info);
         }
     }

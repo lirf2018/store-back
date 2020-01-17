@@ -60,6 +60,7 @@ public class InfoDaoImpl implements IInfoDao {
 
     @Override
     public void updateInfo(TbInfo info) {
-        iGeneralDao.saveOrUpdate(info);
+        String sql = " update tb_info set info_title=?,info_img=?,info_url=?,info_content=?,status=?,shop_id=?,info_index=?,update_time=now() where info_id=?  ";
+        iGeneralDao.executeUpdateForSQL(sql, info.getInfoTitle(), info.getInfoImg(), info.getInfoUrl(), info.getInfoContent(), info.getStatus(), info.getShopId(), info.getInfoIndex(), info.getInfoId());
     }
 }

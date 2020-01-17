@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * 创建人: lirf
- * 创建时间:  2020/1/16 15:22
+ * 创建时间:  2020/1/17 23:21
  * 功能介绍:
  */
 @Entity
@@ -22,6 +22,7 @@ public class TbInfo {
     private Integer infoIndex;
     private Timestamp createTime;
     private Timestamp updateTime;
+    private Integer readCount;
 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
@@ -124,6 +125,16 @@ public class TbInfo {
         this.updateTime = updateTime;
     }
 
+    @Basic
+    @Column(name = "read_count", nullable = true)
+    public Integer getReadCount() {
+        return readCount;
+    }
+
+    public void setReadCount(Integer readCount) {
+        this.readCount = readCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -138,11 +149,12 @@ public class TbInfo {
                 Objects.equals(shopId, tbInfo.shopId) &&
                 Objects.equals(infoIndex, tbInfo.infoIndex) &&
                 Objects.equals(createTime, tbInfo.createTime) &&
-                Objects.equals(updateTime, tbInfo.updateTime);
+                Objects.equals(updateTime, tbInfo.updateTime) &&
+                Objects.equals(readCount, tbInfo.readCount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(infoId, infoTitle, infoImg, infoUrl, infoContent, status, shopId, infoIndex, createTime, updateTime);
+        return Objects.hash(infoId, infoTitle, infoImg, infoUrl, infoContent, status, shopId, infoIndex, createTime, updateTime, readCount);
     }
 }
