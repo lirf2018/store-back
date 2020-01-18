@@ -36,13 +36,13 @@ public class OrderDaoImpl implements IOrderDao {
         sql.append(" o.discounts_remark,o.trade_no,o.refund_price,o.refund_remark, o.lastaltertime,o.lastalterman,o.remark,o.post_phone,o.post_man,o.status_opration,o.shop_id ");
         sql.append(" from tb_order o where 1=1 ");
         if (!StringUtils.isEmpty(orderCondition.getOrderNo())) {
-            sql.append(" and o.order_no='").append(orderCondition.getOrderNo()).append("' ");
+            sql.append(" and o.order_no like '%").append(orderCondition.getOrderNo()).append("%' ");
         }
         if (!StringUtils.isEmpty(orderCondition.getUserPhone())) {
-            sql.append("  and o.user_phone='").append(orderCondition.getUserPhone()).append("' ");
+            sql.append("  and o.user_phone like '%").append(orderCondition.getUserPhone()).append("%' ");
         }
         if (!StringUtils.isEmpty(orderCondition.getUserName())) {
-            sql.append(" and o.user_name = '").append(orderCondition.getUserName()).append("' ");
+            sql.append(" and o.user_name  like '%").append(orderCondition.getUserName()).append("%' ");
         }
         if (null != orderCondition.getOrderStatus()) {
             sql.append("  and o.order_status = ").append(orderCondition.getOrderStatus()).append(" ");
