@@ -69,7 +69,7 @@ function addCategoryHtml(data, index) {
         "</tr>";
 
     html = html + "<tr>" +
-        "<td class='tableLeft'><span style='color: red;font-weight: bold'>* </span>图片:<br><span style='color: red;padding-top: 3px'>建议尺寸:80*80</span></td>" +
+        "<td class='tableLeft'><span style='color: red;font-weight: bold'>* </span>图片:<br><span style='color: red;padding-top: 3px'>像素(宽*高):80*80</span></td>" +
         "<td style='text-align: left'>" +
         "<div class='imgDiv' id='imgDiv0'><input type='hidden' value='" + categoryImg + "' id='categoryImg' name='categoryImg'>";
     if (categoryId > 0) {
@@ -257,7 +257,7 @@ function showPropHtml(data, index) {
 
 
     html = html + "<tr>" +
-        "<td class='tableLeft'><span style='color: red;font-weight: bold'>* </span>图片:<br><span style='color: red;padding-top: 3px'>建议尺寸:80*80</span></td>" +
+        "<td class='tableLeft'><span style='color: red;font-weight: bold'>* </span>图片:<br><span style='color: red;padding-top: 3px'>像素(宽*高):80*80</span></td>" +
         "<td style='text-align: left'>" +
         "<div  class='imgDiv' id='imgDiv1'>" +
         "<input type='hidden' value='" + propImg + "' id='propImg' name='propImg'>";

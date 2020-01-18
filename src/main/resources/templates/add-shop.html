@@ -89,7 +89,7 @@
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>店铺名称</td>
                 <td><input type="text" placeholder="请输入店铺名称" class="form-control" name="shopName" id="shopName" th:value="${shop.shopName}"></td>
-                <td rowspan="2" class="tableLeft"><span style="color: red;font-weight: bold"> </span>店铺logo</td>
+                <td rowspan="2" class="tableLeft"><span style="color: red;font-weight: bold"> </span>店铺logo<br><span style="color: red;padding-top: 3px">建议像素(宽*高):150*150</span></td>
                 <td rowspan="2" style="text-align: left">
                     <div id = "imgShowDiv">
                         <div class="deleteImg0" onclick="deleteImg(this)" delete-mark="0"><img src="./img/delete.png" width="25px" height="25px"></div>
@@ -194,7 +194,7 @@
                     <table class="table table-hover table-bordered">
                         <thead>
                         <tr>
-                            <th>店铺介绍图片</th>
+                            <th>店铺介绍图片 <span style="color: red;padding-top: 3px">(建议像素(宽*高):750*高度)</span></th>
                         </tr>
                         </thead>
                         <tbody>

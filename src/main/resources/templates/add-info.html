@@ -80,7 +80,7 @@
     </style>
 </head>
 <body>
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated">
     <input type="hidden" id="infoId" th:value="${info.InfoId}">
     <input type="hidden" id="img" th:value="${info.infoImg}">
 
@@ -90,7 +90,7 @@
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>标题</td>
                 <td><input type="text" placeholder="请输入标题" class="form-control" name="infoTitle" id="infoTitle" th:value="${info.infoTitle}" ></td>
-                <td rowspan="2" class="tableLeft"><span style="color: red;font-weight: bold"> </span>图片</td>
+                <td rowspan="2" class="tableLeft"><span style="color: red;font-weight: bold"> </span>头图<br><span style="color: red;padding-top: 3px">像素(宽*高):300*300</span></td>
                 <td rowspan="2" style="text-align: left">
                     <div id = "imgShowDiv">
                         <div class="deleteImg0" onclick="deleteImg(this)" delete-mark="0"><img src="./img/delete.png" width="25px" height="25px"></div>
@@ -145,7 +145,7 @@
                     <table class="table table-hover table-bordered">
                         <thead>
                         <tr>
-                            <th>内容</th>
+                            <th>内容  <span style="color: red;padding-top: 3px">(像素(宽*高):750*高)</span></th>
                         </tr>
                         </thead>
                         <tbody>
