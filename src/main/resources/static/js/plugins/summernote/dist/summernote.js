@@ -7567,7 +7567,8 @@
               'Tahoma', 'Times New Roman', 'Verdana',
           ],
           fontNamesIgnoreCheck: [],
-          fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
+          /*fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],*/
+          fontSizes: [ '12','13', '14', '18', '24', '36','40'],
           // pallete colors(n x n)
           colors: [
               ['#000000', '#424242', '#636363', '#9C9C94', '#CEC6CE', '#EFEFEF', '#F7F7F7', '#FFFFFF'],

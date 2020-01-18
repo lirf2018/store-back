@@ -267,6 +267,17 @@
     var $summernote = $('.summernote').summernote({
         lang: 'zh-CN'
         ,height: 450
+        ,toolbar: [
+            ['edit',['undo','redo']],//编辑
+            ['headline', ['style']],//大字标题
+            ['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],//样式
+            ['fontface', ['fontname','color','fontsize']],//字体
+            ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],//对齐方式
+            ['height', ['height']],//行高(自定义行高时一定不要忘记写这个)
+            ['table', ['table']],//表单
+            ['insert', ['link','picture','hr']],//插入链接，图片，下划线
+            ['view', ['fullscreen', 'codeview']]//全屏，代码视图
+        ]
         //调用图片上传
         ,callbacks: {
             onImageUpload: function (files) {
