@@ -491,7 +491,7 @@ public class CategroyController {
      *  保存类目
      */
     @RequestMapping("saveCategory")
-    public void saveCategory(HttpServletRequest request, HttpServletResponse response, TbCategory category) {
+    public void saveCategory(HttpServletRequest request, HttpServletResponse response, TbCategory category,Integer levelId) {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
@@ -506,7 +506,7 @@ public class CategroyController {
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             category.setCreateman(user.getLoginName());
             JSONObject out = category.getCategoryId() > 0 ? CommonMethod.packagMsg("5") : CommonMethod.packagMsg("6");
-            iCategoryService.saveCategory(category);
+            iCategoryService.saveCategory(category,levelId);
             writer.print(out);
             writer.close();
         } catch (Exception e) {

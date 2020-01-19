@@ -106,7 +106,7 @@
                     <td style="text-align: right;border: none" >一级分类: </td>
                     <td style="border: none">
                         <select  class="form-control form-control-common" name="levelId" id="levelId" onchange="categoryPage()">
-                            <option value="">--选择一级分类--</option>
+                            <option value="-1">--选择一级分类--</option>
                             <option th:each="l:${levelListMap}" th:selected="${levelId == l.level_id}" th:text="${l.level_name}" th:value="${l.level_id}"></option>
                         </select>
                     </td>
@@ -493,6 +493,7 @@
             type: 'POST',
             data: {
                 "categoryId":categoryId,
+                "levelId":levelId,
                 "categoryName":categoryName,
                 "dataIndex":dataIndex,
                 "outeId":outeId,

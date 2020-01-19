@@ -282,7 +282,7 @@ public class CategoryDaoImpl implements ICategoryDao {
     public List<Map<String, Object>> loadLeveCategoryRel(Integer levelId, Integer categoryId) {
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT level_id,category_id from tb_level_category_rel where 1=1 ");
-        if (null != levelId) {
+        if (null != levelId && levelId > 0) {
             sql.append(" and level_id=").append(levelId).append(" ");
         }
         if (null != categoryId) {
@@ -348,7 +348,7 @@ public class CategoryDaoImpl implements ICategoryDao {
     public void deletePropValue(int propId, String valueIds) {
         StringBuffer sql = new StringBuffer();
         sql.append(" update tb_props_value set `status`=0 where  prop_id=").append(propId).append(" ");
-        if(org.apache.commons.lang3.StringUtils.isNotEmpty(valueIds)){
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(valueIds)) {
             sql.append(" and value_id not in (").append(valueIds).append(")  ");
         }
 

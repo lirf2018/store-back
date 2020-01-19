@@ -162,7 +162,7 @@ public interface ICategoryService {
      *
      * @param category
      */
-    void saveCategory(TbCategory category);
+    void saveCategory(TbCategory category,Integer levelId);
 
 
     /**

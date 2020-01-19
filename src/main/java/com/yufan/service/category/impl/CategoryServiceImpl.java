@@ -208,7 +208,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public void saveCategory(TbCategory category) {
+    public void saveCategory(TbCategory category,Integer levelId) {
         try {
             category.setCategoryType(0);
             category.setCreatetime(new Timestamp(new Date().getTime()));
@@ -216,6 +216,7 @@ public class CategoryServiceImpl implements ICategoryService {
             category.setIsParent(0);
             category.setIsShow(1);
             category.setStatus(1);
+            category.setShopId(0);
             if (category.getCategoryId() > 0) {
                 Map<String, Object> old = iCategoryDao.loadCategoryMap(category.getCategoryId());
                 int status = Integer.parseInt(old.get("status").toString());
@@ -226,6 +227,16 @@ public class CategoryServiceImpl implements ICategoryService {
                 return;
             }
             iCategoryDao.saveObject(category);
+
+            //更新一级分类关联
+            if(!StringUtils.isEmpty(levelId)){
+                //保存关联
+                TbLevelCategoryRel categoryRel = new TbLevelCategoryRel();
+                categoryRel.setCategoryId(category.getCategoryId());
+                categoryRel.setLevelId(levelId);
+                iCategoryDao.saveObject(categoryRel);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
