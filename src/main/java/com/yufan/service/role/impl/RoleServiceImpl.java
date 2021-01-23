@@ -25,7 +25,6 @@ import java.util.Map;
  * 功能介绍:
  */
 @Service
-@Transactional
 public class RoleServiceImpl implements IRoleService {
 
     @Autowired
@@ -82,10 +81,8 @@ public class RoleServiceImpl implements IRoleService {
             iMenuDao.insertMoreBySQL(valuesString.toString());
             return 1;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
-
-        return 0;
     }
 
     @Override

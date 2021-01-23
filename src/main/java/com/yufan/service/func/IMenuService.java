@@ -1,6 +1,7 @@
 package com.yufan.service.func;
 
 import com.yufan.pojo.TbFunctions;
+import com.yufan.pojo.TbPageMenu;
 import com.yufan.utils.PageInfo;
 
 import java.util.List;
@@ -25,4 +26,10 @@ public interface IMenuService {
     void deleteMenu(int menuId, int parentId);
 
     void updateMenuStatus(int menuId, int status);
+
+    PageInfo loadMenuWebPage(int currePage, TbPageMenu menu);
+
+    void updateMenuWebStatus(int id, int status);
+
+    TbPageMenu loadPageMenu(int id);
 }

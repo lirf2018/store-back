@@ -31,6 +31,9 @@
         textarea{
             border: 1px solid #ccc;
         }
+        .form-control-common{
+            width: auto;
+        }
     </style>
 </head>
 <body>
@@ -56,6 +59,17 @@
                 <td><input type="text" placeholder="请输入value2" class="form-control" name="paramValue1" id="paramValue1" th:value="${paramObj.paramValue1}"></td>
                 <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>参数值3</td>
                 <td><input type="text" placeholder="请输入value3" class="form-control" name="paramValue2" id="paramValue2" th:value="${paramObj.paramValue2}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>排序</td>
+                <td>
+                    <div style="display: flex">
+                        <input type="text" placeholder="请输入排序" class="form-control form-control-common" id="dataIndex" name="dataIndex" th:value="${paramObj.dataIndex}">
+                        <div style="color: red;padding-left: 10px;line-height: 45px">数值越大越靠前</div>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span></td>
+                <td></td>
             </tr>
             <tr>
                 <td class="tableLeft">备注</td>
@@ -99,6 +113,7 @@
         var paramValue = $("#paramValue").val();
         var paramValue1 = $("#paramValue1").val();
         var paramValue2 = $("#paramValue2").val();
+        var dataIndex = $("#dataIndex").val();
         var remark = $("#remark").val();
 
         if (paramName == '') {
@@ -121,7 +136,8 @@
             "paramObj.paramValue":paramValue.trim(),
             "paramObj.paramValue1":paramValue1.trim(),
             "paramObj.paramValue2":paramValue2.trim(),
-            "paramObj.remark":remark.trim()
+            "paramObj.remark":remark.trim(),
+            "paramObj.dataIndex":dataIndex.trim()
         }
         //上传完得到id 或者路径 标志上传成功
         $.ajax({

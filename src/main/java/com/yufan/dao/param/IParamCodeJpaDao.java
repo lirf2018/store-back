@@ -17,13 +17,13 @@ import java.util.List;
 @Repository
 public interface IParamCodeJpaDao extends JpaRepository<TbParam, Integer> {
 
-    @Query(value = "SELECT * from tb_param p where p.status=?1 ORDER BY p.param_id desc", nativeQuery = true)
+    @Query(value = "SELECT * from tb_param p where p.status=?1 ORDER BY p.data_index desc,p.param_id desc", nativeQuery = true)
     public List<TbParam> loadTbParamCodeList(int status);
 
-    @Query(value = "SELECT * from tb_param p where p.status=?1 and p.param_code=?2 ORDER BY p.param_id desc", nativeQuery = true)
+    @Query(value = "SELECT * from tb_param p where p.status=?1 and p.param_code=?2 ORDER BY p.data_index desc,p.param_id desc", nativeQuery = true)
     public List<TbParam> loadTbParamCodeList(int status, String paramCode);
 
-    @Query(value = "SELECT * from tb_param p where p.status=?1 and p.param_code=?2 and p.param_key=?3 ORDER BY p.param_id desc", nativeQuery = true)
+    @Query(value = "SELECT * from tb_param p where p.status=?1 and p.param_code=?2 and p.param_key=?3 ORDER BY p.data_index desc,p.param_id desc", nativeQuery = true)
     public List<TbParam> loadTbParamCodeList(int status, String paramCode, String paramKey) ;
 
 }

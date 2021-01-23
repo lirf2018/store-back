@@ -34,6 +34,7 @@ import java.util.Map;
 @RequestMapping(value = "/param/")
 public class ParamController {
     private Logger LOG = Logger.getLogger(ParamController.class);
+
     @Autowired
     private IParamCodeService iParamCodeService;
 
@@ -90,6 +91,7 @@ public class ParamController {
 
         ModelAndView modelAndView = new ModelAndView();
         TbParam param = new TbParam();
+        param.setDataIndex(0);
         if (null != paramId && paramId > 0) {
             param = iParamCodeService.loadTbParamCodeById(paramId);
         }
@@ -135,6 +137,8 @@ public class ParamController {
             String remark = request.getParameter("paramObj.remark");
             paramCode.setRemark(remark);
             paramCode.setStatus(1);
+            int dataIndex = Integer.parseInt(StringUtils.isEmpty(request.getParameter("paramObj.dataIndex"))?"0":request.getParameter("paramObj.dataIndex"));
+            paramCode.setDataIndex(dataIndex);
             iParamCodeService.saveParamCode(paramCode);
             writer.print(result);
             writer.close();

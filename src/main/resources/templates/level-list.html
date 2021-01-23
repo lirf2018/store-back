@@ -47,6 +47,12 @@
                                 <option value="0">无效</option>
                                 <option value="1">有效</option>
                             </select>
+                            <label>类型:</label>
+                            <select class="form-control" id="categoryType" name="categoryType" onchange="searchData()">
+                                <option value="-1">--类型--</option>
+                                <option value="0">通用</option>
+                                <option value="1">左侧菜单</option>
+                            </select>
                             <input type="button" class="btn btn-primary" value="查询" onclick="searchData()">
                             <button class="btn btn-success" type="button" onclick="addOrUpdateData(0)"><i class=""></i><span class="bold">新增</span></button>
                         </div>
@@ -60,6 +66,7 @@
                             <th>一级分类名称</th>
                             <th>一级分类图片</th>
                             <th>一级分类权重</th>
+                            <th>一级分类类型</th>
                             <th>一级分类状态</th>
                             <th>下单时间</th>
                             <th>操作</th>
@@ -132,6 +139,7 @@
                     d.levelStatus = $('#levelStatus').val();
                     d.categoryName = $('#categoryName').val();
                     d.categoryId = $('#categoryId').val();
+                    d.categoryType = $('#categoryType').val();
                 }
             }
             ,columns:[
@@ -155,6 +163,11 @@
                 }
                 ,{
                     data: function (obj) {
+                        return obj.categoryType==0?'通用':'左侧菜单';
+                    }
+                }
+                ,{
+                    data: function (obj) {
                         return obj.status==1?'有效':'<span style="color: red">无效</span>';
                     }
                 }
@@ -163,7 +176,7 @@
                 }
             ]
             ,columnDefs: [{
-                targets: 7,
+                targets: 8,
                 data: null,
                 render: function (data, type, row) {
                     var html = "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData("+data.level_id+")'><i class='fa fa-paste'></i> 编辑</button>";

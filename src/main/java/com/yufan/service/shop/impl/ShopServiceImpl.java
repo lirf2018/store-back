@@ -24,7 +24,6 @@ import java.util.List;
  * 功能介绍:
  */
 @Service
-@Transactional
 public class ShopServiceImpl implements IShopService {
 
     @Autowired
@@ -74,7 +73,7 @@ public class ShopServiceImpl implements IShopService {
                 iCommonRelDao.saveObject(img);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         return 0;
     }

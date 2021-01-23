@@ -75,6 +75,12 @@
                                 <option value="0">不是单品</option>
                                 <option value="1">单品</option>
                             </select>
+                            <label>是否自营:</label>
+                            <select class="form-control" id="isZiYin" name="isZiYin" onchange="searchData()">
+                                <option value="-1">--选择是否自营--</option>
+                                <option value="0">非自营</option>
+                                <option value="1">自营</option>
+                            </select>
                             <label>是否抢购:</label>
                             <select class="form-control" id="isTimeGoods" name="isTimeGoods" onchange="searchData()">
                                 <option value="">--选择是否抢购--</option>
@@ -119,7 +125,9 @@
                             <th>权重</th>
                             <th>商品属性</th>
                             <th>商品类型</th>
+                            <th>商品单位</th>
                             <th>是否单品</th>
+                            <th>是否自营</th>
                             <th>取货方式</th>
                             <th>类目</th>
                             <th>一级分类</th>
@@ -212,6 +220,7 @@
                     d.levelId = $("#levelId").val();
                     d.status = $("#status").val();
                     d.shopId = $("#shopId").val();
+                    d.isZiYin = $("#isZiYin").val();
                 }
             }
             , columns: [
@@ -292,6 +301,11 @@
                 }
                 , {
                     data: function (obj) {
+                        return obj.goods_unit_name == null ? '' : obj.goods_unit_name;
+                    }
+                }
+                , {
+                    data: function (obj) {
                         var html = "<input type='hidden' value='"+obj.is_single+"' id='isSingle"+obj.goods_id+"'>";
                         var str =  obj.is_single_name+" "+html;
                         if(obj.is_single == 0){
@@ -300,6 +314,17 @@
                             return str;
                         }
 
+                    }
+                }
+                , {
+                    data: function (obj) {
+                        let name = "";
+                        if(obj.is_zi_yin == 1){
+                            name = "自营";
+                        }else if(obj.is_zi_yin == 0){
+                            name = "非自营";
+                        }
+                        return name;
                     }
                 }
                 , {
@@ -339,18 +364,18 @@
             ]
             , columnDefs: [
                 {
-                    targets: 22,
+                    targets: 24,
                     data: null,
                     render: function (data, type, row) {
                         var html = "";
                         if(data.is_putaway == '0'){
                             html = html + "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='setSellGoods(" + data.goods_id + ",2)'><i class='fa fa-check'></i> 上架</button>&nbsp;&nbsp;";
+                            html = html + "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData(" + data.goods_id + ")'><i class='fa fa-paste'></i> 编辑</button>&nbsp;&nbsp;";
+                            html = html + "<button class='btn btn-info btn-danger' data-value='" + data + "' type='button' onclick='updateGoodsStatus(" + data.goods_id + ",0)'><i class='fa fa-warning'></i> 删除</button>&nbsp;&nbsp;";
                         }else{
                             html = html + "<button class='btn btn-info btn-warning' data-value='" + data + "' type='button' onclick='setSellGoods(" + data.goods_id + ",0)'><i class='fa fa-warning'></i> 下架</button>&nbsp;&nbsp;";
                         }
-                        html = html + "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData(" + data.goods_id + ")'><i class='fa fa-paste'></i> 编辑</button>&nbsp;&nbsp;";
                         if(data.status == 1){
-                            html = html + "<button class='btn btn-info btn-danger' data-value='" + data + "' type='button' onclick='updateGoodsStatus(" + data.goods_id + ",0)'><i class='fa fa-warning'></i> 删除</button>&nbsp;&nbsp;";
                         }else{
                             html = html + "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='updateGoodsStatus(" + data.goods_id + ",1)'><i class='fa fa-check'></i> 启用</button>&nbsp;&nbsp;";
                         }
@@ -358,7 +383,7 @@
                     }
                 }
                 , {
-                    targets: 23,
+                    targets: 25,
                     data: null,
                     render: function (data, type, row) {
                         var html = "";

@@ -31,7 +31,7 @@ public class CategoryDaoImpl implements ICategoryDao {
     @Override
     public PageInfo loadLevelPage(int currePage, CategoryCondition categoryCondition) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT lev.level_id,lev.level_name,lev.level_code,CONCAT('").append(Constants.IMG_WEB_URL).append("',lev.level_img) as level_img,lev.data_index,lev.`status`,DATE_FORMAT(lev.createtime,'%Y-%m-%d %T') as createtime ");
+        sql.append(" SELECT lev.level_id,lev.level_name,lev.level_code,CONCAT('").append(Constants.IMG_WEB_URL).append("',lev.level_img) as level_img,lev.data_index,lev.`status`,DATE_FORMAT(lev.createtime,'%Y-%m-%d %T') as createtime,lev.category_type as categoryType ");
         sql.append(" from tb_category_level lev where 1=1 ");
         if (!StringUtils.isEmpty(categoryCondition.getLevelName())) {
             sql.append(" and lev.level_name like '%").append(categoryCondition.getLevelName().trim()).append("%' ");
@@ -41,6 +41,9 @@ public class CategoryDaoImpl implements ICategoryDao {
         }
         if (null != categoryCondition.getLevelStatus() && categoryCondition.getLevelStatus() != -1) {
             sql.append(" and lev.status=").append(categoryCondition.getLevelStatus()).append(" ");
+        }
+        if (null != categoryCondition.getCategoryType() && categoryCondition.getCategoryType() != -1) {
+            sql.append(" and lev.category_type=").append(categoryCondition.getCategoryType()).append(" ");
         }
         if ((null != categoryCondition.getCategoryId() && categoryCondition.getCategoryId() != -1) || !StringUtils.isEmpty(categoryCondition.getCategoryName())) {
             sql.append(" and lev.level_id in ( ");
@@ -285,9 +288,22 @@ public class CategoryDaoImpl implements ICategoryDao {
         if (null != levelId && levelId > 0) {
             sql.append(" and level_id=").append(levelId).append(" ");
         }
-        if (null != categoryId) {
+        if (null != categoryId && categoryId > 0) {
             sql.append(" and category_id=").append(categoryId).append(" ");
         }
+        return iGeneralDao.getBySQLListMap(sql.toString());
+    }
+    @Override
+    public List<Map<String, Object>> loadLeveCategoryRelGroup(Integer levelId, Integer categoryId) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select level_id,GROUP_CONCAT(category_id) as category_id from tb_level_category_rel where 1=1 ");
+        if (null != levelId && levelId > 0) {
+            sql.append(" and level_id=").append(levelId).append(" ");
+        }
+        if (null != categoryId && categoryId > 0) {
+            sql.append(" and category_id=").append(categoryId).append(" ");
+        }
+        sql.append(" GROUP BY level_id ");
         return iGeneralDao.getBySQLListMap(sql.toString());
     }
 

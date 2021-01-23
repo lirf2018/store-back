@@ -47,12 +47,11 @@ public class AddrServiceImpl implements IAddrService {
     @Transactional
     public int savePlatformAddrList(List<TbPlatformAddr> addrs) {
         try {
-            iAddrJpaDao.saveAll(addrs);
+           iAddrJpaDao.saveAll(addrs);
             return 1;
         } catch (Exception e) {
-            e.printStackTrace();
+           throw new RuntimeException();
         }
-        return 0;
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.yufan.dao.func.impl;
 import com.yufan.common.dao.IGeneralDao;
 import com.yufan.dao.func.IMenuDao;
 import com.yufan.pojo.TbFunctions;
+import com.yufan.pojo.TbPageMenu;
+import com.yufan.utils.Constants;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -75,6 +77,49 @@ public class MenuDaoImpl implements IMenuDao {
     @Override
     public List<Map<String, Object>> loadRoleFunListMap(int roleId) {
         String sql = " SELECT role_id,function_id from tb_role_function where role_id=? ";
-        return iGeneralDao.getBySQLListMap(sql,roleId);
+        return iGeneralDao.getBySQLListMap(sql, roleId);
+    }
+
+    @Override
+    public PageInfo loadMenuWebPage(int currePage, TbPageMenu menu) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select id,menu_name,CONCAT('").append(Constants.IMG_WEB_URL).append("',menu_img) as menu_img,menu_sort,menu_type,rel_type,menu_url,status,leve1_ids,category_ids,DATE_FORMAT(createtime,'%Y-%m-%d %T') as createtime,shop_id from tb_page_menu ");
+        sql.append(" where 1=1 ");
+
+        if (null != menu) {
+            if (null != menu.getMenuType() && -1 != menu.getMenuType()) {
+                sql.append(" and menu_type=").append(menu.getMenuType());
+            }
+            if (null != menu.getStatus() && -1 != menu.getStatus()) {
+                sql.append(" and status=").append(menu.getStatus());
+            }
+            if (null != menu.getShopId() && -1 != menu.getShopId()) {
+                sql.append(" and shop_id=").append(menu.getShopId());
+            }
+            if (!StringUtils.isEmpty(menu.getLeve1Ids())) {
+                sql.append(" and CONCAT(leve1_ids,',') like '%").append(menu.getLeve1Ids()).append(",%' ");
+            }
+            if (!StringUtils.isEmpty(menu.getCategoryIds())) {
+                sql.append(" and CONCAT(category_ids,',') like '%").append(menu.getCategoryIds()).append(",%' ");
+            }
+        }
+        sql.append(" order by menu_sort desc,createtime desc ");
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setCurrePage(currePage);
+        pageInfo.setSqlQuery(sql.toString());
+        pageInfo = iGeneralDao.loadPageInfoSQLListMap(pageInfo);
+        return pageInfo;
+    }
+
+    @Override
+    public void updateMenuWebStatus(int id, int status) {
+        String sql = " update tb_page_menu set `status`=? where id=? ";
+        iGeneralDao.executeUpdateForSQL(sql, status, id);
+    }
+
+    @Override
+    public TbPageMenu loadPageMenu(int id) {
+        String hql = " from TbPageMenu where id = ?1 ";
+        return iGeneralDao.queryUniqueByHql(hql,id);
     }
 }

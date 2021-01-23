@@ -11,7 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +46,7 @@ public class GoodsDaoImpl implements IGoodsDao {
         sql.append(" g.status,g.remark,g.goods_type,g.is_pay_online,g.out_code,CONCAT(g.deposit_money,'') as deposit_money,g.peisong_zc_desc,g.peisong_pei_desc, ");
         sql.append(" CONCAT(g.purchase_price,'') as purchase_price,g.is_time_goods,g.limit_num,g.bar_code,g.bar_code_shop,g.sell_count, ");
         sql.append(" g.limit_way,DATE_FORMAT(g.limit_begin_time,'%Y-%m-%d %T') as limit_begin_time,g.level_id,CONCAT(g.advance_price,'') as advance_price ");
-        sql.append(" ,cl.level_name,ca.category_name,IFNULL(tg.id,0) as time_goods_id ");
+        sql.append(" ,cl.level_name,ca.category_name,IFNULL(tg.id,0) as time_goods_id,g.is_zi_yin ");
         sql.append(" from tb_goods g LEFT JOIN tb_category_level cl on cl.level_id=g.level_id LEFT JOIN tb_category ca on ca.category_id=g.category_id  ");
         sql.append(" LEFT JOIN tb_time_goods tg on tg.goods_id=g.goods_id and tg.`status`=1 ");
         sql.append(" where 1=1 ");
@@ -96,6 +98,9 @@ public class GoodsDaoImpl implements IGoodsDao {
         }
         if (goodsCondition.getShopId() != null) {
             sql.append(" and g.shop_id=").append(goodsCondition.getShopId()).append(" ");
+        }
+        if (goodsCondition.getIsZiYin() != null&&goodsCondition.getIsZiYin()>-1) {
+            sql.append(" and g.is_zi_yin=").append(goodsCondition.getIsZiYin()).append(" ");
         }
         sql.append(" ORDER BY g.data_index DESC,g.goods_id desc ");
         PageInfo pageInfo = new PageInfo();
@@ -180,5 +185,15 @@ public class GoodsDaoImpl implements IGoodsDao {
     public void deleteGoodsAttribute(int goodsId) {
         String sql = " delete from tb_goods_attribute where goods_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, goodsId);
+    }
+
+    @Override
+    public Map<String, Object> getGoodsInfoMap(int goodsId) {
+        String sql = " SELECT  goods_id,createman,createtime,sell_count,is_time_goods  from tb_goods where goods_id=? ";
+        List<Map<String, Object>> list = iGeneralDao.getBySQLListMap(sql, goodsId);
+        if (!CollectionUtils.isEmpty(list)) {
+            return list.get(0);
+        }
+        return null;
     }
 }

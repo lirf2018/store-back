@@ -31,7 +31,7 @@ public interface IGoodsDao {
      * @param goodsCondition
      * @return
      */
-    PageInfo loadDataPage(int currePage, GoodsCondition goodsCondition);
+    public PageInfo loadDataPage(int currePage, GoodsCondition goodsCondition);
 
     /**
      * 保存数据
@@ -39,7 +39,7 @@ public interface IGoodsDao {
      * @param object
      * @return
      */
-    int saveObject(Object object);
+    public int saveObject(Object object);
 
     /**
      * 更新数据状态
@@ -47,7 +47,7 @@ public interface IGoodsDao {
      * @param goodsId
      * @param status
      */
-    void updateGoodsStatus(int goodsId, int status);
+    public void updateGoodsStatus(int goodsId, int status);
 
 
     /**
@@ -56,7 +56,7 @@ public interface IGoodsDao {
      * @param goodsId
      * @return
      */
-    List<Map<String, Object>> loadGoodsSkuListMap(int goodsId);
+    public List<Map<String, Object>> loadGoodsSkuListMap(int goodsId);
 
     /**
      * 商品上下架
@@ -64,7 +64,7 @@ public interface IGoodsDao {
      * @param goodsId
      * @param isPutway 上架状态 0下架 1等待确认 2销售中
      */
-    void updateGoodsOnSell(int goodsId, int isPutway);
+    public void updateGoodsOnSell(int goodsId, int isPutway);
 
     /**
      * 查询商品销售和非销售属性关联
@@ -72,17 +72,17 @@ public interface IGoodsDao {
      * @param goodsId
      * @return
      */
-    List<Map<String, Object>> loadGoodsAttribute(int goodsId);
+    public List<Map<String, Object>> loadGoodsAttribute(int goodsId);
 
     /**
      * 更新对象
      * @param object
      */
-    void updateObject(Object object);
+    public void updateObject(Object object);
 
-    void updateGoodsSku(TbGoodsSku goodsSku);
+    public void updateGoodsSku(TbGoodsSku goodsSku);
 
-    void updateGoodsSingle(int goodsId,int isSingle);
+    public void updateGoodsSingle(int goodsId,int isSingle);
 
     /**
      * 删除商品sku
@@ -90,15 +90,22 @@ public interface IGoodsDao {
      * @param goodsId
      * @param status
      */
-    void updateGoodsSkuStatus(int goodsId, int status);
+    public void updateGoodsSkuStatus(int goodsId, int status);
 
-    void updateGoodsSkuStatus(int goodsId, int skuId, int status);
+    public void updateGoodsSkuStatus(int goodsId, int skuId, int status);
 
-    void updateGoodsSkuStatusNoinSkuId(int goodsId, String skuIds, int status);
+    public void updateGoodsSkuStatusNoinSkuId(int goodsId, String skuIds, int status);
 
     /**
      * 删除商品属性
      * @param goodsId
      */
-    void deleteGoodsAttribute(int goodsId);
+    public void deleteGoodsAttribute(int goodsId);
+
+    /**
+     * 查询商品信息
+     * @param goodsId
+     * @return
+     */
+    public Map<String,Object> getGoodsInfoMap(int goodsId);
 }

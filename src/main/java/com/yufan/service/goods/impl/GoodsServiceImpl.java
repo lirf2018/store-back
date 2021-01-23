@@ -8,6 +8,7 @@ import com.yufan.dao.commonrel.ICommonRelDao;
 import com.yufan.dao.goods.IGoodsDao;
 import com.yufan.dao.goods.IGoodsJapDao;
 import com.yufan.dao.timegoods.ITimeGoodsDao;
+import com.yufan.exception.ApplicationException;
 import com.yufan.pojo.TbGoods;
 import com.yufan.pojo.TbGoodsAttribute;
 import com.yufan.pojo.TbGoodsSku;
@@ -15,6 +16,7 @@ import com.yufan.pojo.TbImg;
 import com.yufan.service.goods.IGoodsService;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
+import com.yufan.utils.DatetimeUtil;
 import com.yufan.utils.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -151,21 +153,27 @@ public class GoodsServiceImpl implements IGoodsService {
             //保存商品
             if (goods.getGoodsId() > 0) {
                 //更新
-                TbGoods old = iGoodsJapDao.getOne(goods.getGoodsId());
-                goods.setCreatetime(old.getCreatetime());
-                goods.setCreateman(old.getCreateman());
-                goods.setSellCount(old.getSellCount() == null ? 0 : old.getSellCount());
+                Map<String, Object> goodsMap = iGoodsDao.getGoodsInfoMap(goods.getGoodsId());
+                String createMan = goodsMap.get("createman") == null ? "" : goodsMap.get("createman").toString();
+                Date createtime = goodsMap.get("createtime") == null ? new Date() : DatetimeUtil.convertStrToDate(goodsMap.get("createtime").toString(), DatetimeUtil.DEFAULT_DATE_FORMAT_STRING);
+                int sellCount = goodsMap.get("sell_count") == null ? 0 : Integer.parseInt(goodsMap.get("sell_count").toString());
+                int isTimeGoods = goodsMap.get("is_time_goods") == null ? 0 : Integer.parseInt(goodsMap.get("is_time_goods").toString());
+                goods.setCreatetime(new Timestamp(createtime.getTime()));
+                goods.setCreateman(createMan);
+                goods.setSellCount(sellCount);
+                goods.setIsTimeGoods(isTimeGoods);
                 goods.setLastalterman(goodsDataObj.getCreateman());
                 goods.setLastaltertime(new Timestamp(new Date().getTime()));
-                goods.setIsTimeGoods(old.getIsTimeGoods());
+                iGoodsDao.updateObject(goods);
             } else {
                 //增加
                 goods.setCreateman(goodsDataObj.getCreateman());
                 goods.setCreatetime(new Timestamp(new Date().getTime()));
                 goods.setLastalterman(goodsDataObj.getCreateman());
                 goods.setLastaltertime(new Timestamp(new Date().getTime()));
+                iGoodsDao.saveObject(goods);
             }
-            iGoodsJapDao.save(goods);
+
 
             //保存商品图片
             for (int i = 0; i < listImg.size(); i++) {
@@ -256,15 +264,15 @@ public class GoodsServiceImpl implements IGoodsService {
                     continue;
                 }
                 isSingle = true;//单品0
-                String skuCode = skuCodeArray[i];
-                String skuPurchasePrice = skuPurchasePriceArray[i];
-                String skuTrueMoney = skuTrueMoneyArray[i];
-                String skuNowMoney = skuNowMoneyArray[i];
-                String skuNum = skuNumArray[i];
-                String skuImg = skuImgArray[i];
-                String skuId = skuIdArray[i];
-                String skuName = skuNameArray[i];
-                String propCode = skuPropCodeArray[i];
+                String skuCode = skuCodeArray[i].trim();
+                String skuPurchasePrice = skuPurchasePriceArray[i].trim();
+                String skuTrueMoney = skuTrueMoneyArray[i].trim();
+                String skuNowMoney = skuNowMoneyArray[i].trim();
+                String skuNum = skuNumArray[i].trim();
+                String skuImg = skuImgArray[i].trim();
+                String skuId = skuIdArray[i].trim();
+                String skuName = skuNameArray[i].trim();
+                String propCode = skuPropCodeArray[i].trim();
                 String valueIds[] = propCode.split(";");
                 //商品属性表
                 for (int j = 0; j < valueIds.length; j++) {
@@ -289,7 +297,6 @@ public class GoodsServiceImpl implements IGoodsService {
                     iGoodsDao.saveObject(sku);
                 }
             }
-
 
             if (isSingle) {
                 //非单品
@@ -325,9 +332,7 @@ public class GoodsServiceImpl implements IGoodsService {
 
             return out;
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            return out;
+            throw new ApplicationException(out);
         }
     }
 
@@ -353,7 +358,7 @@ public class GoodsServiceImpl implements IGoodsService {
             iTimeGoodsDao.deleteTimeGoods(goodsId, 0);
             iGoodsDao.updateGoodsToTimeGoods(goodsId, 0);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 

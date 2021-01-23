@@ -208,6 +208,18 @@
                 </td>
             </tr>
             <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>是否自营</td>
+                <td>
+                    <select  class="form-control form-control-common" name="isZiYin" id="isZiYin" >
+                        <option value="1" th:selected="${goods.isZiYin == 1}">自营</option>
+                        <option value="0" th:selected="${goods.isZiYin == 0}">非自营</option>
+                    </select>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span></td>
+                <td>
+                </td>
+            </tr>
+            <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>是否卡券</td>
                 <td>
                     <select  class="form-control form-control-common" name="couponId" id="couponId" >
@@ -240,8 +252,13 @@
                         <option th:each="p:${listParam}" th:if="${p.paramCode == 'get_way'}" th:value="${p.paramKey}" th:selected="${p.paramKey == (goods.getWay+'')}"><span th:text="${p.paramValue}"></span></option>
                     </select>
                 </td>
-                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>商品单位</td>
-                <td><input type="text" placeholder="请输入商品单位" class="form-control" name="goodsUnit" id="goodsUnit" th:value="${goods.goodsUnit}" ></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> *</span>商品单位</td>
+                <td>
+                    <select  class="form-control form-control-common" name="goodsUnit" id="goodsUnit" >
+                        <option value="">--选择商品单位--</option>
+                        <option th:each="p:${listParam}" th:if="${p.paramCode == 'goods_unit'}" th:value="${p.paramKey}" th:selected="${p.paramKey == goods.goodsUnit}"><span th:text="${p.paramValue}"></span></option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td colspan="10">
@@ -535,6 +552,7 @@
         var limitBeginTime = $("#limitBeginTime").val();
         var levelId = $("#levelId").val();
         var advancePrice = $("#advancePrice").val();
+        var isZiYin = $("#isZiYin").val();
 
         if(levelId == ''){
             $("#levelId").focus();
@@ -588,6 +606,10 @@
         if(goodsType == ''){
             $("#goodsType").focus();
             return myAlertSimple("选择商品类型")
+        }
+        if(goodsUnit == ''){
+            $("#goodsUnit").focus();
+            return myAlertSimple("选择商品单位")
         }
         if(!numAndpoint(depositMoney)){
             $("#depositMoney").focus();
@@ -804,7 +826,8 @@
             "skuId": skuId,
             "skuName": skuName,
             "skuPropCode": skuPropCode,
-            "unsellPropId": unsellPropId
+            "unsellPropId": unsellPropId,
+            "isZiYin":isZiYin
         }
         //上传完得到id 或者路径 标志上传成功
         $.ajax({
@@ -824,6 +847,9 @@
                         setTimeout("javascript:window.location.href = 'goods/goodsPage'",1000);
                     }
                 }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                myAlertSimple("操作失败");
             }
         });
     })

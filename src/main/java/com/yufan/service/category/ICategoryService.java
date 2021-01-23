@@ -131,6 +131,7 @@ public interface ICategoryService {
      * @return
      */
     public List<Map<String, Object>> loadLeveCategoryRel(Integer levelId, Integer categoryId);
+    public List<Map<String, Object>> loadLeveCategoryRelGroup(Integer levelId, Integer categoryId);
 
     /**
      * 更新类目状态

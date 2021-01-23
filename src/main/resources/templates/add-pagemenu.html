@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <title>增加页面菜单</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <base th:href="@{/}">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <style>
+        table td{
+            text-align: center;
+        }
+        .tableLeft{
+            background-color: #f5f5f5;
+        }
+        .deleteImg{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            top: 27px;
+            right: 2px;
+            text-align: right;
+        }
+        .shop-info-img{
+            /*display: flex;*/
+            width: 100%;
+        }
+
+        .shop-info-img>div{
+            float: left;
+            width: 25%;
+            height: 300px;
+            padding: 0px 18px;
+        }
+        .shop-info-img>div>img{
+            border: 2px solid #ccc;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            top: -25px;
+            cursor:pointer;
+        }
+        .deleteImg0{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            top: 27px;
+            right: 2px;
+            text-align: right;
+        }
+        .deleteImg{
+            width: 100%;
+            height: 25px;
+            position: relative;
+            top: 10px;
+            right: 10px;
+            text-align: right;
+            z-index: 100;
+        }
+        .form-control-common{
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <input type="hidden" id="activityId" th:value="${menuPage.id}">
+    <input type="hidden" id="img" th:value="${menuPage.menuImg}">
+    <input type="hidden" id="goodsDefaultUrl" th:value="${goodsDefaultUrl}">
+
+    <div class="row">
+        <table class="table table-hover table-bordered">
+            <tbody>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>菜单名称</td>
+                <td><input type="text" placeholder="请输入名称" class="form-control" name="menuName" id="menuName" th:value="${menuPage.menuName}"></td>
+                <td rowspan="2" class="tableLeft"><span style="color: red;font-weight: bold"> </span>图片<br><span style="color: red;padding-top: 3px">像素(宽*高):150*150</span></td>
+                <td rowspan="2" style="text-align: left">
+                    <div id = "imgShowDiv">
+                        <div class="deleteImg0" onclick="deleteImg(this)" delete-mark="0"><img src="./img/delete.png" width="25px" height="25px"></div>
+                        <img style="border: 1px solid #ccc" src="./img/null.jpg" width="80px" height="80px" >
+                    </div>
+                    <form id="fileForm" method="post" enctype="multipart/form-data" action="image/uploadFile">
+                        <input style="border: none" type="file" class="form-control" name="file" id="file" multiple="multiple"  onchange="uploadFile(this)">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>菜单类型</td>
+                <td>
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <select  class="form-control" name="menuType" id="menuType" >
+                                <option value="1">分类菜单</option>
+                                <option value="0" th:selected="${menuPage.status == 0}">main页菜单</option>
+                            </select>
+                        </div>
+                        <div style="color: red;padding-left: 10px;line-height: 45px">main页菜单最多查询8个</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>排序</td>
+                <td>
+                    <div style="display: flex">
+                        <input type="text" placeholder="请输入排序" class="form-control form-control-common" id="menuSort" name="menuSort" th:value="${menuPage.menuSort}" >
+                        <div style="color: red;padding-left: 10px;line-height: 45px">数值越大越靠前</div>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>状态</td>
+                <td>
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <select  class="form-control" name="status" id="status" >
+                                <option value="1">有效</option>
+                                <option value="0" th:selected="${menuPage.status == 0}">无效</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+<!--            <tr>-->
+<!--                <td class="tableLeft">默认链接</td>-->
+<!--                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  readonly  rows="1"  th:text="${goodsDefaultUrl}" disabled></textarea></td>-->
+<!--            </tr>-->
+            <tr>
+                <td class="tableLeft">菜单链接</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="2"  id="menuUrl" name="menuUrl" th:text="${menuPage.menuUrl}"></textarea></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>关联类型</td>
+                <td colspan="3" >
+                    <div style="display: flex">
+                        <div class="form-group">
+                            <select  class="form-control" name="relType" id="relType" >
+                                <option value="1">关联一级分类</option>
+                                <option value="2" th:selected="${menuPage.status == 2}">关联类目</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr id="rel1">
+                <td colspan="10">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th>关联一级分类 <span style="color: red;padding-top: 3px"></span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div id="levelDiv">
+                                    <label th:each="ca:${allLeveListMapOut}" style="margin-left: 15px"><input name="levelIdsItem" type="checkbox" th:value="${ca.level_id}" th:checked="${ca.rel == 1}"> <i></i>&nbsp;<span th:text="${ca.level_name+'('+ca.level_code+')'}"></span></label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr id="rel2">
+                <td colspan="10">
+                    <table class="table table-hover table-bordered">
+                        <tr>
+                            <th colspan="2">关联类目 <span style="color: red;padding-top: 3px"></span></th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="display: flex">
+                                        <label style="padding-left: 10px;width: 150px">一级分类:</label>
+                                        <select class="form-control" id="levelId" name="levelId" onchange="searchCategoryList(0)">
+                                            <option value="-1">--选择一级分类--</option>
+                                            <option th:each="lv:${listLevel}" th:value="${lv.level_id}" th:text="${lv.level_name}"></option>
+                                        </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex;">
+                                    <input class="form-control input-width100" style="width: 260px" value="" id="categoryName" name="categoryName" placeholder="类目关键词" onkeyup="searchCategoryList(0)" onkeydown="searchCategoryList(0)">
+                                    <input type="button" value="查询全陪类目" class="btn btn-success" onclick="searchCategoryList(0)" >
+                                    <input type="button" value="查询已关联的类目" class="btn btn-success" onclick="searchCategoryList(1)">
+                                </div>
+                            </td>
+                        </tr>
+                        <tbody>
+                        <tr>
+                            <td colspan="2" style="text-align: left">
+                                <div id="categoryDiv">
+                                    <label th:each="ca:${allCategoryListMapOut}" style="margin-left: 15px"><input name="categoryItems" type="checkbox" th:value="${ca.category_id}" th:checked="${ca.rel == 1}"> <i></i>&nbsp;<span th:text="${ca.category_name+'('+ca.category_code+')'}"></span></label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <input type="button" value="返回列表" onclick="javascript:window.location.href = 'activity/activityPage'" class="btn btn-info">
+                    <input type="button" value="保存并继续添加" class="btn btn-success btn-save" data-mark="1" th:if="${menuPage.id == null || menuPage.id == 0}">
+                    <input type="button" value="保存" class="btn btn-success btn-save" data-mark="0">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- Data picker -->
+<script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<!-- 自定义js -->
+<script src="js/content.js?v=1.0.0"></script>
+<script src="js/common.js" th:inline="javascript"></script>
+<script src="js/imgUtils.js" th:inline="javascript"></script>
+<script src="js/laydate/laydate.js"></script>
+
+<script th:inline="javascript">
+    //图片设置
+    setShopInfoImg();
+    function setShopInfoImg(){
+        var activityId = [[${menuPage.id}]];
+        if (!activityId > 0) {
+            return;
+        }
+        var webImg = [[${webImg}]];//图片访问前缀
+
+        var img0 = [[${menuPage.menuUrl}]];
+        if (null != img0 && img0 != '') {
+            setPageImg(webImg + img0, img0, 0)
+        }
+    }
+
+    function searchCategoryList(index) {
+        var levelId = $("#levelId").val();
+        var categoryNameS = $("#categoryName").val()+"";
+        var allCategoryListMapOut = [[${allCategoryListMapOut}]];
+        var html = "";
+        for (var i = 0; i < allCategoryListMapOut.length; i++) {
+            var categoryId = allCategoryListMapOut[i].category_id;
+            var levelIds = allCategoryListMapOut[i].level_ids;
+            var categoryName = allCategoryListMapOut[i].category_name;
+            var categoryCode = allCategoryListMapOut[i].category_code;
+            var rel = allCategoryListMapOut[i].rel;//1关联
+            if(1 == index && rel == '0'){
+                //查询已关联的类目
+                continue;
+            }
+            if (levelId != null &&levelId != -1) {
+                if (null == levelIds) {
+                    continue
+                }
+                if(levelIds.indexOf(levelId)<0){
+                    continue
+                }
+            }
+
+            if (categoryNameS != '' && (categoryName.indexOf(categoryNameS) >= 0 || categoryCode.indexOf(categoryNameS) >= 0)) {
+                let categoryNameS_ = "<b style='color: red;font-size: 16px !important;font-weight: bold'>" + categoryNameS + "</b>";
+                categoryName = categoryName.replace(RegExp(categoryNameS, "g"), categoryNameS_);
+                categoryCode = categoryCode.replace(RegExp(categoryNameS, "g"), categoryNameS_);
+            }
+            var checked = "";
+            if (rel == '1') {
+                checked = 'checked';
+            }
+            html = html + "<label style='margin-left: 15px'><input name='categoryItems' type='checkbox' " + checked + " value='" + categoryId + "'> <i></i>&nbsp;" + categoryName + "(" + categoryCode + ")</label>";
+        }
+
+        $("#categoryDiv").html(html);
+    }
+</script>
+
+</body>
+</html>

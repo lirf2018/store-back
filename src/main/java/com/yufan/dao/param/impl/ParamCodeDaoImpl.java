@@ -36,7 +36,7 @@ public class ParamCodeDaoImpl implements IParamCodeDao {
         if(!StringUtils.isEmpty(param.getParamName())){
             sql.append(" and param_name='").append(param.getParamName()).append("' ");
         }
-        sql.append(" ORDER BY param_id desc,param_name,param_code ");
+        sql.append(" ORDER BY  param_code,data_index desc ");
 
         PageInfo pageInfo = new PageInfo();
         pageInfo.setCurrePage(currePage);
@@ -53,7 +53,7 @@ public class ParamCodeDaoImpl implements IParamCodeDao {
 
     @Override
     public List<Map<String, Object>> loadParamGroupName() {
-        String sql = " SELECT param_name,param_code from tb_param where `status`=1 GROUP BY param_name,param_code ";
+        String sql = " SELECT param_name,param_code from tb_param where `status`=1 GROUP BY param_name,param_code order by data_index desc ";
         return iGeneralDao.getBySQLListMap(sql);
     }
 }

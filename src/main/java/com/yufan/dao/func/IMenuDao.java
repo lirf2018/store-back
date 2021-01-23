@@ -1,6 +1,7 @@
 package com.yufan.dao.func;
 
 import com.yufan.pojo.TbFunctions;
+import com.yufan.pojo.TbPageMenu;
 import com.yufan.utils.PageInfo;
 
 import java.util.List;
@@ -22,4 +23,10 @@ public interface IMenuDao {
     public void insertMoreBySQL(String values);
 
     public List<Map<String, Object>> loadRoleFunListMap(int roleId);
+
+    PageInfo loadMenuWebPage(int currePage, TbPageMenu menu);
+
+    void updateMenuWebStatus(int id, int status);
+
+    TbPageMenu loadPageMenu(int id);
 }

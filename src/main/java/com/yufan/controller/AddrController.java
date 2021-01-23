@@ -162,53 +162,58 @@ public class AddrController {
      *
      * @param request
      * @param response
-     * @param addr
      */
     @PostMapping("savePlatformAddrData")
-    public void savePlatformAddrData(HttpServletRequest request, HttpServletResponse response, TbPlatformAddr addr) {
+    public void savePlatformAddrData(HttpServletRequest request, HttpServletResponse response) {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
             JSONObject result = new JSONObject();
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
-            addr.setCreateman(user.getLoginName());
-            addr.setCreatetime(new Timestamp(new Date().getTime()));
 
-            if (!StringUtils.isEmpty(request.getParameter("addr.id"))) {
-                addr.setId(Integer.parseInt(request.getParameter("addr.id")));
-            }
-            String detailAddr = request.getParameter("addr.detailAddr");
-            addr.setDetailAddr(detailAddr);
-            String responsibleMan = request.getParameter("addr.responsibleMan");
-            addr.setResponsibleMan(responsibleMan);
-            String responsiblePhone = request.getParameter("addr.responsiblePhone");
-            addr.setResponsiblePhone(responsiblePhone);
-            BigDecimal freight = new BigDecimal(StringUtils.isEmpty(request.getParameter("addr.freight")) ? "0" : request.getParameter("addr.freight"));
-            addr.setFreight(freight);
-            String sortChar = request.getParameter("addr.sortChar");
-            addr.setSortChar(sortChar);
-            String addrPrefix = request.getParameter("addr.addrPrefix");
-            addr.setAddrPrefix(addrPrefix);
-            addr.setStatus(1);
-            Integer addrShort = StringUtils.isEmpty(request.getParameter("addr.addrSort")) ? 0 : Integer.parseInt(request.getParameter("addr.addrSort"));
-            addr.setAddrSort(addrShort);
-            String addrDesc = request.getParameter("addr.addrDesc");
-            addr.setAddrDesc(addrDesc);
-            String addrName = request.getParameter("addr.addrName");
-            addr.setAddrName(addrName);
-            String remark = request.getParameter("addr.remark");
-            addr.setRemark(remark);
-            String addrLng = request.getParameter("addr.addrLng");
-            addr.setAddrLng(addrLng);
-            String addrLat = request.getParameter("addr.addrLat");
-            addr.setAddrLat(addrLat);
             String addrTypes = request.getParameter("addrTypes");
             String[] addrTypesArray = addrTypes.split(",");
 
             List<TbPlatformAddr> addrslist = new ArrayList<>();
             for (int i = 0; i < addrTypesArray.length; i++) {
                 if (!StringUtils.isEmpty(addrTypesArray[i])) {
+                    TbPlatformAddr addr = new TbPlatformAddr();
+                    addr.setCreateman(user.getLoginName());
+                    addr.setCreatetime(new Timestamp(new Date().getTime()));
+
+                    if (!StringUtils.isEmpty(request.getParameter("addr.id"))) {
+                        addr.setId(Integer.parseInt(request.getParameter("addr.id")));
+                    }
+                    String detailAddr = request.getParameter("addr.detailAddr");
+                    addr.setDetailAddr(detailAddr);
+                    String responsibleMan = request.getParameter("addr.responsibleMan");
+                    addr.setResponsibleMan(responsibleMan);
+                    String responsiblePhone = request.getParameter("addr.responsiblePhone");
+                    addr.setResponsiblePhone(responsiblePhone);
+                    BigDecimal freight = new BigDecimal(StringUtils.isEmpty(request.getParameter("addr.freight")) ? "0" : request.getParameter("addr.freight"));
+                    addr.setFreight(freight);
+                    String sortChar = request.getParameter("addr.sortChar");
+                    addr.setSortChar(sortChar);
+                    String addrPrefix = request.getParameter("addr.addrPrefix");
+                    addr.setAddrPrefix(addrPrefix);
+                    addr.setStatus(1);
+                    Integer addrShort = StringUtils.isEmpty(request.getParameter("addr.addrSort")) ? 0 : Integer.parseInt(request.getParameter("addr.addrSort"));
+                    addr.setAddrSort(addrShort);
+                    String addrDesc = request.getParameter("addr.addrDesc");
+                    addr.setAddrDesc(addrDesc);
+                    String addrName = request.getParameter("addr.addrName");
+                    addr.setAddrName(addrName);
+                    String remark = request.getParameter("addr.remark");
+                    addr.setRemark(remark);
+                    String addrLng = request.getParameter("addr.addrLng");
+                    addr.setAddrLng(addrLng);
+                    String addrLat = request.getParameter("addr.addrLat");
+                    addr.setAddrLat(addrLat);
                     addr.setAddrType(Integer.parseInt(addrTypesArray[i]));
+                    Integer shopId = StringUtils.isEmpty(request.getParameter("shopId")) ? 0 : Integer.parseInt(request.getParameter("shopId"));
+                    addr.setShopId(shopId);
+                    Integer storeId = StringUtils.isEmpty(request.getParameter("storeId")) ? 0 : Integer.parseInt(request.getParameter("storeId"));
+                    addr.setStoreId(storeId);
                     addrslist.add(addr);
                 }
             }

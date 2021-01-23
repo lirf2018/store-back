@@ -7,11 +7,11 @@ import java.util.Objects;
 
 /**
  * 创建人: lirf
- * 创建时间:  2019/8/13 11:22
+ * 创建时间:  2020/9/8 20:12
  * 功能介绍:
  */
 @Entity
-@Table(name = "tb_goods", schema = "testlirf", catalog = "")
+@Table(name = "tb_goods", schema = "store_db", catalog = "")
 public class TbGoods {
     private int goodsId;
     private String goodsName;
@@ -59,6 +59,7 @@ public class TbGoods {
     private String barCode;
     private String barCodeShop;
     private Integer sellCount;
+    private Integer isZiYin;
 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
@@ -521,6 +522,16 @@ public class TbGoods {
         this.sellCount = sellCount;
     }
 
+    @Basic
+    @Column(name = "is_zi_yin", nullable = true)
+    public Integer getIsZiYin() {
+        return isZiYin;
+    }
+
+    public void setIsZiYin(Integer isZiYin) {
+        this.isZiYin = isZiYin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -571,12 +582,12 @@ public class TbGoods {
                 Objects.equals(advancePrice, goods.advancePrice) &&
                 Objects.equals(barCode, goods.barCode) &&
                 Objects.equals(barCodeShop, goods.barCodeShop) &&
-                Objects.equals(sellCount, goods.sellCount);
+                Objects.equals(sellCount, goods.sellCount) &&
+                Objects.equals(isZiYin, goods.isZiYin);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(goodsId, goodsName, title, goodsImg, trueMoney, nowMoney, intro, shopId, isYuding, getWay, isInvoice, isPutaway, dataIndex, categoryId, areaId, property, startTime, endTime, goodsCode, goodsUnit, isSingle, goodsNum, isReturn, couponId, createman, createtime, lastaltertime, lastalterman, status, remark, goodsType, isPayOnline, outCode, depositMoney, peisongZcDesc, peisongPeiDesc, purchasePrice, isTimeGoods, limitNum, limitWay, limitBeginTime, levelId, advancePrice, barCode, barCodeShop, sellCount);
+        return Objects.hash(goodsId, goodsName, title, goodsImg, trueMoney, nowMoney, intro, shopId, isYuding, getWay, isInvoice, isPutaway, dataIndex, categoryId, areaId, property, startTime, endTime, goodsCode, goodsUnit, isSingle, goodsNum, isReturn, couponId, createman, createtime, lastaltertime, lastalterman, status, remark, goodsType, isPayOnline, outCode, depositMoney, peisongZcDesc, peisongPeiDesc, purchasePrice, isTimeGoods, limitNum, limitWay, limitBeginTime, levelId, advancePrice, barCode, barCodeShop, sellCount, isZiYin);
     }
 }

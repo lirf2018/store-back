@@ -73,17 +73,21 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional
     public TbAdmin saveAdmin(TbAdmin admin, int roleId) {
-        //保存用户角色(先删除现保存)
-        if(admin.getAdminId()!=null&&admin.getAdminId()>0){
-            iUserDao.delUserRole(admin.getAdminId());
+        try {
+            //保存用户角色(先删除现保存)
+            if (admin.getAdminId() != null && admin.getAdminId() > 0) {
+                iUserDao.delUserRole(admin.getAdminId());
+            }
+            iUserJpaDao.save(admin);
+            TbUserRole userRole = new TbUserRole();
+            userRole.setAdminId(admin.getAdminId());
+            userRole.setCreatetime(new Timestamp(new Date().getTime()));
+            userRole.setRoleId(roleId);
+            iUserDao.saveUserRole(userRole);
+            return admin;
+        } catch (Exception e) {
+            throw new RuntimeException();
         }
-        iUserJpaDao.save(admin);
-        TbUserRole userRole = new TbUserRole();
-        userRole.setAdminId(admin.getAdminId());
-        userRole.setCreatetime(new Timestamp(new Date().getTime()));
-        userRole.setRoleId(roleId);
-        iUserDao.saveUserRole(userRole);
-        return admin;
     }
 
     @Override

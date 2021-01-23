@@ -64,7 +64,6 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public JSONObject saveLevel(JSONObject data) {
         try {
-
             Integer levelId = data.getInteger("levelId");
             String levelCode = data.getString("levelCode");
             String levelName = data.getString("levelName");
@@ -76,6 +75,7 @@ public class CategoryServiceImpl implements ICategoryService {
             String categoryIds = data.getString("categoryIds");//新关联的类目
             String createman = data.getString("createman");
             String categoryIdsHasRel = data.getString("categoryIdsHasRel");//已关联的类目
+            Integer categoryType = data.getInteger("categoryType");//
             Map<String, String> hasRelMap = new HashMap<>();//已关联的类目
 
             //检验编码是否重复
@@ -112,7 +112,7 @@ public class CategoryServiceImpl implements ICategoryService {
                 categoryLevel.setStatus(status);
                 categoryLevel.setRemark(remark);
                 categoryLevel.setShopId(0);
-                categoryLevel.setCategoryType(0);
+                categoryLevel.setCategoryType(categoryType);
                 levelId = iCategoryJpaDao.save(categoryLevel).getLevelId();
                 code = "6";
             } else {
@@ -127,6 +127,7 @@ public class CategoryServiceImpl implements ICategoryService {
                 categoryLevel.setStatus(status);
                 categoryLevel.setRemark(remark);
                 categoryLevel.setShopId(0);
+                categoryLevel.setCategoryType(categoryType);
                 iCategoryJpaDao.save(categoryLevel);
                 code = "5";
             }
@@ -147,9 +148,8 @@ public class CategoryServiceImpl implements ICategoryService {
             }
             return CommonMethod.packagMsg(code);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
-        return CommonMethod.packagMsg("0");
     }
 
     @Override
@@ -190,6 +190,10 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public List<Map<String, Object>> loadLeveCategoryRel(Integer levelId, Integer categoryId) {
         return iCategoryDao.loadLeveCategoryRel(levelId, categoryId);
+    }
+    @Override
+    public List<Map<String, Object>> loadLeveCategoryRelGroup(Integer levelId, Integer categoryId) {
+        return iCategoryDao.loadLeveCategoryRelGroup(levelId, categoryId);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.yufan.bean.GoodsDataObj;
 import com.yufan.bean.ItempropObj;
 import com.yufan.bean.PropValueObj;
 import com.yufan.dao.shop.IShopDao;
+import com.yufan.exception.ApplicationException;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbGoods;
 import com.yufan.pojo.TbParam;
@@ -73,9 +74,9 @@ public class GoodsController {
         //查询店铺
         List<TbShop> shopList = new ArrayList<>();
         TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
-        if("admin".equals(user.getLoginName())){
+        if ("admin".equals(user.getLoginName())) {
             shopList = iShopService.findShopAll();
-        }else{
+        } else {
             shopList = iShopService.findShopAll(user.getShopId());
         }
 
@@ -148,6 +149,8 @@ public class GoodsController {
                 if ("1".equals(isTimeGoods)) {
                     map.put("is_time_goods_name", "是");
                 }
+                String goodsUnit = map.get("goods_unit").toString();
+                map.put("goods_unit_name", nameMap.get("goods_unit" + goodsUnit));
 
                 outDataList.add(map);
             }
@@ -252,7 +255,7 @@ public class GoodsController {
      * 新增加商品页面
      */
     @RequestMapping("addGoodsPage")
-    public ModelAndView addGoodsPage(HttpServletRequest request, HttpServletResponse response, Integer goodsId) {
+    public ModelAndView addGoodsPage(HttpServletRequest request, HttpServletResponse response, Integer goodsId) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
 
         //查询参数列表
@@ -263,9 +266,9 @@ public class GoodsController {
         //查询店铺
         List<TbShop> shopList = new ArrayList<>();
         TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
-        if("admin".equals(user.getLoginName())){
+        if ("admin".equals(user.getLoginName())) {
             shopList = iShopService.findShopAll();
-        }else{
+        } else {
             shopList = iShopService.findShopAll(user.getShopId());
         }
 
@@ -282,6 +285,13 @@ public class GoodsController {
         goods.setGetWay(6);
         goods.setGoodsType(0);
         goods.setLimitBeginTime(new Timestamp(new Date().getTime()));
+        goods.setGoodsNum(1);
+        goods.setGoodsUnit("7");// 默认促销
+        goods.setStartTime(new Timestamp(new Date().getTime()));
+        goods.setEndTime(new Timestamp(DatetimeUtil.convertStrToDate(DatetimeUtil.addYearTime(DatetimeUtil.getNow(), 1, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING), DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
+        if (null != shopList && shopList.size() == 1) {
+            goods.setShopId(shopList.get(0).getShopId());
+        }
         if (null != goodsId && goodsId > 0) {
             goods = iGoodsService.loadGoods(goodsId);
             //查询关联图片
@@ -302,8 +312,6 @@ public class GoodsController {
                 modelAndView.setViewName("404");
                 return modelAndView;
             }
-
-
         }
 
         modelAndView.addObject("webImg", Constants.IMG_WEB_URL);
@@ -326,15 +334,19 @@ public class GoodsController {
     @RequestMapping("saveGoodsData")
     public void saveData(HttpServletRequest request, HttpServletResponse response, TbGoods goods, GoodsDataObj goodsDataObj) {
         PrintWriter writer = null;
+        JSONObject out = new JSONObject();
         try {
             writer = response.getWriter();
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             goodsDataObj.setCreateman(user.getLoginName());
-            JSONObject out = iGoodsService.saveGoods(goods, goodsDataObj);
+            out = iGoodsService.saveGoods(goods, goodsDataObj);
             writer.print(out);
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();
+            ApplicationException applicationException = (ApplicationException) e;
+            writer.print(applicationException.getOut());
+            writer.close();
         }
     }
 

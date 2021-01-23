@@ -46,6 +46,7 @@
 <body>
 <div class="wrapper wrapper-content animated fadeInRight">
     <input type="hidden" id="levelId" th:value="${categoryLevel.levelId}">
+    <input type="hidden" id="status" th:value="${categoryLevel.status}">
     <input type="hidden" th:value="${categoryLevel.levelImg}" name="img" id="img">
     <div class="row">
         <table class="table table-hover table-bordered">
@@ -78,13 +79,13 @@
                         <div style="color: red;padding-left: 10px;line-height: 45px">数值越大越靠前</div>
                     </div>
                 </td>
-                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>状态</td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>类型</td>
                 <td>
                     <div style="display: flex">
                         <div class="form-group">
-                            <select  class="form-control" name="status" id="status" >
-                                <option value="1">有效</option>
-                                <option value="0" th:selected="${categoryLevel.status == 0}">无效</option>
+                            <select  class="form-control" name="status" id="categoryType" >
+                                <option value="0">通用</option>
+                                <option value="1" th:selected="${categoryLevel.categoryType == 1}">左侧菜单</option>
                             </select>
                         </div>
                     </div>
@@ -97,8 +98,8 @@
                            <td>类目列表</td>
                            <td>
                                <div style="display: flex">
-                                       <input class="form-control input-width100" style="width: 260px" value="" id="categoryName" name="categoryName" placeholder="类目关键词">
-                                       <input type="button" value="查询全陪类目" class="btn btn-success" onclick="searchCategoryList(0)">
+                                       <input class="form-control input-width100" style="width: 260px" value="" id="categoryName" name="categoryName" placeholder="类目关键词" onkeyup="searchCategoryList(0)" onkeydown="searchCategoryList(0)">
+                                       <input type="button" value="查询全陪类目" class="btn btn-success" onclick="searchCategoryList(0)" >
                                        <input type="button" value="查询已关联的类目" class="btn btn-success" onclick="searchCategoryList(1)">
                                </div>
                            </td>
@@ -162,6 +163,7 @@
         var status = $("#status").val();
         var dataIndex = $("#dataIndex").val();
         var remark = $("#remark").val();
+        var categoryType = $("#categoryType").val();
 
         var retain = 0;//1保留
         if($("input[name='retain']").prop("checked")){
@@ -206,7 +208,8 @@
             "categoryLevel.remark":remark.trim(),
             "retain":retain,
             "categoryIds":categoryIds,
-            "categoryIdsHasRel":categoryIdsHasRel
+            "categoryIdsHasRel":categoryIdsHasRel,
+            "categoryType":categoryType
         }
         //上传完得到id 或者路径 标志上传成功
         $.ajax({
@@ -231,7 +234,7 @@
     })
 
     function searchCategoryList(index) {
-        var categoryNameS = $("#categoryName").val();
+        var categoryNameS = $("#categoryName").val()+"";
         var allCategoryListMapOut = [[${allCategoryListMapOut}]];
         var html = "";
         for (var i = 0; i < allCategoryListMapOut.length; i++) {
@@ -244,23 +247,16 @@
                 continue;
             }
 
-            if (categoryNameS != '') {
-                categoryNameS = categoryNameS.trim();
-                if (categoryName.indexOf(categoryNameS) >= 0) {
-                    var checked = "";
-                    if (rel == '1') {
-                        checked = 'checked';
-                    }
-                    html = html + "<label style='margin-left: 15px'><input name='categoryItems' type='checkbox' " + checked + " value='" + categoryId + "'> <i></i>&nbsp;" + categoryName + "(" + categoryCode + ")</label>";
-                }
-
-            } else {
-                var checked = "";
-                if (rel == '1') {
-                    checked = 'checked';
-                }
-                html = html + "<label style='margin-left: 15px'><input name='categoryItems' type='checkbox' "+checked+" value='"+categoryId+"'> <i></i>&nbsp;"+categoryName+"("+categoryCode+")</label>";
+            if (categoryNameS != '' && (categoryName.indexOf(categoryNameS) >= 0 || categoryCode.indexOf(categoryNameS) >= 0)) {
+                let categoryNameS_ = "<b style='color: red;font-size: 16px !important;font-weight: bold'>" + categoryNameS + "</b>";
+                categoryName = categoryName.replace(RegExp(categoryNameS, "g"), categoryNameS_);
+                categoryCode = categoryCode.replace(RegExp(categoryNameS, "g"), categoryNameS_);
             }
+            var checked = "";
+            if (rel == '1') {
+                checked = 'checked';
+            }
+            html = html + "<label style='margin-left: 15px'><input name='categoryItems' type='checkbox' " + checked + " value='" + categoryId + "'> <i></i>&nbsp;" + categoryName + "(" + categoryCode + ")</label>";
         }
 
         $("#categoryDiv").html(html);

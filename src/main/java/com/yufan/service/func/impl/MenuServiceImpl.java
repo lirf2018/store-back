@@ -3,6 +3,7 @@ package com.yufan.service.func.impl;
 import com.yufan.dao.func.IMenuDao;
 import com.yufan.dao.func.IMenuJpaDao;
 import com.yufan.pojo.TbFunctions;
+import com.yufan.pojo.TbPageMenu;
 import com.yufan.service.func.IMenuService;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +54,16 @@ public class MenuServiceImpl implements IMenuService {
     @Override
     @Transactional
     public void deleteMenu(int menuId, int parentId) {
-        TbFunctions func = new TbFunctions();
-        func.setFunctionId(menuId);
-        iMenuJpaDao.delete(func);
-        if (parentId == 0) {
-            //删除子菜单
-            iMenuDao.deleteMenuByParentId(menuId);
+        try {
+            TbFunctions func = new TbFunctions();
+            func.setFunctionId(menuId);
+            iMenuJpaDao.delete(func);
+            if (parentId == 0) {
+                //删除子菜单
+                iMenuDao.deleteMenuByParentId(menuId);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException();
         }
     }
 
@@ -67,5 +72,20 @@ public class MenuServiceImpl implements IMenuService {
         TbFunctions f = iMenuJpaDao.getOne(menuId);
         f.setStatus(status);
         iMenuJpaDao.save(f);
+    }
+
+    @Override
+    public PageInfo loadMenuWebPage(int currePage, TbPageMenu menu) {
+        return iMenuDao.loadMenuWebPage(currePage, menu);
+    }
+
+    @Override
+    public void updateMenuWebStatus(int id, int status) {
+        iMenuDao.updateMenuWebStatus(id,status);
+    }
+
+    @Override
+    public TbPageMenu loadPageMenu(int id) {
+        return iMenuDao.loadPageMenu(id);
     }
 }

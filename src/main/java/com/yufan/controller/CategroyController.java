@@ -48,7 +48,7 @@ public class CategroyController {
         ModelAndView modelAndView = new ModelAndView();
 
         //查询类目列表
-        List<Map<String, Object>> categoryListMap = iCategoryService.loadCategoryListMap(1);
+        List<Map<String, Object>> categoryListMap = iCategoryService.loadCategoryListMap(Constants.DATA_STATUS_YX);
 
 
         modelAndView.addObject("categoryListMap", categoryListMap);
@@ -98,6 +98,9 @@ public class CategroyController {
         PrintWriter writer;
         try {
             writer = response.getWriter();
+            if(null==levelId){
+                levelId = 0;
+            }
             List<Map<String, Object>> list = iCategoryService.loadLevelCategoryData(levelId, status);
             //输出参数
             JSONObject dataJson = new JSONObject();
@@ -121,6 +124,7 @@ public class CategroyController {
         TbCategoryLevel categoryLevel = new TbCategoryLevel();
         categoryLevel.setStatus(1);
         categoryLevel.setDataIndex(0);
+        categoryLevel.setCategoryType(0);
         //已关联的类目
         Map<String, String> relMap = new HashMap<>();
         if (null != levelId && levelId > 0) {
@@ -131,14 +135,14 @@ public class CategroyController {
                 String categoryId = categoryListMap.get(i).get("category_id").toString();
                 relMap.put(categoryId, categoryId);
             }
-            if(!StringUtils.isEmpty(imgUrl)){
-                modelAndView.addObject("imgWebUrl", Constants.IMG_WEB_URL+imgUrl);//
+            if (!StringUtils.isEmpty(imgUrl)) {
+                modelAndView.addObject("imgWebUrl", Constants.IMG_WEB_URL + imgUrl);//
             }
         }
 
         String categoryIdsHasRel = "";//已关联的类目
         //查询所有类目列表
-        List<Map<String, Object>> allCategoryListMap = iCategoryService.loadCategoryListMap(1);
+        List<Map<String, Object>> allCategoryListMap = iCategoryService.loadCategoryListMap(Constants.DATA_STATUS_YX);
         //处理类目
         List<Map<String, Object>> allCategoryListMapOut = new ArrayList<>();
         for (int i = 0; i < allCategoryListMap.size(); i++) {
@@ -180,6 +184,7 @@ public class CategroyController {
             data.put("retain", request.getParameter("retain"));//是否保留原来关联
             data.put("categoryIds", request.getParameter("categoryIds"));//新关联的类目
             data.put("categoryIdsHasRel", request.getParameter("categoryIdsHasRel"));//已关联的类目
+            data.put("categoryType", request.getParameter("categoryType"));//
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             data.put("createman", user.getLoginName());
             JSONObject out = iCategoryService.saveLevel(data);
@@ -229,7 +234,7 @@ public class CategroyController {
 
         //一级分类与类目关系
         Map<Integer, Integer> rel = null;
-        if (levelId != null) {
+        if (levelId != null && levelId > 0) {
             rel = new HashMap<>();
             List<Map<String, Object>> relList = iCategoryService.loadLeveCategoryRel(levelId, null);
             for (int i = 0; i < relList.size(); i++) {
@@ -488,16 +493,16 @@ public class CategroyController {
     }
 
     /**
-     *  保存类目
+     * 保存类目
      */
     @RequestMapping("saveCategory")
-    public void saveCategory(HttpServletRequest request, HttpServletResponse response, TbCategory category,Integer levelId) {
+    public void saveCategory(HttpServletRequest request, HttpServletResponse response, TbCategory category, Integer levelId) {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
             //校验编码
-            boolean flag = iCategoryService.checkCategoryCode(category.getCategoryId(),category.getCategoryCode());
-            if(flag){
+            boolean flag = iCategoryService.checkCategoryCode(category.getCategoryId(), category.getCategoryCode());
+            if (flag) {
                 JSONObject out = CommonMethod.packagMsg("15");
                 writer.print(out);
                 writer.close();
@@ -506,7 +511,7 @@ public class CategroyController {
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             category.setCreateman(user.getLoginName());
             JSONObject out = category.getCategoryId() > 0 ? CommonMethod.packagMsg("5") : CommonMethod.packagMsg("6");
-            iCategoryService.saveCategory(category,levelId);
+            iCategoryService.saveCategory(category, levelId);
             writer.print(out);
             writer.close();
         } catch (Exception e) {
@@ -515,7 +520,7 @@ public class CategroyController {
     }
 
     /**
-     *  保存类目属性
+     * 保存类目属性
      */
     @RequestMapping("saveCategoryProp")
     public void saveCategoryProp(HttpServletRequest request, HttpServletResponse response, ItempropObj itempropObj) {
