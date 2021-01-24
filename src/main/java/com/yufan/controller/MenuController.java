@@ -310,6 +310,8 @@ public class MenuController {
             goodsDefaultUrl = paramList.get(0).getParamValue();
         }
         TbPageMenu menuPage = new TbPageMenu();
+        menuPage.setRelType(1);
+        menuPage.setMenuSort(0);
         menuPage.setMenuUrl(goodsDefaultUrl);
         Map<String, String> relMaplev = new HashMap<>();// 已关联的一级分类
         Map<String, String> relMapCa = new HashMap<>();// 已关联的类目
@@ -340,7 +342,7 @@ public class MenuController {
         for (int i = 0; i < listLevel.size(); i++) {
             Map<String, Object> map = listLevel.get(i);
             map.put("rel", 0);//未关联
-            if (relMapCa.get(map.get("level_id").toString()) != null) {
+            if (relMaplev.get(map.get("level_id").toString()) != null) {
                 map.put("rel", 1);//已关联
                 leveIdsHasRel = leveIdsHasRel + map.get("level_id") + ",";
             }
@@ -360,6 +362,7 @@ public class MenuController {
             map.put("level_ids",categoryIdRelMap.get(map.get("category_id").toString()));
             allCategoryListMapOut.add(map);
         }
+        modelAndView.addObject("webImg", Constants.IMG_WEB_URL);
         modelAndView.addObject("menuPage", menuPage);
         modelAndView.addObject("goodsDefaultUrl", goodsDefaultUrl);
         //
@@ -372,6 +375,39 @@ public class MenuController {
         //
         modelAndView.setViewName("add-pagemenu");
         return modelAndView;
+    }
+
+    /**
+     * 保存数据
+     *
+     * @param request
+     * @param response
+     */
+    @RequestMapping("savePageMenuData")
+    public void saveData(HttpServletRequest request, HttpServletResponse response, TbPageMenu pageMenu) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject out = CommonMethod.packagMsg("6");
+            TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+            pageMenu.setCreatetime(new Timestamp(new Date().getTime()));
+            if(!StringUtils.isEmpty(pageMenu.getLeve1Ids())){
+                String leve1Ids = pageMenu.getLeve1Ids();
+                pageMenu.setLeve1Ids(leve1Ids.substring(0,leve1Ids.length()-1));
+            }
+            if(!StringUtils.isEmpty(pageMenu.getCategoryIds())){
+                String categoryIds = pageMenu.getCategoryIds();
+                pageMenu.setCategoryIds(categoryIds.substring(0,categoryIds.length()-1));
+            }
+            if (pageMenu.getId() > 0) {
+                out = CommonMethod.packagMsg("5");
+            }
+            iMenuService.savePageMenuData(pageMenu);
+            writer.print(out);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

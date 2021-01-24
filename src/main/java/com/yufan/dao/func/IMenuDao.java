@@ -29,4 +29,8 @@ public interface IMenuDao {
     void updateMenuWebStatus(int id, int status);
 
     TbPageMenu loadPageMenu(int id);
+
+    public void updatePageMenuData(TbPageMenu pageMenu);
+
+    public void savePageMenuData(TbPageMenu pageMenu);
 }

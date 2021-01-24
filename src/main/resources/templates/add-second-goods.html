@@ -361,6 +361,9 @@
             $("#shopId").focus();
             return myAlertSimple("选择店铺");
         }
+        if(null == img0 || img0 == ''){
+            img0 = "null.jpg";
+        }
         var mark = $(this).attr("data-mark");//1保存并继续添加
         var data = {
             "goodsId":goodsId,

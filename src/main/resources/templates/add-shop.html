@@ -318,7 +318,9 @@
             $("#dataIndex").focus();
             return myAlertSimple("非法权重");
         }
-
+        if(null == img0 || img0 == ''){
+            img0 = "null.jpg";
+        }
         var mark = $(this).attr("data-mark");//1保存并继续添加
         var data = {
             "shop.shopId":shopId,

@@ -488,6 +488,9 @@
             $("#categoryCode").focus();
             return myAlertSimple("类目编码不能为空");
         }
+        if(null == categoryImg || categoryImg == ''){
+            categoryImg = "null.jpg";
+        }
         $.ajax({
             url: "category/saveCategory",
             type: 'POST',
@@ -600,7 +603,9 @@
         if(flag){
             return myAlertSimple("非法属性值排序");
         }
-
+        if(null == propImg || propImg == ''){
+            propImg = "null.jpg";
+        }
         $.ajax({
             url: "category/saveCategoryProp",
             type: 'POST',

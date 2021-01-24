@@ -215,7 +215,9 @@
         if(endTime < startTime){
             return myAlertSimple("结束时间不能小于开始时间");
         }
-
+        if(null == bannerImg || bannerImg == ''){
+            bannerImg = "null.jpg";
+        }
         var mark = $(this).attr("data-mark");//1保存并继续添加
         var data = {
             "bannerId":bannerId,

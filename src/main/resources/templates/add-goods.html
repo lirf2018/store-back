@@ -729,7 +729,7 @@
         var skuImgObj = $("input[name='skuImg']");
         var skuImg = "";
         skuImgObj.each(function () {
-            var value = $(this).val() == null || $(this).val()==''?'0':$(this).val();
+            var value = $(this).val() == null || $(this).val()==''?'null.jpg':$(this).val();
             skuImg = skuImg + value+"``";
         });
 
@@ -771,7 +771,9 @@
             }
 
         }
-
+        if(null == goodsImg || goodsImg == ''){
+            goodsImg = "null.jpg";
+        }
         var mark = $(this).attr("data-mark");//1保存并继续添加
         var data = {
             "goodsId": goodsId,

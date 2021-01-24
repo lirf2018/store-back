@@ -197,7 +197,9 @@
             }
         })
         var mark = $(this).attr("data-mark");//1保存并继续添加
-
+        if(null == img || img == ''){
+            img = "null.jpg";
+        }
         var data = {
             "categoryLevel.levelId":levelId,
             "categoryLevel.levelCode":levelCode.trim(),

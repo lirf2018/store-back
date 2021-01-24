@@ -80,7 +80,7 @@
 </head>
 <body>
 <div class="wrapper wrapper-content animated fadeInRight">
-    <input type="hidden" id="activityId" th:value="${menuPage.id}">
+    <input type="hidden" id="id" th:value="${menuPage.id}">
     <input type="hidden" id="img" th:value="${menuPage.menuImg}">
     <input type="hidden" id="goodsDefaultUrl" th:value="${goodsDefaultUrl}">
 
@@ -144,11 +144,11 @@
                 <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="2"  id="menuUrl" name="menuUrl" th:text="${menuPage.menuUrl}"></textarea></td>
             </tr>
             <tr>
-                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>关联类型</td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>关联类型</td>
                 <td colspan="3" >
                     <div style="display: flex">
                         <div class="form-group">
-                            <select  class="form-control" name="relType" id="relType" >
+                            <select  class="form-control" name="relType" id="relType"  onchange="changeRelType()">
                                 <option value="1">关联一级分类</option>
                                 <option value="2" th:selected="${menuPage.status == 2}">关联类目</option>
                             </select>
@@ -156,7 +156,7 @@
                     </div>
                 </td>
             </tr>
-            <tr id="rel1">
+            <tr id="rel1" style="display: none">
                 <td colspan="10">
                     <table class="table table-hover table-bordered">
                         <thead>
@@ -176,7 +176,7 @@
                     </table>
                 </td>
             </tr>
-            <tr id="rel2">
+            <tr id="rel2" style="display: none">
                 <td colspan="10">
                     <table class="table table-hover table-bordered">
                         <tr>
@@ -241,20 +241,118 @@
 <script src="js/laydate/laydate.js"></script>
 
 <script th:inline="javascript">
+
+    $(".btn-save").on("click",function (e) {
+        var img = $("#img").val();
+        var id = $("#id").val();
+        var menuName = $("#menuName").val().trim();;
+        var menuType = $("#menuType").val();
+        var menuSort = $("#menuSort").val().trim();;
+        var status = $("#status").val();
+        var menuUrl = $("#menuUrl").val().trim();
+        var relType = $("#relType").val();
+        //
+        var leve1Ids = "";
+        var categoryIds = "";
+
+
+
+        if(menuName == ''){
+            $("#menuName").focus();
+            return myAlertSimple("菜单名称不能为空");
+        }
+        var regNum=/^[0-9]*$/;
+        if(menuSort == '' ||!regNum.test($.trim(menuSort))){
+            $("#dataIndex").focus();
+            return myAlertSimple("非法排序");
+        }
+
+        if(menuType == 1){
+            //选中要关联的类目
+            leve1Ids = "";
+            var levelIdsItems = $("input[name='levelIdsItem']");
+            levelIdsItems.each(function () {
+                if($(this).prop("checked")){
+                    var levelId = $(this).val();
+                    leve1Ids = leve1Ids + levelId +",";
+                }
+            })
+        }else{
+            //选中要关联的类目
+            categoryIds = "";
+            var categoryItems = $("input[name='categoryItems']");
+            categoryItems.each(function () {
+                if($(this).prop("checked")){
+                    var categoryId = $(this).val();
+                    categoryIds = categoryIds + categoryId +",";
+                }
+            })
+        }
+        var mark = $(this).attr("data-mark");//1保存并继续添加
+        if(null == img || img == ''){
+            img = "null.jpg";
+        }
+        var data = {
+            "id":id,
+            "menuName":menuName,
+            "menuImg":img,
+            "menuSort":menuSort,
+            "menuType":menuType,
+            "relType":relType,
+            "menuUrl":menuUrl,
+            "status":status,
+            "leve1Ids":leve1Ids,
+            "categoryIds":categoryIds
+        }
+
+        //上传完得到id 或者路径 标志上传成功
+        $.ajax({
+            url: "menu/savePageMenuData",
+            type: 'POST',
+            data: data,// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple(data.msg);
+                if (code == "5" || code == '6') {
+                    if(mark == 1){
+                        setTimeout("javascript:window.location.href = 'menu/toMenuAddPage'",1000);
+                    }else {
+                        setTimeout("javascript:window.location.href = 'menu/pageMenu'",1000);
+                    }
+                }
+            }
+        });
+    })
+
     //图片设置
     setShopInfoImg();
     function setShopInfoImg(){
-        var activityId = [[${menuPage.id}]];
-        if (!activityId > 0) {
+        var id = [[${menuPage.id}]];
+        if (!id > 0) {
             return;
         }
         var webImg = [[${webImg}]];//图片访问前缀
 
-        var img0 = [[${menuPage.menuUrl}]];
+        var img0 = [[${menuPage.menuImg}]];
         if (null != img0 && img0 != '') {
             setPageImg(webImg + img0, img0, 0)
         }
     }
+    changeRelType();
+    function changeRelType() {
+        let relType = $("#relType").val();
+        if(relType == 1){
+            $("#rel1").show();
+            $("#rel2").hide();
+        }else{
+            $("#rel1").hide();
+            $("#rel2").show();
+        }
+    }
+
 
     function searchCategoryList(index) {
         var levelId = $("#levelId").val();

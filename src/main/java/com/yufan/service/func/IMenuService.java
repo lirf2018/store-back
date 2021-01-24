@@ -32,4 +32,6 @@ public interface IMenuService {
     void updateMenuWebStatus(int id, int status);
 
     TbPageMenu loadPageMenu(int id);
+
+    void savePageMenuData(TbPageMenu pageMenu);
 }

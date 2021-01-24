@@ -257,6 +257,9 @@
         if(shopId == null || shopId == ''){
             return myAlertSimple("店铺不能为空");
         }
+        if(null == infoImg || infoImg == ''){
+            infoImg = "null.jpg";
+        }
         var data = {
             "infoId":infoId,
             "infoTitle":infoTitle.trim(),

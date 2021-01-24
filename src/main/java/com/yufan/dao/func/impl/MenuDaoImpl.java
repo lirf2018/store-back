@@ -1,16 +1,26 @@
 package com.yufan.dao.func.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yufan.common.dao.IGeneralDao;
 import com.yufan.dao.func.IMenuDao;
+import com.yufan.pojo.TbActivity;
+import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbFunctions;
 import com.yufan.pojo.TbPageMenu;
+import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -121,5 +131,15 @@ public class MenuDaoImpl implements IMenuDao {
     public TbPageMenu loadPageMenu(int id) {
         String hql = " from TbPageMenu where id = ?1 ";
         return iGeneralDao.queryUniqueByHql(hql,id);
+    }
+
+    @Override
+    public void updatePageMenuData(TbPageMenu pageMenu) {
+        iGeneralDao.saveOrUpdate(pageMenu);
+    }
+
+    @Override
+    public void savePageMenuData(TbPageMenu pageMenu) {
+        iGeneralDao.save(pageMenu);
     }
 }

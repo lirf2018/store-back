@@ -224,7 +224,9 @@
         if(endTime < startTime){
             return myAlertSimple("结束时间不能小于开始时间");
         }
-
+        if(null == activityImg || activityImg == ''){
+            activityImg = "null.jpg";
+        }
         var mark = $(this).attr("data-mark");//1保存并继续添加
         var data = {
             "activityId":activityId,

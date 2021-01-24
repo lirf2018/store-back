@@ -81,11 +81,20 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public void updateMenuWebStatus(int id, int status) {
-        iMenuDao.updateMenuWebStatus(id,status);
+        iMenuDao.updateMenuWebStatus(id, status);
     }
 
     @Override
     public TbPageMenu loadPageMenu(int id) {
         return iMenuDao.loadPageMenu(id);
+    }
+
+    @Override
+    public void savePageMenuData(TbPageMenu pageMenu) {
+        if (pageMenu.getId() > 0) {
+            iMenuDao.updatePageMenuData(pageMenu);
+            return;
+        }
+        iMenuDao.savePageMenuData(pageMenu);
     }
 }
