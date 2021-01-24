@@ -148,9 +148,9 @@
                 <td colspan="3" >
                     <div style="display: flex">
                         <div class="form-group">
-                            <select  class="form-control" name="relType" id="relType"  onchange="changeRelType()">
+                            <select  class="form-control" name="relType" id="relType"  onchange="changeRelType(1)">
                                 <option value="1">关联一级分类</option>
-                                <option value="2" th:selected="${menuPage.status == 2}">关联类目</option>
+                                <option value="2" th:selected="${menuPage.relType == 2}">关联类目</option>
                             </select>
                         </div>
                     </div>
@@ -255,8 +255,6 @@
         var leve1Ids = "";
         var categoryIds = "";
 
-
-
         if(menuName == ''){
             $("#menuName").focus();
             return myAlertSimple("菜单名称不能为空");
@@ -267,7 +265,7 @@
             return myAlertSimple("非法排序");
         }
 
-        if(menuType == 1){
+        if(relType == 1){
             //选中要关联的类目
             leve1Ids = "";
             var levelIdsItems = $("input[name='levelIdsItem']");
@@ -341,9 +339,13 @@
             setPageImg(webImg + img0, img0, 0)
         }
     }
-    changeRelType();
-    function changeRelType() {
+    changeRelType(0);
+    function changeRelType(type) {
         let relType = $("#relType").val();
+        if(type == 0){
+            relType = [[${menuPage.relType}]];
+        }
+
         if(relType == 1){
             $("#rel1").show();
             $("#rel2").hide();
