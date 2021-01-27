@@ -206,10 +206,10 @@
         if(shopId == null || shopId == ''){
             return myAlertSimple("店铺不能为空");
         }
-        if(startTime == null){
+        if(startTime == null || startTime == ''){
             return myAlertSimple("开始时间不能为空");
         }
-        if(endTime == null){
+        if(endTime == null || endTime == ''){
             return myAlertSimple("结束时间不能为空");
         }
         if(endTime < startTime){

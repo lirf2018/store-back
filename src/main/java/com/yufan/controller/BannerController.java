@@ -12,6 +12,7 @@ import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
 import com.yufan.utils.DatetimeUtil;
 import com.yufan.utils.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
@@ -131,15 +132,6 @@ public class BannerController {
         ModelAndView modelAndView = new ModelAndView();
 
         TbBanner banner = new TbBanner();
-        banner.setDataIndex(0);
-        if (null != bannerId && bannerId > 0) {
-            banner = iBannerService.loadBanner(bannerId);
-            TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
-            if(!"admin".equals(user.getLoginName())&&banner.getShopId()!=user.getShopId()){
-                modelAndView.setViewName("404");
-                return modelAndView;
-            }
-        }
         //查询店铺
         List<TbShop> shopList = new ArrayList<>();
         TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
@@ -147,6 +139,17 @@ public class BannerController {
             shopList = iShopService.findShopAll();
         }else{
             shopList = iShopService.findShopAll(user.getShopId());
+            if(CollectionUtils.isNotEmpty(shopList)){
+                banner.setShopId(shopList.get(0).getShopId());
+            }
+        }
+        banner.setDataIndex(0);
+        if (null != bannerId && bannerId > 0) {
+            banner = iBannerService.loadBanner(bannerId);
+            if(!"admin".equals(user.getLoginName())&&banner.getShopId()!=user.getShopId()){
+                modelAndView.setViewName("404");
+                return modelAndView;
+            }
         }
         modelAndView.addObject("shopList",shopList);
         modelAndView.addObject("webImg", Constants.IMG_WEB_URL);

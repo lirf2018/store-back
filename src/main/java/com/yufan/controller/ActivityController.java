@@ -11,6 +11,7 @@ import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
 import com.yufan.utils.DatetimeUtil;
 import com.yufan.utils.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -126,13 +128,15 @@ public class ActivityController {
         //查询店铺
         List<TbShop> shopList = new ArrayList<>();
         TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        TbActivity activity = new TbActivity();
         if("admin".equals(user.getLoginName())){
             shopList = iShopService.findShopAll();
         }else{
             shopList = iShopService.findShopAll(user.getShopId());
+            if(CollectionUtils.isNotEmpty(shopList)){
+                activity.setShopId(shopList.get(0).getShopId());
+            }
         }
-
-        TbActivity activity = new TbActivity();
         activity.setDataIndex(0);
         if (null != activityId && activityId > 0) {
             activity = iActivityService.loadActivity(activityId);

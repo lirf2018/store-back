@@ -107,8 +107,8 @@
                     <div style="display: flex">
                         <div class="form-group">
                             <select  class="form-control" name="menuType" id="menuType" >
-                                <option value="1">分类菜单</option>
-                                <option value="0" th:selected="${menuPage.status == 0}">main页菜单</option>
+                                <option value="0">main页菜单</option>
+                                <option value="1" th:selected="${menuPage.menuType == 1}">分类菜单</option>
                             </select>
                         </div>
                         <div style="color: red;padding-left: 10px;line-height: 45px">main页菜单最多查询8个</div>
