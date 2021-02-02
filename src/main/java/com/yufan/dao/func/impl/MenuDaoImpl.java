@@ -106,11 +106,14 @@ public class MenuDaoImpl implements IMenuDao {
             if (null != menu.getShopId() && -1 != menu.getShopId()) {
                 sql.append(" and shop_id=").append(menu.getShopId());
             }
-            if (!StringUtils.isEmpty(menu.getLeve1Ids())) {
-                sql.append(" and CONCAT(leve1_ids,',') like '%").append(menu.getLeve1Ids()).append(",%' ");
-            }
-            if (!StringUtils.isEmpty(menu.getCategoryIds())) {
-                sql.append(" and CONCAT(category_ids,',') like '%").append(menu.getCategoryIds()).append(",%' ");
+            if(menu.getRelType() == 1){
+                if (!StringUtils.isEmpty(menu.getLeve1Ids())) {
+                    sql.append(" and CONCAT(leve1_ids,',') like '%").append(menu.getLeve1Ids()).append(",%' ");
+                }
+            }else if(menu.getRelType() == 2){
+                if (!StringUtils.isEmpty(menu.getCategoryIds())) {
+                    sql.append(" and CONCAT(category_ids,',') like '%").append(menu.getCategoryIds()).append(",%' ");
+                }
             }
         }
         sql.append(" order by menu_sort desc,createtime desc ");

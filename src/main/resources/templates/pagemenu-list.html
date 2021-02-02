@@ -37,6 +37,12 @@
                                 <option value="0">main页菜单</option>
                                 <option value="1">分类菜单</option>
                             </select>
+                            <label>关联类型:</label>
+                            <select class="form-control" id="relType" name="relType" onchange="searchData()">
+                                <option value="-1">--选择关联类型--</option>
+                                <option value="1">关联一级分类</option>
+                                <option value="2">关联类目</option>
+                            </select>
                             <label>一级分类:</label>
                             <select class="form-control" id="levelId" name="levelId" onchange="setCategory()">
                                 <option value="">--选择一级分类--</option>
@@ -118,6 +124,7 @@
                     d.leve1Ids = $('#levelId').val();
                     d.categoryIds = $('#categoryId').val();
                     d.status = $('#status').val();
+                    d.relType = $('#relType').val();
                 }
             },
             columns:[

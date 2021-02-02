@@ -68,6 +68,9 @@ public class GoodsDaoImpl implements IGoodsDao {
         }
         if (goodsCondition.getIsPutaway() != null) {
             sql.append(" and g.is_putaway=").append(goodsCondition.getIsPutaway()).append(" ");
+            if(goodsCondition.getIsPutaway() == 2){
+                sql.append(" and NOW()>= g.start_time AND NOW()<= g.end_time ");
+            }
         }
         if (goodsCondition.getStatus() != null) {
             sql.append(" and g.`status`=").append(goodsCondition.getStatus()).append(" ");
