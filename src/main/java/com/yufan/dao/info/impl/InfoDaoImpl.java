@@ -27,6 +27,7 @@ public class InfoDaoImpl implements IInfoDao {
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT info_id,info_title,CONCAT('").append(Constants.IMG_WEB_URL).append("',info_img) as info_img,`status`,DATE_FORMAT(create_time,'%Y-%m-%d %T') as create_time ");
         sql.append(" ,info_index ");
+        sql.append(" ,DATE_FORMAT(start_time,'%Y-%m-%d %T') as startTime,DATE_FORMAT(end_time,'%Y-%m-%d %T') as endTime ");
         sql.append(" from tb_info where 1=1 ");
         if (null != info.getStatus() && -1 != info.getStatus()) {
             sql.append(" and status=").append(info.getStatus()).append(" ");
@@ -60,7 +61,11 @@ public class InfoDaoImpl implements IInfoDao {
 
     @Override
     public void updateInfo(TbInfo info) {
-        String sql = " update tb_info set info_title=?,info_img=?,info_url=?,info_content=?,status=?,shop_id=?,info_index=?,update_time=now() where info_id=?  ";
-        iGeneralDao.executeUpdateForSQL(sql, info.getInfoTitle(), info.getInfoImg(), info.getInfoUrl(), info.getInfoContent(), info.getStatus(), info.getShopId(), info.getInfoIndex(), info.getInfoId());
+        String sql = " update tb_info set info_title=?,info_img=?,info_url=?,info_content=?,status=?,shop_id=?,info_index=?,update_time=now(),mark_msg=? ,start_time=? ,end_time=? where info_id=?  ";
+        iGeneralDao.executeUpdateForSQL(sql, info.getInfoTitle(), info.getInfoImg(), info.getInfoUrl(), info.getInfoContent(), info.getStatus(), info.getShopId(), info.getInfoIndex(),
+                info.getMarkMsg(),
+                info.getStartTime(),
+                info.getEndTime(),
+                info.getInfoId());
     }
 }

@@ -145,4 +145,17 @@ public class MenuDaoImpl implements IMenuDao {
     public void savePageMenuData(TbPageMenu pageMenu) {
         iGeneralDao.save(pageMenu);
     }
+
+    @Override
+    public List<Map<String, Object>> findPageMenu(int id, Integer menuType) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select m.id,m.leve1_ids,m.category_ids from tb_page_menu m   ");
+        sql.append("  ");
+        sql.append("  ");
+        sql.append("  ");
+        sql.append("  ");
+        sql.append("  ");
+        sql.append("  ");
+        return iGeneralDao.getBySQLListMap(sql.toString());
+    }
 }

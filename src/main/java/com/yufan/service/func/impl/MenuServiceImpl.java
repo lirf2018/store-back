@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 创建人: lirf
@@ -96,5 +97,10 @@ public class MenuServiceImpl implements IMenuService {
             return;
         }
         iMenuDao.savePageMenuData(pageMenu);
+    }
+
+    @Override
+    public List<Map<String, Object>> findPageMenu(int id, Integer menuType) {
+        return iMenuDao.findPageMenu(id,menuType);
     }
 }

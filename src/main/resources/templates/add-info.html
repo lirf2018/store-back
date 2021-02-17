@@ -90,7 +90,7 @@
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>标题</td>
                 <td><input type="text" placeholder="请输入标题" class="form-control" name="infoTitle" id="infoTitle" th:value="${info.infoTitle}" ></td>
-                <td rowspan="2" class="tableLeft"><span style="color: red;font-weight: bold"> </span>头图<br><span style="color: red;padding-top: 3px">像素(宽*高):300*300</span></td>
+                <td rowspan="2" class="tableLeft"><span style="color: red;font-weight: bold"> </span>头图<br><span style="color: red;padding-top: 3px"></span></td>
                 <td rowspan="2" style="text-align: left">
                     <div id = "imgShowDiv">
                         <div class="deleteImg0" onclick="deleteImg(this)" delete-mark="0"><img src="./img/delete.png" width="25px" height="25px"></div>
@@ -133,19 +133,29 @@
                         <option th:each="s:${shopList}" th:selected="${info.shopId == s.shopId}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
                     </select>
                 </td>
-                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span></td>
-                <td></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>标签</td>
+                <td><input type="text" placeholder="请输入标签" class="form-control" name="markMsg" id="markMsg" th:value="${info.markMsg}" ></td>
             </tr>
             <tr>
                 <td class="tableLeft">链接</td>
                 <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="2"  id="infoUrl" name="infoUrl" th:text="${info.infoUrl}"></textarea></td>
             </tr>
             <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>开始时间</td>
+                <td>
+                    <input type="text" class="form-control form-control-common"  placeholder="请选择开始时间"  readonly th:value="${#dates.format(info.startTime, 'yyyy-MM-dd HH:mm:ss')}" id="startTime" name="startTime" >
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>结束时间</td>
+                <td>
+                    <input type="text" class="form-control form-control-common" readonly placeholder="请选择结束时间" th:value="${#dates.format(info.endTime, 'yyyy-MM-dd HH:mm:ss')}" id="endTime" name="endTime" >
+                </td>
+            </tr>
+            <tr>
                 <td colspan="10">
                     <table class="table table-hover table-bordered">
                         <thead>
                         <tr>
-                            <th>内容  <span style="color: red;padding-top: 3px">(像素(宽*高):750*高)</span></th>
+                            <th>内容  <span style="color: red;padding-top: 3px"></span></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -240,6 +250,9 @@
         var infoIndex = $("#infoIndex").val();
         var status = $("#status").val();
         var shopId = $("#shopId").val();
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        var markMsg = $("#markMsg").val();
 
         var infoImg = $("#img").val();
 
@@ -257,6 +270,15 @@
         if(shopId == null || shopId == ''){
             return myAlertSimple("店铺不能为空");
         }
+        if(startTime == null || startTime == ''){
+            return myAlertSimple("开始时间不能为空");
+        }
+        if(endTime == null || endTime == ''){
+            return myAlertSimple("结束时间不能为空");
+        }
+        if(endTime < startTime){
+            return myAlertSimple("结束时间不能小于开始时间");
+        }
         if(null == infoImg || infoImg == ''){
             infoImg = "null.jpg";
         }
@@ -269,7 +291,10 @@
             "status":status,
             "infoIndex":infoIndex.trim(),
             "infoImg":infoImg,
-            "shopId":shopId
+            "shopId":shopId,
+            "startTime":startTime,
+            "endTime":endTime,
+            "markMsg":markMsg
         }
         //上传完得到id 或者路径 标志上传成功
         $.ajax({
@@ -304,6 +329,28 @@
         }
     }
 </script>
+<script th:inline="javascript">
+    var nowDate = [[${nowDate}]];
+    var startTime = laydate.render({
+        elem: '#startTime' //指定元素
+        ,type: 'datetime'
+        ,closeStop: '#startTime'
+        ,position: 'abolute'
+        , min: nowDate
+        ,done: function(value, date){
+            if(null!=value){
+                date.month = date.month-1;
+                endTime.config.min = date;
+            }
+        }
+    });
 
+    var endTime = laydate.render({
+        elem: '#endTime' //指定元素
+        ,type: 'datetime'
+        ,closeStop: '#endTime'
+        , position: 'abolute'
+    });
+</script>
 </body>
 </html>

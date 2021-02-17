@@ -54,6 +54,8 @@
                             <th>标题</th>
                             <th>图片</th>
                             <th>排序</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
                             <th>状态</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -122,6 +124,14 @@
                     data: function (obj) {
                         return obj.info_index==null?"":obj.info_index;
                     }
+                },{
+                    data: function (obj) {
+                        return obj.startTime==null?"":obj.startTime;
+                    }
+                },{
+                    data: function (obj) {
+                        return obj.endTime==null?"":obj.endTime;
+                    }
                 }
                 ,{
                     data: function (obj) {
@@ -135,7 +145,7 @@
                 }
             ]
             ,columnDefs: [{
-                targets: 6,
+                targets: 8,
                 data: null,
                 render: function (data, type, row) {
                     var html = "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData("+data.info_id+")'><i class='fa fa-paste'></i> 编辑</button> ";

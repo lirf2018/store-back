@@ -33,4 +33,6 @@ public interface IMenuDao {
     public void updatePageMenuData(TbPageMenu pageMenu);
 
     public void savePageMenuData(TbPageMenu pageMenu);
+
+    List<Map<String,Object>> findPageMenu(int id,Integer menuType);
 }

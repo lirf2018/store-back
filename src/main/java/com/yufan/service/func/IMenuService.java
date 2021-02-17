@@ -5,6 +5,7 @@ import com.yufan.pojo.TbPageMenu;
 import com.yufan.utils.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 创建人: lirf
@@ -34,4 +35,6 @@ public interface IMenuService {
     TbPageMenu loadPageMenu(int id);
 
     void savePageMenuData(TbPageMenu pageMenu);
+
+    List<Map<String,Object>> findPageMenu(int id,Integer menuType);
 }

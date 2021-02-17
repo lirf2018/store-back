@@ -391,6 +391,17 @@ public class MenuController {
             JSONObject out = CommonMethod.packagMsg("6");
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             pageMenu.setCreatetime(new Timestamp(new Date().getTime()));
+            // 校验是否已关联 用于分类页面的关联类型 1关联一级分类 2 关联2级分类
+            if(pageMenu.getRelType() == 1){
+               String leve1Ids =  pageMenu.getLeve1Ids();
+
+            }else{
+                String categoryIds = pageMenu.getCategoryIds();
+
+            }
+
+
+
             if(!StringUtils.isEmpty(pageMenu.getLeve1Ids())){
                 String leve1Ids = pageMenu.getLeve1Ids();
                 pageMenu.setLeve1Ids(leve1Ids.substring(0,leve1Ids.length()-1));

@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * 创建人: lirf
- * 创建时间:  2020/1/17 23:21
+ * 创建时间:  2021/2/11 19:15
  * 功能介绍:
  */
 @Entity
@@ -23,6 +23,9 @@ public class TbInfo {
     private Timestamp createTime;
     private Timestamp updateTime;
     private Integer readCount;
+    private Timestamp startTime;
+    private Timestamp endTime;
+    private String markMsg;
 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
@@ -135,6 +138,36 @@ public class TbInfo {
         this.readCount = readCount;
     }
 
+    @Basic
+    @Column(name = "start_time", nullable = true)
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    @Basic
+    @Column(name = "end_time", nullable = true)
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
+    @Basic
+    @Column(name = "mark_msg", nullable = true, length = 100)
+    public String getMarkMsg() {
+        return markMsg;
+    }
+
+    public void setMarkMsg(String markMsg) {
+        this.markMsg = markMsg;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -150,11 +183,14 @@ public class TbInfo {
                 Objects.equals(infoIndex, tbInfo.infoIndex) &&
                 Objects.equals(createTime, tbInfo.createTime) &&
                 Objects.equals(updateTime, tbInfo.updateTime) &&
-                Objects.equals(readCount, tbInfo.readCount);
+                Objects.equals(readCount, tbInfo.readCount) &&
+                Objects.equals(startTime, tbInfo.startTime) &&
+                Objects.equals(endTime, tbInfo.endTime) &&
+                Objects.equals(markMsg, tbInfo.markMsg);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(infoId, infoTitle, infoImg, infoUrl, infoContent, status, shopId, infoIndex, createTime, updateTime, readCount);
+        return Objects.hash(infoId, infoTitle, infoImg, infoUrl, infoContent, status, shopId, infoIndex, createTime, updateTime, readCount, startTime, endTime, markMsg);
     }
 }
