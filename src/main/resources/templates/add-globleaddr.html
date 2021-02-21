@@ -234,6 +234,8 @@
                     }else {
                         setTimeout("javascript:window.location.href = 'addr/globleAddrPage'",1000);
                     }
+                }else{
+                    return myAlertSimple(data.msg);
                 }
             }
         });
@@ -242,9 +244,6 @@
     function searchAddrData() {
         var regionCode = $("#regionCodeSearch").val();
         var regionName = $("#regionNameSearch").val();
-        if (regionCode == '' && regionName == '') {
-            return;
-        }
         $.ajax({
             url: "addr/loadRegionListMap",
             type: 'POST',

@@ -18,4 +18,5 @@ public class RegionCondition {
     private String regionCode;
     private String parentId;
     private String regionName;
+    private String regionNameStr;// 多条件查询用分号分开
 }

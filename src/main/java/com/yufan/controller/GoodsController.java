@@ -306,6 +306,11 @@ public class GoodsController {
             //查询商品sku列表
             if (goods.getIsSingle() == 0) {
                 skuList = iGoodsService.loadGoodsSkuListMap(goodsId);
+                int storeCount = 0;
+                for (int i = 0; i < skuList.size(); i++) {
+                    storeCount = storeCount + Integer.parseInt(skuList.get(i).get("sku_num").toString());
+                }
+                goods.setGoodsNum(storeCount);
             }
 
             if (!"admin".equals(user.getLoginName()) && user.getShopId() != goods.getShopId()) {

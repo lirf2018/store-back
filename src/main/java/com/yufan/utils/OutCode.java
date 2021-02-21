@@ -35,7 +35,8 @@ public enum OutCode {
     setting_success("22","设置成功"),
     goods_exception_01("goods_exception_01","查询类目属性值数据异常"),
     goods_exception_02("goods_exception_02","sku数据异常"),
-    file_out_size("23","文件大小超出规定大小");
+    file_out_size("23","文件大小超出规定大小"),
+    data_exist("24","数据{}已存在");
 
 
     private String code;

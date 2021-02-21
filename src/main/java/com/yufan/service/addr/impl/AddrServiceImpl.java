@@ -80,6 +80,11 @@ public class AddrServiceImpl implements IAddrService {
     }
 
     @Override
+    public List<Map<String, Object>> findCheckGlobleAddrRegionCode(Integer id, String regionCode) {
+        return iAddrDao.findCheckGlobleAddrRegionCode(id,regionCode);
+    }
+
+    @Override
     public void saveRegion(TbRegion region) {
         if (region.getRegionId() == 0) {
             iAddrDao.saveObject(region);

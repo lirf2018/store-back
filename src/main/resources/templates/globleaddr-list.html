@@ -50,7 +50,7 @@
                                 <option value="4">乡/镇/街道</option>
                                 <option value="5">村</option>
                             </select>
-                            <label>选择区域分类:</label><span th:text="${loginName}"></span>
+                            <label>选择区域分类:</label>
                             <select class="form-control" id="regionType" name="regionType" onchange="searchData()">
                                 <option value="">--选择区域分类--</option>
                                 <option value="1">省</option>
@@ -58,6 +58,7 @@
                                 <option value="3">直辖市</option>
                                 <option value="4">特别行政区</option>
                             </select>
+                            <label>行政区划名称(多个):</label><input class="form-control input-width300" id="regionNameStr" name="regionNameStr" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
                             <input type="button" class="btn btn-primary" value="查询" onclick="searchData()">
                             <button th:if="${'admin' == loginName}" class="btn btn-success" type="button" onclick="addOrUpdateData(0)"><i class=""></i><span class="bold">新增</span></button>
                         </div>
@@ -129,6 +130,7 @@
                     d.regionLevel = $('#regionLevel').val();
                     d.regionType = $('#regionType').val();
                     d.status = $('#status').val();
+                    d.regionNameStr = $('#regionNameStr').val();
                 }
             },
             columns:[

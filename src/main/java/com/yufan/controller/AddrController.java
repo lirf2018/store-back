@@ -9,6 +9,7 @@ import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -451,8 +452,14 @@ public class AddrController {
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             region.setCreateman(user.getLoginName());
             region.setCreatetime(new Timestamp(new Date().getTime()));
-            iAddrService.saveRegion(region);
-            result = CommonMethod.packagMsg("1");
+            // 检验是否在
+            List<Map<String, Object>>  list = iAddrService.findCheckGlobleAddrRegionCode(region.getRegionId(), region.getRegionCode());
+            if(!CollectionUtils.isEmpty(list)){
+                result = CommonMethod.packagMsg("24","【行政区划代码】"+region.getRegionCode());
+            }else{
+                iAddrService.saveRegion(region);
+                result = CommonMethod.packagMsg("1");
+            }
             writer.print(result);
             writer.close();
         } catch (Exception e) {

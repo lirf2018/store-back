@@ -58,6 +58,8 @@ public interface IAddrService {
      */
     List<Map<String, Object>> loadRegionListMap(Integer status,String regionName,String regionCode);
 
+    List<Map<String, Object>> findCheckGlobleAddrRegionCode(Integer id,String regionCode);
+
     /**
      * 保存地址
      * @param region

@@ -5,12 +5,12 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
- * 创建人: lirf
- * 创建时间:  2019/8/14 13:36
- * 功能介绍:
+ * @description:
+ * @author: lirf
+ * @time: 2021/2/20
  */
 @Entity
-@Table(name = "tb_goods_sku", schema = "testlirf", catalog = "")
+@Table(name = "tb_goods_sku", schema = "store_db", catalog = "")
 public class TbGoodsSku {
     private int skuId;
     private Integer goodsId;
@@ -19,6 +19,7 @@ public class TbGoodsSku {
     private BigDecimal nowMoney;
     private String skuCode;
     private String propCode;
+    private String propCodeName;
     private Integer skuNum;
     private String skuImg;
     private BigDecimal purchasePrice;
@@ -98,6 +99,16 @@ public class TbGoodsSku {
     }
 
     @Basic
+    @Column(name = "prop_code_name", nullable = true, length = 100)
+    public String getPropCodeName() {
+        return propCodeName;
+    }
+
+    public void setPropCodeName(String propCodeName) {
+        this.propCodeName = propCodeName;
+    }
+
+    @Basic
     @Column(name = "sku_num", nullable = true)
     public Integer getSkuNum() {
         return skuNum;
@@ -161,25 +172,25 @@ public class TbGoodsSku {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TbGoodsSku goodsSku = (TbGoodsSku) o;
-        return skuId == goodsSku.skuId &&
-                Objects.equals(goodsId, goodsSku.goodsId) &&
-                Objects.equals(skuName, goodsSku.skuName) &&
-                Objects.equals(trueMoney, goodsSku.trueMoney) &&
-                Objects.equals(nowMoney, goodsSku.nowMoney) &&
-                Objects.equals(skuCode, goodsSku.skuCode) &&
-                Objects.equals(propCode, goodsSku.propCode) &&
-                Objects.equals(skuNum, goodsSku.skuNum) &&
-                Objects.equals(skuImg, goodsSku.skuImg) &&
-                Objects.equals(purchasePrice, goodsSku.purchasePrice) &&
-                Objects.equals(shopId, goodsSku.shopId) &&
-                Objects.equals(sellCount, goodsSku.sellCount) &&
-                Objects.equals(status, goodsSku.status);
+        TbGoodsSku that = (TbGoodsSku) o;
+        return skuId == that.skuId &&
+                Objects.equals(goodsId, that.goodsId) &&
+                Objects.equals(skuName, that.skuName) &&
+                Objects.equals(trueMoney, that.trueMoney) &&
+                Objects.equals(nowMoney, that.nowMoney) &&
+                Objects.equals(skuCode, that.skuCode) &&
+                Objects.equals(propCode, that.propCode) &&
+                Objects.equals(propCodeName, that.propCodeName) &&
+                Objects.equals(skuNum, that.skuNum) &&
+                Objects.equals(skuImg, that.skuImg) &&
+                Objects.equals(purchasePrice, that.purchasePrice) &&
+                Objects.equals(shopId, that.shopId) &&
+                Objects.equals(sellCount, that.sellCount) &&
+                Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(skuId, goodsId, skuName, trueMoney, nowMoney, skuCode, propCode, skuNum, skuImg, purchasePrice, shopId, sellCount, status);
+        return Objects.hash(skuId, goodsId, skuName, trueMoney, nowMoney, skuCode, propCode, propCodeName, skuNum, skuImg, purchasePrice, shopId, sellCount, status);
     }
 }

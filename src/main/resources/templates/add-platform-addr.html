@@ -185,6 +185,9 @@
             return myAlertSimple("请输入负责人电话");
         }
         var sortChar = $("#sortChar").val()
+        if(sortChar == null || $.trim(sortChar) == ''){
+            return myAlertSimple("地址排序字母,大写A到Z");
+        }
         var az = /^[A-Z]{0,1}$/;
         if( !az.test($.trim(sortChar))){
             return myAlertSimple("地址排序字母,大写A到Z");

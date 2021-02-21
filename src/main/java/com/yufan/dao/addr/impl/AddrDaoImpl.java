@@ -5,6 +5,7 @@ import com.yufan.common.dao.IGeneralDao;
 import com.yufan.dao.addr.IAddrDao;
 import com.yufan.pojo.TbPlatformAddr;
 import com.yufan.pojo.TbRegion;
+import com.yufan.utils.CommonMethod;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -100,6 +101,18 @@ public class AddrDaoImpl implements IAddrDao {
         if (!"-1".equals(regionCondition.getRegionLevel()) && null != regionCondition.getRegionLevel()) {
             sql.append(" and `region_level`=" + regionCondition.getRegionLevel() + " ");
         }
+        if (!StringUtils.isEmpty(regionCondition.getRegionNameStr())) {
+            List<String> regionNameArray = CommonMethod.replaceSpecialChar(regionCondition.getRegionNameStr());
+            sql.append(" and (");
+            for (int i = 0; i < regionNameArray.size(); i++) {
+                if (i == regionNameArray.size() - 1) {
+                    sql.append(" region_name like '%").append(regionNameArray.get(i)).append("%' ");
+                } else {
+                    sql.append(" region_name like '%").append(regionNameArray.get(i)).append("%' ").append(" or ");
+                }
+            }
+            sql.append(" )");
+        }
         sql.append(" ORDER BY parent_id, region_level,region_order desc ");
 
         PageInfo pageInfo = new PageInfo();
@@ -138,7 +151,20 @@ public class AddrDaoImpl implements IAddrDao {
         }
         sql.append(" ORDER BY parent_id, region_level,region_order desc ");
         if (StringUtils.isEmpty(regionName)) {
-            sql.append(" limit 0,1000 ");
+            sql.append(" limit 0,50 ");
+        }
+        return iGeneralDao.getBySQLListMap(sql.toString());
+    }
+
+    @Override
+    public List<Map<String, Object>> findCheckGlobleAddrRegionCode(Integer id, String regionCode) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" SELECT region_id,region_code,region_name,region_shortname,parent_id,region_level,region_order,region_name_en,region_shortname_en,region_type, ");
+        sql.append(" createman,createtime,status,remark,CONCAT('',freight) as freight ");
+        sql.append(" from tb_region where 1=1 ");
+        sql.append(" and region_code='").append(regionCode).append("' ");
+        if (null != id && id > 0) {
+            sql.append(" and region_id !=").append(id).append("  ");
         }
         return iGeneralDao.getBySQLListMap(sql.toString());
     }

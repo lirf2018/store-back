@@ -52,6 +52,7 @@ public interface IAddrDao {
      */
     List<Map<String, Object>> loadRegionListMap(Integer status,String regionName,String regionCode);
 
+    List<Map<String, Object>> findCheckGlobleAddrRegionCode(Integer id,String regionCode);
     /**
      * 保存地址
      *
