@@ -120,9 +120,9 @@ public class GoodsDaoImpl implements IGoodsDao {
 
     @Override
     public void updateGoodsSku(TbGoodsSku goodsSku) {
-        String sql = " update tb_goods_sku set goods_id =? ,sku_name=? ,true_money=? ,now_money=? ,sku_code=?,prop_code=?,prop_code_name=?,sku_num=?,sku_img=?,purchase_price=? where sku_id=? ";
+        String sql = " update tb_goods_sku set goods_id =? ,sku_name=? ,true_money=? ,now_money=? ,sku_code=?,prop_code=?,prop_code_name=?,goods_spec_name_str=?,sku_num=?,sku_img=?,purchase_price=? where sku_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, goodsSku.getGoodsId(), goodsSku.getSkuName(), goodsSku.getTrueMoney(), goodsSku.getNowMoney(),
-                goodsSku.getSkuCode(), goodsSku.getPropCode(),goodsSku.getPropCodeName(), goodsSku.getSkuNum(), goodsSku.getSkuImg(), goodsSku.getPurchasePrice(), goodsSku.getSkuId());
+                goodsSku.getSkuCode(), goodsSku.getPropCode(),goodsSku.getPropCodeName(),goodsSku.getGoodsSpecNameStr(), goodsSku.getSkuNum(), goodsSku.getSkuImg(), goodsSku.getPurchasePrice(), goodsSku.getSkuId());
     }
 
     @Override

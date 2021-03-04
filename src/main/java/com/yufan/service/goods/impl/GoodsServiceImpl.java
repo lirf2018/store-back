@@ -190,12 +190,15 @@ public class GoodsServiceImpl implements IGoodsService {
             List<Map<String, Object>> listPropValue = iCategoryDao.loadPropValueByCategoryId(goods.getCategoryId());
             Map<String, String> mapPropValueName = new HashMap<>();
             Map<String, String> mapValueProp = new HashMap<>();
+            Map<String, String> mapItem = new HashMap<>();
             for (int i = 0; i < listPropValue.size(); i++) {
                 String key = listPropValue.get(i).get("value_id").toString();
-                String value = listPropValue.get(i).get("prop_id").toString();
                 String valueName = listPropValue.get(i).get("value_name").toString();
+                String value = listPropValue.get(i).get("prop_id").toString();
+                String itemName = listPropValue.get(i).get("prop_name").toString();
                 mapValueProp.put(key, value);
                 mapPropValueName.put(key, valueName);
+                mapItem.put(key, itemName);
             }
             //商品非销售属性
             String unsellProp = goodsDataObj.getUnsellPropId();
@@ -295,11 +298,13 @@ public class GoodsServiceImpl implements IGoodsService {
                 sku.setSkuId(Integer.parseInt(StringUtils.isEmpty(skuId) ? "0" : skuId));
                 sku.setStatus(1);
                 StringBuffer propCodeName = new StringBuffer();
+                StringBuffer propCodeNameStr = new StringBuffer();
                 for (int j = 0; j < valueIds.length; j++) {
                     propCodeName.append(mapPropValueName.get(valueIds[j])).append(";");
+                    propCodeNameStr.append(mapItem.get(valueIds[j])).append(":").append(mapPropValueName.get(valueIds[j])).append("; ");
                 }
-
                 sku.setPropCodeName(propCodeName.toString());
+                sku.setGoodsSpecNameStr(propCodeNameStr.toString());
                 if (sku.getSkuId() > 0) {
                     iGoodsDao.updateGoodsSku(sku);
                 } else {

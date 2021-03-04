@@ -237,7 +237,7 @@ public class CategoryDaoImpl implements ICategoryDao {
 
     @Override
     public List<Map<String, Object>> loadPropValueByCategoryId(int categoryId) {
-        String sql = " SELECT prop_id,value_id,value_name from tb_props_value where status=1 and category_id=? ";
+        String sql = " SELECT v.prop_id,v.value_id,v.value_name,item.prop_name from tb_props_value v JOIN tb_itemprops item on item.prop_id=v.prop_id and item.`status`=1 where v.status=1 and v.category_id=? ";
         return iGeneralDao.getBySQLListMap(sql, categoryId);
     }
 

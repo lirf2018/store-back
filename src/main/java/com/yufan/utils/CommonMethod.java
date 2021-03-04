@@ -56,4 +56,10 @@ public class CommonMethod {
         }
     }
 
+    public static void main(String[] args) {
+        String date = "2010-11-12";
+        System.out.println(date.substring(0,7));
+        System.out.println(date.substring(0,4));
+    }
+
 }

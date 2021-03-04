@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * @description:
  * @author: lirf
- * @time: 2021/2/20
+ * @time: 2021/3/4
  */
 @Entity
 @Table(name = "tb_goods_sku", schema = "store_db", catalog = "")
@@ -20,6 +20,7 @@ public class TbGoodsSku {
     private String skuCode;
     private String propCode;
     private String propCodeName;
+    private String goodsSpecNameStr;
     private Integer skuNum;
     private String skuImg;
     private BigDecimal purchasePrice;
@@ -109,6 +110,16 @@ public class TbGoodsSku {
     }
 
     @Basic
+    @Column(name = "goods_spec_name_str", nullable = true, length = 100)
+    public String getGoodsSpecNameStr() {
+        return goodsSpecNameStr;
+    }
+
+    public void setGoodsSpecNameStr(String goodsSpecNameStr) {
+        this.goodsSpecNameStr = goodsSpecNameStr;
+    }
+
+    @Basic
     @Column(name = "sku_num", nullable = true)
     public Integer getSkuNum() {
         return skuNum;
@@ -181,6 +192,7 @@ public class TbGoodsSku {
                 Objects.equals(skuCode, that.skuCode) &&
                 Objects.equals(propCode, that.propCode) &&
                 Objects.equals(propCodeName, that.propCodeName) &&
+                Objects.equals(goodsSpecNameStr, that.goodsSpecNameStr) &&
                 Objects.equals(skuNum, that.skuNum) &&
                 Objects.equals(skuImg, that.skuImg) &&
                 Objects.equals(purchasePrice, that.purchasePrice) &&
@@ -191,6 +203,6 @@ public class TbGoodsSku {
 
     @Override
     public int hashCode() {
-        return Objects.hash(skuId, goodsId, skuName, trueMoney, nowMoney, skuCode, propCode, propCodeName, skuNum, skuImg, purchasePrice, shopId, sellCount, status);
+        return Objects.hash(skuId, goodsId, skuName, trueMoney, nowMoney, skuCode, propCode, propCodeName, goodsSpecNameStr, skuNum, skuImg, purchasePrice, shopId, sellCount, status);
     }
 }
