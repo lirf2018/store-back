@@ -255,9 +255,8 @@ public class GoodsController {
      * 新增加商品页面
      */
     @RequestMapping("addGoodsPage")
-    public ModelAndView addGoodsPage(HttpServletRequest request, HttpServletResponse response, Integer goodsId) throws Exception {
+    public ModelAndView addGoodsPage(HttpServletRequest request, HttpServletResponse response, Integer goodsId, Integer editorFlag) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
-
         //查询参数列表
         List<TbParam> listParam = iParamCodeService.loadTbParamCodeList(Constants.DATA_STATUS_YX);
         //查询一级分类
@@ -326,6 +325,7 @@ public class GoodsController {
         modelAndView.addObject("listLevel", listLevel);
         modelAndView.addObject("shopList", shopList);
         modelAndView.addObject("skuList", skuList);
+        modelAndView.addObject("editorFlag",editorFlag );
         modelAndView.setViewName("add-goods");
         return modelAndView;
     }

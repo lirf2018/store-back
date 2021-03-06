@@ -38,7 +38,7 @@ public class TimeGoodsServiceImpl implements ITimeGoodsService {
     public int saveTimeGoods(TbTimeGoods timeGoods) {
         try {
             //设置商品为抢购商品
-            iGoodsDao.updateGoodsToTimeGoods(1, timeGoods.getGoodsId());
+            iGoodsDao.updateGoodsToTimeGoods(timeGoods.getGoodsId(),1 );
             //对同一个商品只能设置 一条有效的抢购
             if (timeGoods.getId() == 0) {
                 iTimeGoodsDao.deleteTimeGoods(timeGoods.getGoodsId(), 0);

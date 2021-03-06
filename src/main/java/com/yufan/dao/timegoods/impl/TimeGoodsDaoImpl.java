@@ -52,13 +52,13 @@ public class TimeGoodsDaoImpl implements ITimeGoodsDao {
 
     @Override
     public void updateTimeGoodsStatus(int timeGoodsId, int status) {
-        String sql = " update tb_time_goods set `status`=? where id = ? ";
+        String sql = " update tb_time_goods set `status`=?,lastaltertime=now() where id = ? ";
         iGeneralDao.executeUpdateForSQL(sql, status, timeGoodsId);
     }
 
     @Override
     public void deleteTimeGoods(int goodsId, int status) {
-        String sql = " update tb_time_goods set status=? where goods_id=? ";
+        String sql = " update tb_time_goods set status=?,lastaltertime=now() where goods_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, status, goodsId);
     }
 }

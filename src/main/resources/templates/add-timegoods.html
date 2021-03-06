@@ -79,6 +79,8 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <input type="hidden" id="goodsId" th:value="${goods.goodsId}">
     <input type="hidden" id="timeGoodsId" th:value="${timeGoods.id}">
+    <input type="hidden" id="nowPrice" th:value="${goods.nowMoney}">
+    <input type="hidden" id="advancePrice" th:value="${goods.advancePrice}">
 
     <div class="row">
         <table class="table table-hover table-bordered">
@@ -230,6 +232,10 @@
         if(!numAndpoint(timePrice)){
             return myAlertSimple("非法抢购价");
         }
+        var nowPrice = $("#nowPrice").val();
+        if (timePrice > nowPrice) {
+            return myAlertSimple("抢购价不能大于商品销售价格");
+        }
 
         if(beginTime == null || beginTime == ''){
             return myAlertSimple("开始时间不能为空");
@@ -243,11 +249,13 @@
         if(limitBeginTime == null || limitBeginTime == ''){
             return myAlertSimple("限购统计开始时间不能为空");
         }
-
         if(timeWay == -1){
             return myAlertSimple("选择限购方式");
         }
-
+        var advancePrice = $("#advancePrice").val();
+        if (advancePrice > timePrice) {
+            return myAlertSimple("抢购价不能小于对应商品的预付款, 请在商品详情页面修改预付款");
+        }
         var data = {
             "id":timeGoodsId,
             "goodsId":goodsId,

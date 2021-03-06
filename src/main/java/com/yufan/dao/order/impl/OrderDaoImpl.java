@@ -87,7 +87,7 @@ public class OrderDaoImpl implements IOrderDao {
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT d.order_id,d.detail_id,d.goods_id,d.goods_name,d.goods_spec_name,d.goods_count,CONCAT(d.sale_money,'') as sale_money,CONCAT(d.time_price,'') as time_price,CONCAT(d.deposit_price,'') as deposit_price,d.get_addr_name, ");
         sql.append(" DATE_FORMAT(d.get_time,'%Y-%m-%d %T') as get_time,d.back_addr_name,DATE_FORMAT(d.back_time,'%Y-%m-%d %T') as back_time,p.param_value as detail_status_name,if(d.is_coupon=1,'是','否') as is_coupon,d.detail_status ");
-        sql.append(" ,d.goods_spec,CONCAT(d.goods_true_money,'') as goods_true_money,CONCAT(d.goods_purchase_price,'') as goods_purchase_price ");
+        sql.append(" ,d.goods_spec,CONCAT(d.goods_true_money,'') as goods_true_money,CONCAT(d.goods_purchase_price,'') as goods_purchase_price,d.time_goods_id,if(d.time_goods_id>0,'是','否') as is_time_goods ");
         sql.append("  from tb_order_detail d ");
         sql.append(" LEFT JOIN tb_param p on p.param_code='detail_status' and p.param_key=d.detail_status and p.`status`=1 where order_id=? ");
         return iGeneralDao.getBySQLListMap(sql.toString(), orderId);

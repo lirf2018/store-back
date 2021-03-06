@@ -196,6 +196,8 @@ public class TimeGoodsController {
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             timeGoods.setCreatetime(new Timestamp(new Date().getTime()));
             timeGoods.setCreateman(user.getLoginName());
+            timeGoods.setLastalterman("");
+            timeGoods.setLastaltertime(new Timestamp(new Date().getTime()));
             iTimeGoodsService.saveTimeGoods(timeGoods);
             writer.print(out);
             writer.close();

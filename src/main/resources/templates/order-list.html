@@ -120,8 +120,8 @@
                     <th>规格名称</th>
                     <th>销售价格</th>
                     <th>购买数</th>
-                    <th>抢购价格</th>
                     <th>押金</th>
+                    <th>是否抢购</th>
                     <th>领取时间</th>
                     <th>归还时间</th>
                     <th>是否卡券</th>
@@ -336,8 +336,8 @@
                     {data: 'goods_spec_name'},
                     {data: 'sale_money'},
                     {data: 'goods_count'},
-                    {data: 'time_price'},
                     {data: 'deposit_price'},
+                    {data: 'is_time_goods'},
                     {
                         data: function (obj) {
                             return obj.get_time==null?"":obj.get_time;

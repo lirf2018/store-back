@@ -104,7 +104,7 @@
                                 <option th:each="s:${shopList}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
                             </select>
                             <input type="button" class="btn btn-primary" value="查询" onclick="searchData()">
-                            <button class="btn btn-success" type="button" onclick="addOrUpdateData(0)"><i class=""></i><span class="bold">新增</span></button>
+                            <button class="btn btn-success" type="button" onclick="addOrUpdateData(0,1)"><i class=""></i><span class="bold">新增</span></button>
                         </div>
                     </div>
                     <div>&nbsp;</div>
@@ -228,7 +228,10 @@
                     data: 'goods_id'
                 }
                 , {
-                    data: 'goods_name'
+                    data: function (obj) {
+                        var goodsName = obj.goods_name;
+                        return "<a href='javaScript:addOrUpdateData("+obj.goods_id+",0)'>"+goodsName+"</a>";
+                    }
                 }
                 , {
                     data: function (obj) {
@@ -370,7 +373,7 @@
                         var html = "";
                         if(data.is_putaway == '0'){
                             html = html + "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='setSellGoods(" + data.goods_id + ",2)'><i class='fa fa-check'></i> 上架</button>&nbsp;&nbsp;";
-                            html = html + "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData(" + data.goods_id + ")'><i class='fa fa-paste'></i> 编辑</button>&nbsp;&nbsp;";
+                            html = html + "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData(" + data.goods_id + ",1)'><i class='fa fa-paste'></i> 编辑</button>&nbsp;&nbsp;";
                             html = html + "<button class='btn btn-info btn-danger' data-value='" + data + "' type='button' onclick='updateGoodsStatus(" + data.goods_id + ",0)'><i class='fa fa-warning'></i> 删除</button>&nbsp;&nbsp;";
                         }else{
                             html = html + "<button class='btn btn-info btn-warning' data-value='" + data + "' type='button' onclick='setSellGoods(" + data.goods_id + ",0)'><i class='fa fa-warning'></i> 下架</button>&nbsp;&nbsp;";
@@ -430,12 +433,6 @@
         table.draw({
             start: 0
         });
-    }
-
-
-    //跳转到查询详情
-    function addOrUpdateData(id) {
-        window.location.href = "category/addLevelPage?goodsId=" + id;
     }
 
     //保存一份追加详情的html
@@ -498,7 +495,7 @@
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: "取消",
+            confirmButtonText: "确认",
             closeOnConfirm: false
         }, function () {
             $.ajax({
@@ -578,8 +575,8 @@
     }
 
     //增加或者编辑
-    function addOrUpdateData(goodsId) {
-        window.location.href = "goods/addGoodsPage?goodsId=" + goodsId ;
+    function addOrUpdateData(goodsId,editorFlag) {
+        window.location.href = "goods/addGoodsPage?goodsId=" + goodsId + "&editorFlag=" + editorFlag;
     }
 
     var categoryHtml = $("#categoryId").html();

@@ -99,7 +99,7 @@
 <div class="wrapper wrapper-content animated">
     <input type="hidden" id="goodsId" th:value="${goods.goodsId}">
     <input type="hidden" id="img" th:value="${goods.goodsImg}">
-    <div class="row">
+    <div class="row" id="app">
         <table class="table table-hover table-bordered">
             <tbody>
             <tr>
@@ -436,7 +436,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <input type="button" value="返回列表" onclick="javascript:window.location.href = 'goods/goodsPage'" class="btn btn-info">
+                    <input id="myBtn" type="button" value="返回列表" onclick="javascript:window.location.href = 'goods/goodsPage'" class="btn btn-info">
                     <input type="button" value="保存并继续添加" class="btn btn-success btn-save" data-mark="1" th:if="${goods.goodsId == null || goods.goodsId == 0}">
                     <input type="button" value="保存" class="btn btn-success btn-save" data-mark="0">
                 </td>
@@ -472,6 +472,27 @@
 <script src="js/plugins/summernote/dist/summernote.js"></script>
 <script src="js/plugins/summernote/summernote-zh-CN.js"></script>
 <script th:inline="javascript">
+
+    var editorFlag = [[${editorFlag}]];
+    if(editorFlag == 0){
+        // $('').attr("disabled",true);
+        // $(function(){ $('input[type="text"]').attr('disabled','disabled'); });
+        // $(function(){ $('input[type="button"]').attr('disabled','disabled'); });
+        $(function(){
+            $("select").each(function () {
+                $(this).attr("disabled","disabled");
+            });
+            $("textarea").each(function () {
+                $(this).attr("disabled","disabled");
+            });
+            $("input").each(function () {
+                $(this).attr("disabled","disabled");
+            });
+            $('#app').css("pointer-events","none")
+            $('#myBtn').css("pointer-events","auto")
+            $('#myBtn').removeAttr("disabled");
+        });
+    }
 
      //$(document).ready(function () {
         var $summernote = $('.summernote').summernote({
@@ -767,10 +788,21 @@
                     myAlertSimple("商品sku销售价格不能大于sku原价");
                     return;
                 }
-
+                if(advancePrice>skuNowMoney){
+                    myAlertSimple(" 商品预付款不能大于商品sku现价");
+                    return;
+                }
             }
-
         }
+
+        if (skuNowMoney == "" || skuNowMoney == null){
+            if(advancePrice>nowMoney){
+                myAlertSimple(" 商品预付款不能大于商品现价");
+                return;
+            }
+        }
+
+
         if(null == goodsImg || goodsImg == ''){
             goodsImg = "null.jpg";
         }
