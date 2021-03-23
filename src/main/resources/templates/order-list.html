@@ -86,12 +86,14 @@
                                     <th>订单号</th>
                                     <th>订单数量</th>
                                     <th>订单价格</th>
+                                    <th>实付价格</th>
+                                    <th>优惠价格</th>
                                     <th>支付方式</th>
                                     <th>支付时间</th>
                                     <th>预付款价格</th>
-                                    <th>预付款方式</th>
-                                    <th>预付款时间</th>
-                                    <th>快递价格</th>
+<!--                                    <th>预付款方式</th>-->
+<!--                                    <th>预付款时间</th>-->
+                                    <th>邮费</th>
                                     <th>收货人</th>
                                     <th>手机号</th>
                                     <th>业务类型</th>
@@ -200,6 +202,12 @@
                         data: 'order_price'
                     }
                     ,{
+                        data: 'real_price'
+                    }
+                    ,{
+                        data: 'discounts_price'
+                    }
+                    ,{
                         data: function (obj) {
                             return obj.pay_way_name==null?"":obj.pay_way_name;
                         }
@@ -212,16 +220,16 @@
                     ,{
                         data: 'advance_price'
                     }
-                    ,{
-                        data: function (obj) {
-                            return obj.advance_pay_way_name==null?"":obj.advance_pay_way_name;
-                        }
-                    }
-                    ,{
-                        data: function (obj) {
-                            return obj.advance_pay_time==null?"":obj.advance_pay_time;
-                        }
-                    }
+                    // ,{
+                    //     data: function (obj) {
+                    //         return obj.advance_pay_way_name==null?"":obj.advance_pay_way_name;
+                    //     }
+                    // }
+                    // ,{
+                    //     data: function (obj) {
+                    //         return obj.advance_pay_time==null?"":obj.advance_pay_time;
+                    //     }
+                    // }
                     ,{
                         data: 'post_price'
                     }

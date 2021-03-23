@@ -262,14 +262,20 @@ public class GoodsServiceImpl implements IGoodsService {
                 }
             }
 
-            boolean isSingle = false;
+            BigDecimal lowPurchasePrice = goods.getPurchasePrice();
+            BigDecimal lowTrueMoney = goods.getTrueMoney();
+            BigDecimal lowNowMoney = goods.getNowMoney();
+            int count = 0;
+
+
+            boolean isSingle = true;//单品0
             Map<String, String> mapValueIds = new HashMap<>();
             out = CommonMethod.packagMsg("goods_exception_02");
             for (int i = 0; i < skuPurchasePriceArray.length; i++) {
                 if (StringUtils.isEmpty(skuPurchasePriceArray[i])) {
                     continue;
                 }
-                isSingle = true;//单品0
+                isSingle = false;
                 String skuCode = skuCodeArray[i].trim();
                 String skuPurchasePrice = skuPurchasePriceArray[i].trim();
                 String skuTrueMoney = skuTrueMoneyArray[i].trim();
@@ -310,12 +316,23 @@ public class GoodsServiceImpl implements IGoodsService {
                 } else {
                     iGoodsDao.saveObject(sku);
                 }
+                if (lowNowMoney.compareTo(sku.getNowMoney()) > 0) {
+                    lowNowMoney = sku.getNowMoney();
+                    lowPurchasePrice = sku.getPurchasePrice();
+                    lowTrueMoney = sku.getTrueMoney();
+                }
+                count = count + sku.getSkuNum();
             }
 
-            if (isSingle) {
-                //非单品
+            if (!isSingle) {
+                //非单品 sku
                 iGoodsDao.updateGoodsSingle(goods.getGoodsId(), 0);
-
+                goods.setNowMoney(lowNowMoney);
+                goods.setPurchasePrice(lowPurchasePrice);
+                goods.setTrueMoney(lowTrueMoney);
+                goods.setGoodsNum(count);
+                goods.setIsSingle(0);
+                iGoodsDao.updateObject(goods);
             } else {
                 //单品
                 iGoodsDao.updateGoodsSkuStatus(goods.getGoodsId(), 0);

@@ -59,7 +59,7 @@
                 <td class="tableContent"></td>
             </tr>
             <tr>
-                <td class="tableLeft">订单支付总价</td>
+                <td class="tableLeft">订单总价</td>
                 <td class="tableContent"><span th:text="${order.orderPrice}"></span></td>
                 <td class="tableLeft">支付方式</td>
                 <td class="tableContent"><span th:text="${pay_way_name}"></span></td>
@@ -69,7 +69,7 @@
                 <td class="tableContent"><span th:text="${order.orderId}"></span></td>
             </tr>
             <tr>
-                <td class="tableLeft">订单实际总价</td>
+                <td class="tableLeft">支付总价</td>
                 <td class="tableContent"><span th:text="${order.realPrice}"></span></td>
                 <td class="tableLeft">支付交易号</td>
                 <td class="tableContent"><span th:text="${order.payCode}"></span></td>
@@ -106,7 +106,7 @@
                 <td class="tableLeft">配送人员电话</td>
                 <td class="tableContent"><span th:text="${order.postPhone}"></span></td>
                 <td class="tableLeft">优惠券标识</td>
-                <td class="tableContent"><span th:text="${order.discountsPrice}"></span></td>
+                <td class="tableContent"><span th:text="${order.discountsId}"></span></td>
             </tr>
             <tr>
                 <td class="tableLeft">收货人手机号</td>
