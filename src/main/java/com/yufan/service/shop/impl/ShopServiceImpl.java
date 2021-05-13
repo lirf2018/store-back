@@ -57,7 +57,7 @@ public class ShopServiceImpl implements IShopService {
             Integer shopId = shop.getShopId();
             if (null != shopId && shopId > 0) {
                 //删除已保存的图片
-                iCommonRelDao.deletRelImg(shop.getShopId(), Constants.IMGTYPE_SHOP_INFO, Constants.CLASSIFY_SHOP);
+                iCommonRelDao.deletRelImg(shop.getShopId(), Constants.IMG_TYPE_SHOP_INFO, Constants.IMG_CLASSIFY_SHOP);
             }
             //保存店铺
             shopId = iShopJpaDao.save(shop).getShopId();
@@ -65,8 +65,8 @@ public class ShopServiceImpl implements IShopService {
             //保存图片
             for (int i = 0; i < listImg.size(); i++) {
                 TbImg img = listImg.get(i);
-                img.setImgType(Constants.IMGTYPE_SHOP_INFO);
-                img.setImgClassify(Constants.CLASSIFY_SHOP);
+                img.setImgType(Constants.IMG_TYPE_SHOP_INFO);
+                img.setImgClassify(Constants.IMG_CLASSIFY_SHOP);
                 img.setRelateId(shopId);
                 img.setCreatetime(new Timestamp(new Date().getTime()));
                 img.setStatus(1);

@@ -128,7 +128,7 @@ public class OrderDaoImpl implements IOrderDao {
     @Override
     public void updateOrderStatus(int orderId, int status, String serviceRemark, String lastalterman) {
         String sql = " update tb_order set order_status=?,lastaltertime=NOW(),service_remark=?,lastalterman=?,user_read_mark=1 where order_id=? ";
-        if (Constants.ORDER_STATUS_FINISH == status) {
+        if (Constants.ORDER_STATUS_6 == status) {
             sql = " update tb_order set order_status=?,lastaltertime=NOW(),service_remark=?,finish_time=NOW(),lastalterman=?,user_read_mark=1 where order_id=? ";
         }
         iGeneralDao.executeUpdateForSQL(sql, status, serviceRemark, lastalterman, orderId);

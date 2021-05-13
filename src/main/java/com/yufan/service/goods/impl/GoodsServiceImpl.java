@@ -90,7 +90,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 TbImg img = new TbImg();
                 img.setImgSort(5);
                 img.setImgUrl(img5);
-                img.setImgType(Constants.IMGTYPE_GOODS_BANNER);
+                img.setImgType(Constants.IMG_TYPE_GOODS_BANNER);
                 listImg.add(img);
             }
             String img6 = goodsDataObj.getImg6();
@@ -98,7 +98,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 TbImg img = new TbImg();
                 img.setImgSort(6);
                 img.setImgUrl(img6);
-                img.setImgType(Constants.IMGTYPE_GOODS_BANNER);
+                img.setImgType(Constants.IMG_TYPE_GOODS_BANNER);
                 listImg.add(img);
             }
             String img7 = goodsDataObj.getImg7();
@@ -106,7 +106,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 TbImg img = new TbImg();
                 img.setImgSort(7);
                 img.setImgUrl(img7);
-                img.setImgType(Constants.IMGTYPE_GOODS_BANNER);
+                img.setImgType(Constants.IMG_TYPE_GOODS_BANNER);
                 listImg.add(img);
             }
             String img8 = goodsDataObj.getImg8();
@@ -114,7 +114,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 TbImg img = new TbImg();
                 img.setImgSort(8);
                 img.setImgUrl(img8);
-                img.setImgType(Constants.IMGTYPE_GOODS_BANNER);
+                img.setImgType(Constants.IMG_TYPE_GOODS_BANNER);
                 listImg.add(img);
             }
             //介绍图片
@@ -123,7 +123,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 TbImg img = new TbImg();
                 img.setImgSort(9);
                 img.setImgUrl(img9);
-                img.setImgType(Constants.IMGTYPE_GOODS_INFO);
+                img.setImgType(Constants.IMG_TYPE_GOODS_INFO);
                 listImg.add(img);
             }
             String img10 = goodsDataObj.getImg10();
@@ -131,7 +131,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 TbImg img = new TbImg();
                 img.setImgSort(10);
                 img.setImgUrl(img10);
-                img.setImgType(Constants.IMGTYPE_GOODS_INFO);
+                img.setImgType(Constants.IMG_TYPE_GOODS_INFO);
                 listImg.add(img);
             }
             String img11 = goodsDataObj.getImg11();
@@ -139,7 +139,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 TbImg img = new TbImg();
                 img.setImgSort(11);
                 img.setImgUrl(img11);
-                img.setImgType(Constants.IMGTYPE_GOODS_INFO);
+                img.setImgType(Constants.IMG_TYPE_GOODS_INFO);
                 listImg.add(img);
             }
             String img12 = goodsDataObj.getImg12();
@@ -147,7 +147,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 TbImg img = new TbImg();
                 img.setImgSort(12);
                 img.setImgUrl(img12);
-                img.setImgType(Constants.IMGTYPE_GOODS_INFO);
+                img.setImgType(Constants.IMG_TYPE_GOODS_INFO);
                 listImg.add(img);
             }
             //保存商品
@@ -178,7 +178,7 @@ public class GoodsServiceImpl implements IGoodsService {
             //保存商品图片
             for (int i = 0; i < listImg.size(); i++) {
                 TbImg img = listImg.get(i);
-                img.setImgClassify(Constants.CLASSIFY_GOODS);
+                img.setImgClassify(Constants.IMG_CLASSIFY_GOODS);
                 img.setRelateId(goods.getGoodsId());
                 img.setCreatetime(new Timestamp(new Date().getTime()));
                 img.setStatus(1);
