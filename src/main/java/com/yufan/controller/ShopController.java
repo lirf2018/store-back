@@ -11,6 +11,7 @@ import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
 import com.yufan.utils.DatetimeUtil;
 import com.yufan.utils.PageInfo;
+import io.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -209,25 +210,35 @@ public class ShopController {
             //添加图片
             List<TbImg> listImg = new ArrayList<>();
             String img1 = request.getParameter("img1");
-            TbImg imgObj1 = new TbImg();
-            imgObj1.setImgUrl(img1);
-            imgObj1.setImgSort(1);
-            listImg.add(imgObj1);
+            if (!StringUtils.isEmpty(img1)) {
+                TbImg imgObj1 = new TbImg();
+                imgObj1.setImgUrl(img1);
+                imgObj1.setImgSort(1);
+                listImg.add(imgObj1);
+            }
             String img2 = request.getParameter("img2");
-            TbImg imgObj2 = new TbImg();
-            imgObj2.setImgUrl(img2);
-            imgObj2.setImgSort(2);
-            listImg.add(imgObj2);
+            if (!StringUtils.isEmpty(img2)) {
+                TbImg imgObj2 = new TbImg();
+                imgObj2.setImgUrl(img2);
+                imgObj2.setImgSort(2);
+                listImg.add(imgObj2);
+            }
+
             String img3 = request.getParameter("img3");
-            TbImg imgObj3 = new TbImg();
-            imgObj3.setImgUrl(img3);
-            imgObj3.setImgSort(3);
-            listImg.add(imgObj3);
+            if (!StringUtils.isEmpty(img3)) {
+                TbImg imgObj3 = new TbImg();
+                imgObj3.setImgUrl(img3);
+                imgObj3.setImgSort(3);
+                listImg.add(imgObj3);
+            }
             String img4 = request.getParameter("img4");
-            TbImg imgObj4 = new TbImg();
-            imgObj4.setImgUrl(img4);
-            imgObj4.setImgSort(4);
-            listImg.add(imgObj4);
+            if (!StringUtils.isEmpty(img4)) {
+                TbImg imgObj4 = new TbImg();
+                imgObj4.setImgUrl(img4);
+                imgObj4.setImgSort(4);
+                listImg.add(imgObj4);
+            }
+
             out = StringUtils.isEmpty(shopId) || "0".equals(shopId) ? CommonMethod.packagMsg("6") : CommonMethod.packagMsg("5");
             iShopService.saveShop(shop, listImg);
             writer.print(out);

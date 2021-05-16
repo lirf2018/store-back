@@ -3,6 +3,7 @@ package com.yufan.service.complain.impl;
 import com.yufan.bean.ComplainCondition;
 import com.yufan.dao.complain.IComplainDao;
 import com.yufan.pojo.TbBanner;
+import com.yufan.pojo.TbComplain;
 import com.yufan.service.complain.IComplainService;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,8 @@ public class ComplainServiceImpl implements IComplainService {
         iComplainDao.updateAnswer(complainId,answer);
     }
 
-
+    @Override
+    public TbComplain loadComplain(int id) {
+        return iComplainDao.loadComplain(id);
+    }
 }

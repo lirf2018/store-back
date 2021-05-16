@@ -165,7 +165,11 @@
                 }
                 ,{
                     data: function (obj) {
-                        return obj.contents==null?"":obj.contents;
+                        let str = obj.contents;
+                        if(null!=str&& str.length>20){
+                            str = obj.contents.substring(0,19)+"..."
+                        }
+                        return "<a style='cursor:pointer' href='javascript:toPageInfo("+obj.id+")'>"+str+"</a>";
                     }
                 }
                 ,{
@@ -287,6 +291,10 @@
                 }
             }
         });
+    }
+
+    function toPageInfo(id) {
+        window.location.href = "complain/complainInfo?id="+id;
     }
 
 

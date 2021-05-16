@@ -3,10 +3,15 @@ package com.yufan.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.bean.ComplainCondition;
 import com.yufan.pojo.TbAdmin;
+import com.yufan.pojo.TbComplain;
+import com.yufan.pojo.TbInfo;
 import com.yufan.pojo.TbShop;
+import com.yufan.service.commonrel.ICommonRelService;
 import com.yufan.service.complain.IComplainService;
 import com.yufan.service.shop.IShopService;
 import com.yufan.utils.CommonMethod;
+import com.yufan.utils.Constants;
+import com.yufan.utils.DatetimeUtil;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +22,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 创建人: lirf
@@ -35,6 +42,9 @@ public class ComplainController {
     @Autowired
     private IShopService iShopService;
 
+    @Autowired
+    private ICommonRelService iCommonRelService;
+
     /**
      * 管理页面
      *
@@ -47,12 +57,12 @@ public class ComplainController {
         //查询店铺
         List<TbShop> shopList = new ArrayList<>();
         TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
-        if("admin".equals(user.getLoginName())){
+        if ("admin".equals(user.getLoginName())) {
             shopList = iShopService.findShopAll();
-        }else{
+        } else {
             shopList = iShopService.findShopAll(user.getShopId());
         }
-        modelAndView.addObject("shopList",shopList);
+        modelAndView.addObject("shopList", shopList);
         modelAndView.setViewName("complain-list");
         return modelAndView;
     }
@@ -66,7 +76,7 @@ public class ComplainController {
     @RequestMapping("loadComplainPageData")
     public void loadPageData(HttpServletRequest request, HttpServletResponse response, ComplainCondition complainCondition) {
         PrintWriter writer = null;
-        try{
+        try {
             writer = response.getWriter();
             PageInfo pageInfo = new PageInfo();
             int pageSize = pageInfo.getPageSize();
@@ -79,7 +89,7 @@ public class ComplainController {
             }
             //条件
             String userId = request.getParameter("userId");
-            if(!StringUtils.isEmpty(userId.trim())){
+            if (!StringUtils.isEmpty(userId.trim())) {
                 complainCondition.setUserId(Integer.parseInt(userId.trim()));
             }
             String information = request.getParameter("information");
@@ -87,15 +97,15 @@ public class ComplainController {
             String contents = request.getParameter("contents");
             complainCondition.setContents(contents);
             String status = request.getParameter("status");
-            if(!"-1".equals(status)){
+            if (!"-1".equals(status)) {
                 complainCondition.setStatus(Integer.parseInt(status));
             }
             String isRead = request.getParameter("isRead");
-            if(!"-1".equals(isRead)){
+            if (!"-1".equals(isRead)) {
                 complainCondition.setIsRead(Integer.parseInt(isRead));
             }
             String complainType = request.getParameter("complainType");
-            if(!"-1".equals(complainType)){
+            if (!"-1".equals(complainType)) {
                 complainCondition.setComplainType(Integer.parseInt(complainType));
             }
 
@@ -111,7 +121,7 @@ public class ComplainController {
             dataJson.put("data", pageInfo.getResultListMap());
             writer.print(dataJson);
             writer.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -121,15 +131,15 @@ public class ComplainController {
      * 修改数据状态
      */
     @RequestMapping("updateComplainStatus")
-    public void updateDataStatus(HttpServletRequest request, HttpServletResponse response,Integer complainId,Integer status){
+    public void updateDataStatus(HttpServletRequest request, HttpServletResponse response, Integer complainId, Integer status) {
         PrintWriter writer = null;
-        try{
+        try {
             writer = response.getWriter();
             JSONObject out = CommonMethod.packagMsg("3");
-            iComplainService.updateComplainStatus(complainId,status);
+            iComplainService.updateComplainStatus(complainId, status);
             writer.print(out);
             writer.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -139,15 +149,15 @@ public class ComplainController {
      * 修改数据已读
      */
     @RequestMapping("updateComplainIsRead")
-    public void updateDataIsRead(HttpServletRequest request, HttpServletResponse response,Integer complainId,Integer isRead){
+    public void updateDataIsRead(HttpServletRequest request, HttpServletResponse response, Integer complainId, Integer isRead) {
         PrintWriter writer = null;
-        try{
+        try {
             writer = response.getWriter();
             JSONObject out = CommonMethod.packagMsg("17");
-            iComplainService.updateComlpainIsRead(complainId,isRead);
+            iComplainService.updateComlpainIsRead(complainId, isRead);
             writer.print(out);
             writer.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -156,17 +166,52 @@ public class ComplainController {
      * 回复
      */
     @RequestMapping("updateAnswer")
-    public void updateDataAnswer(HttpServletRequest request, HttpServletResponse response,Integer complainId,String answer){
+    public void updateDataAnswer(HttpServletRequest request, HttpServletResponse response, Integer complainId, String answer) {
         PrintWriter writer = null;
-        try{
+        try {
             writer = response.getWriter();
             JSONObject out = CommonMethod.packagMsg("1");
-            iComplainService.updateAnswer(complainId,answer);
+            iComplainService.updateAnswer(complainId, answer);
             writer.print(out);
             writer.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 新增加页面
+     */
+    @RequestMapping("complainInfo")
+    public ModelAndView complainInfo(HttpServletRequest request, HttpServletResponse response, Integer id) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
+        if (null == id || id == 0 || !"admin".equals(user.getLoginName())) {
+            modelAndView.setViewName("404");
+            return modelAndView;
+        }
+
+        if (!"admin".equals(user.getLoginName())) {
+            modelAndView.setViewName("404");
+            return modelAndView;
+        }
+
+        TbComplain complain = iComplainService.loadComplain(id);
+        //查询关联图片
+        List<String> outImgList = new ArrayList<>();
+        List<Map<String, Object>> listImg = iCommonRelService.queryTableRelImg(null, id, Constants.IMG_CLASSIFY_SUGGEST);
+        if (listImg.size() > 0) {
+            for (int i = 0; i < listImg.size(); i++) {
+                String imgUrl = listImg.get(i).get("img_url") == null ? "" : listImg.get(i).get("img_url").toString();
+                outImgList.add(Constants.IMG_WEB_URL + imgUrl);
+            }
+        }
+        modelAndView.addObject("webImg", Constants.IMG_WEB_URL);
+        modelAndView.addObject("complain", complain);
+        modelAndView.addObject("outImgList", outImgList);
+        modelAndView.setViewName("complain-info");
+        return modelAndView;
     }
 
 }

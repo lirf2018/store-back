@@ -2,6 +2,7 @@ package com.yufan.dao.complain;
 
 import com.yufan.bean.ComplainCondition;
 import com.yufan.pojo.TbBanner;
+import com.yufan.pojo.TbComplain;
 import com.yufan.utils.PageInfo;
 
 /**
@@ -47,5 +48,7 @@ public interface IComplainDao {
      */
     void updateAnswer(int complainId, String answer);
 
+
+    TbComplain loadComplain(int id);
 
 }

@@ -3,6 +3,7 @@ package com.yufan.service.complain;
 import com.yufan.bean.BannerCondition;
 import com.yufan.bean.ComplainCondition;
 import com.yufan.pojo.TbBanner;
+import com.yufan.pojo.TbComplain;
 import com.yufan.utils.PageInfo;
 
 /**
@@ -46,6 +47,9 @@ public interface IComplainService {
      * @param answer
      */
     void updateAnswer(int complainId, String answer);
+
+
+    TbComplain loadComplain(int id);
 
 
 }

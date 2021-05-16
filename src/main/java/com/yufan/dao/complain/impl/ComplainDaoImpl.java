@@ -3,6 +3,7 @@ package com.yufan.dao.complain.impl;
 import com.yufan.bean.ComplainCondition;
 import com.yufan.common.dao.IGeneralDao;
 import com.yufan.dao.complain.IComplainDao;
+import com.yufan.pojo.TbComplain;
 import com.yufan.utils.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +76,11 @@ public class ComplainDaoImpl implements IComplainDao {
     public void updateAnswer(int complainId, String answer) {
         String sql = " update tb_complain set answer=? ,is_read=1,lastaltertime=NOW()  WHERE id=? ";
         iGeneralDao.executeUpdateForSQL(sql, answer, complainId);
+    }
+
+    @Override
+    public TbComplain loadComplain(int id) {
+        String hql = " from TbComplain where id=?1 ";
+        return iGeneralDao.queryUniqueByHql(hql, id);
     }
 }
