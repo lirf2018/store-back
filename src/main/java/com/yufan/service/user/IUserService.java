@@ -2,6 +2,7 @@ package com.yufan.service.user;
 
 import com.yufan.bean.AdminCondition;
 import com.yufan.pojo.TbAdmin;
+import com.yufan.pojo.TbMemberId;
 import com.yufan.pojo.TbUserRole;
 import com.yufan.utils.PageInfo;
 
@@ -37,4 +38,12 @@ public interface IUserService {
      */
     public void updateLoginPasswd(String newPasswd,int loginId);
 
+
+    PageInfo loadMemberIdPage(int currePage, TbMemberId memberId);
+
+    boolean checkMemberCode(String memberId);
+
+    void saveObj(Object obj);
+
+    void deleteMemberCode(Integer id);
 }

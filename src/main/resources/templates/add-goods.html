@@ -583,6 +583,10 @@
             $("#goodsName").focus();
             return myAlertSimple("商品名称不能为空");
         }
+        if(goodsName.length>24){
+            $("#goodsName").focus();
+            return myAlertSimple("商品名称不能超过24个汉字");
+        }
         if(title == ''){
             $("#title").focus();
             return myAlertSimple("商品title不能为空");

@@ -332,6 +332,10 @@
             $("#goodsName").focus();
             return myAlertSimple("商品名称不能为空");
         }
+        if(goodsName.length>24){
+            $("#goodsName").focus();
+            return myAlertSimple("商品名称不能超过24个汉字");
+        }
         var regNum=/^[0-9]*$/;
         if(!regNum.test($.trim(dataIndex))){
             $("#dataIndex").focus();

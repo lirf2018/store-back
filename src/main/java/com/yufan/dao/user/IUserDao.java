@@ -2,6 +2,7 @@ package com.yufan.dao.user;
 
 
 import com.yufan.bean.AdminCondition;
+import com.yufan.pojo.TbMemberId;
 import com.yufan.pojo.TbUserRole;
 import com.yufan.utils.PageInfo;
 
@@ -40,12 +41,14 @@ public interface IUserDao {
 
     /**
      * 删除用户角色
+     *
      * @param adminId
      */
     public void delUserRole(int adminId);
 
     /**
      * 保存
+     *
      * @param object
      * @return
      */
@@ -53,8 +56,17 @@ public interface IUserDao {
 
     /**
      * 修改登录用户密码
+     *
      * @param newPasswd
      * @param loginId
      */
-    public void updateLoginPasswd(String newPasswd,int loginId);
+    public void updateLoginPasswd(String newPasswd, int loginId);
+
+    PageInfo loadMemberIdPage(int currePage, TbMemberId memberId);
+
+    boolean checkMemberCode(String memberId);
+
+    void saveObj(Object object);
+
+    void deleteMemberCode(Integer id);
 }

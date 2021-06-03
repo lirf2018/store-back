@@ -2,10 +2,7 @@ package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.bean.AdminCondition;
-import com.yufan.pojo.TbAdmin;
-import com.yufan.pojo.TbRole;
-import com.yufan.pojo.TbShop;
-import com.yufan.pojo.TbUserRole;
+import com.yufan.pojo.*;
 import com.yufan.service.role.IRoleService;
 import com.yufan.service.shop.IShopService;
 import com.yufan.service.user.IUserService;
@@ -262,6 +259,96 @@ public class UserController {
             iUserService.updateLoginPasswd(newPasswdMd5, user.getAdminId());
             out = CommonMethod.packagMsg("5");
             writer.print(out);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 用户会员号管理列表(商城)
+     *
+     * @return
+     */
+    @RequestMapping("toMemberCodePage")
+    public ModelAndView toMemberCodePage(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("membercode-list");
+        return modelAndView;
+    }
+
+    /**
+     * 查询用户会员号列表数据(商城)
+     */
+    @RequestMapping("loadMemberCodeListData")
+    public void loadMemberCodeListData(HttpServletRequest request, HttpServletResponse response, TbMemberId memberId) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            PageInfo pageInfo = new PageInfo();
+            int pageSize = pageInfo.getPageSize();
+            int start = Integer.parseInt(request.getParameter("start"));//第一条数据的起始位置，比如0代表第一条数据
+            int currePage = start / pageSize + 1; //当前页
+            pageInfo = iUserService.loadMemberIdPage(currePage, memberId);
+            //处理数据
+            int recordSum = pageInfo.getRecordSum();
+
+            //输出参数
+            JSONObject dataJson = new JSONObject();
+            dataJson.put("draw", Integer.parseInt(request.getParameter("draw")));
+            dataJson.put("recordsTotal", recordSum);
+            dataJson.put("recordsFiltered", recordSum);
+            dataJson.put("data", pageInfo.getResultListMap());
+            writer.print(dataJson);
+            writer.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 新增加会员号
+     *
+     * @param request
+     * @param response
+     */
+    @PostMapping("addMemberCode")
+    public void addMemberCode(HttpServletRequest request, HttpServletResponse response, TbMemberId memberId) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject result = CommonMethod.packagMsg("1");
+            memberId.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            memberId.setMemberType(0);
+            // check
+            if (iUserService.checkMemberCode(memberId.getMemberId())) {
+                result = CommonMethod.packagMsg("24", memberId.getMemberId());
+            } else {
+                iUserService.saveObj(memberId);
+            }
+            writer.print(result);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 删除会员号
+     *
+     * @param request
+     * @param response
+     */
+    @PostMapping("delMemberCode")
+    public void delMemberCode(HttpServletRequest request, HttpServletResponse response, Integer id) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject result = CommonMethod.packagMsg("1");
+            iUserService.deleteMemberCode(id);
+            writer.print(result);
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();

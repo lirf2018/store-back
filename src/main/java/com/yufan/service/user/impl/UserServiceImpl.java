@@ -4,6 +4,7 @@ import com.yufan.bean.AdminCondition;
 import com.yufan.dao.user.IUserDao;
 import com.yufan.dao.user.IUserJpaDao;
 import com.yufan.pojo.TbAdmin;
+import com.yufan.pojo.TbMemberId;
 import com.yufan.pojo.TbUserRole;
 import com.yufan.service.user.IUserService;
 import com.yufan.utils.PageInfo;
@@ -98,5 +99,25 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void updateLoginPasswd(String newPasswd, int loginId) {
 
+    }
+
+    @Override
+    public PageInfo loadMemberIdPage(int currePage, TbMemberId memberId) {
+        return iUserDao.loadMemberIdPage(currePage, memberId);
+    }
+
+    @Override
+    public boolean checkMemberCode(String memberId) {
+        return iUserDao.checkMemberCode(memberId);
+    }
+
+    @Override
+    public void saveObj(Object obj) {
+        iUserDao.saveObj(obj);
+    }
+
+    @Override
+    public void deleteMemberCode(Integer id) {
+        iUserDao.deleteMemberCode(id);
     }
 }

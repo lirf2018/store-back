@@ -3,12 +3,16 @@ package com.yufan.dao.user.impl;
 import com.yufan.bean.AdminCondition;
 import com.yufan.common.dao.IGeneralDao;
 import com.yufan.dao.user.IUserDao;
+import com.yufan.pojo.TbMemberId;
 import com.yufan.pojo.TbUserRole;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 创建人: lirf
@@ -93,5 +97,46 @@ public class UserDaoImpl implements IUserDao {
     public void updateLoginPasswd(String newPasswd, int loginId) {
         String sql = " update tb_admin set login_password=? where admin_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, newPasswd, loginId);
+    }
+
+    @Override
+    public PageInfo loadMemberIdPage(int currePage, TbMemberId memberId) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select id,member_id,user_phone,DATE_FORMAT(create_time,'%Y-%m-%d %T') as create_time  from tb_member_id where 1=1  ");
+        if (!StringUtils.isEmpty(memberId.getUserPhone())) {
+            sql.append(" and user_phone ='").append(memberId.getUserPhone().trim()).append("' ");
+        }
+        if (!StringUtils.isEmpty(memberId.getMemberId())) {
+            sql.append("  and member_id='").append(memberId.getMemberId().trim()).append("' ");
+        }
+        sql.append(" ORDER BY create_time desc ");
+
+
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setCurrePage(currePage);
+        pageInfo.setSqlQuery(sql.toString());
+        pageInfo = iGeneralDao.loadPageInfoSQLListMap(pageInfo);
+        return pageInfo;
+    }
+
+    @Override
+    public boolean checkMemberCode(String memberId) {
+        String sql = " select member_id,id from tb_member_id where member_id=? ";
+        List<Map<String, Object>> list = iGeneralDao.getBySQLListMap(sql, memberId);
+        if (list.size() == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void saveObj(Object object) {
+        iGeneralDao.save(object);
+    }
+
+    @Override
+    public void deleteMemberCode(Integer id) {
+        String sql = " delete from tb_member_id where id=? ";
+        iGeneralDao.executeUpdateForSQL(sql, id);
     }
 }
