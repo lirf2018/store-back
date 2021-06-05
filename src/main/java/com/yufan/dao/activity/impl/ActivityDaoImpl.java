@@ -28,7 +28,7 @@ public class ActivityDaoImpl implements IActivityDao {
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT activity_id,activity_title,activity_name,activity_link,CONCAT('").append(Constants.IMG_WEB_URL).append("',activity_img) as activity_img,data_index,status, ");
         sql.append(" DATE_FORMAT(start_time,'%Y-%m-%d %T') as start_time,DATE_FORMAT(end_time,'%Y-%m-%d %T') as end_time, ");
-        sql.append(" DATE_FORMAT(createtime,'%Y-%m-%d %T') as createtime ");
+        sql.append(" DATE_FORMAT(createtime,'%Y-%m-%d %T') as createtime,if(end_time<NOW(),0,1) as ac_type ");
         sql.append(" from tb_activity where 1=1 ");
         if (!StringUtils.isEmpty(activityCondition.getTitle())) {
             sql.append(" and activity_title like '%").append(activityCondition.getTitle().trim()).append("%' ");

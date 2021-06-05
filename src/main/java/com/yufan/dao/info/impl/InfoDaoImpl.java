@@ -27,7 +27,7 @@ public class InfoDaoImpl implements IInfoDao {
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT info_id,info_title,CONCAT('").append(Constants.IMG_WEB_URL).append("',info_img) as info_img,`status`,DATE_FORMAT(create_time,'%Y-%m-%d %T') as create_time ");
         sql.append(" ,info_index ");
-        sql.append(" ,DATE_FORMAT(start_time,'%Y-%m-%d %T') as startTime,DATE_FORMAT(end_time,'%Y-%m-%d %T') as endTime ");
+        sql.append(" ,DATE_FORMAT(start_time,'%Y-%m-%d %T') as startTime,DATE_FORMAT(end_time,'%Y-%m-%d %T') as endTime,if(end_time<NOW(),0,1) as ac_type ");
         sql.append(" from tb_info where 1=1 ");
         if (null != info.getStatus() && -1 != info.getStatus()) {
             sql.append(" and status=").append(info.getStatus()).append(" ");

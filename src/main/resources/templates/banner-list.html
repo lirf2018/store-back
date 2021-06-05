@@ -121,6 +121,11 @@
                 }
                 ,{
                     data: function (obj) {
+                        var acType = obj.ac_type;
+                        if(acType == 0){
+                            let time = obj.end_time==null?"":obj.end_time
+                            return "<a style='color: red'>"+time+"</a>";
+                        }
                         return obj.end_time==null?"":obj.end_time;
                     }
                 }

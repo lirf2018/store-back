@@ -27,6 +27,7 @@ public class BannerDaoimpl implements IBannerDao {
         StringBuffer sql = new StringBuffer();
         sql.append(" select banner_id,banner_title,banner_name,CONCAT('").append(Constants.IMG_WEB_URL).append("',banner_img) as banner_img,banner_link,DATE_FORMAT(start_time,'%Y-%m-%d %T') as start_time,status, ");
         sql.append(" DATE_FORMAT(end_time,'%Y-%m-%d %T') as end_time,data_index,DATE_FORMAT(createtime,'%Y-%m-%d %T') as createtime ");
+        sql.append(" ,if(end_time<NOW(),0,1) as ac_type");
         sql.append(" from tb_banner where 1=1 ");
         if (StringUtils.isNotEmpty(bannerCondition.getBannerName())) {
             sql.append(" and banner_name like '%").append(bannerCondition.getBannerName().trim()).append("%' ");
