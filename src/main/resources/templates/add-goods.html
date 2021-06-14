@@ -271,7 +271,7 @@
                         <tbody>
                         <tr>
                             <td>
-                                <div class="goods-info-img">
+                                <div class="goods-info-img" id="imgDiv-1">
                                     <div id="imgDiv8">
                                         <input type="hidden" value="" id="img8" name="img8">
                                         <div class="deleteImg" onclick="deleteImg(this)" delete-mark="8"><img src="./img/delete1.png" width="25px" height="25px"></div>
@@ -328,7 +328,7 @@
                         <tbody>
                         <tr>
                             <td>
-                                <div class="goods-info-img">
+                                <div class="goods-info-img" id="imgDiv-2">
                                     <div id="imgDiv12">
                                         <input type="hidden" value="" id="img12" name="img12">
                                         <div class="deleteImg" onclick="deleteImg(this)" delete-mark="12"><img src="./img/delete1.png" width="25px" height="25px"></div>
@@ -488,9 +488,12 @@
             $("input").each(function () {
                 $(this).attr("disabled","disabled");
             });
-            $('#app').css("pointer-events","none")
+            // $('#app').css("pointer-events","none")
             $('#myBtn').css("pointer-events","auto")
             $('#myBtn').removeAttr("disabled");
+            $('#imgShowDiv').css("pointer-events","none")
+            $('#imgDiv-1').css("pointer-events","none")
+            $('#imgDiv-2').css("pointer-events","none")
         });
     }
 

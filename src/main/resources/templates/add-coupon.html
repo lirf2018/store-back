@@ -335,9 +335,12 @@
             $("input").each(function () {
                 $(this).attr("disabled","disabled");
             });
-            $('#app').css("pointer-events","none")
+            // $('#app').css("pointer-events","none")
+            $('#imgShowDiv').css("pointer-events","none")
             $('#myBtn').css("pointer-events","auto")
             $('#myBtn').removeAttr("disabled");
+            $('#summernote').css("pointer-events","auto")
+            $('#summernote').removeAttr("disabled");
         });
     }
 
