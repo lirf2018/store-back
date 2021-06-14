@@ -2,6 +2,7 @@ package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.bean.AdminCondition;
+import com.yufan.bean.WapUserCondition;
 import com.yufan.pojo.*;
 import com.yufan.service.role.IRoleService;
 import com.yufan.service.shop.IShopService;
@@ -22,8 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 创建人: lirf
@@ -349,6 +349,104 @@ public class UserController {
             JSONObject result = CommonMethod.packagMsg("1");
             iUserService.deleteMemberCode(id);
             writer.print(result);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //--------------------------------wap----user---------------------------------------
+
+    /**
+     * 用户管理列表(wap用户)
+     *
+     * @return
+     */
+    @RequestMapping("wapUserPage")
+    public ModelAndView wapUserPage(HttpServletRequest request, HttpServletResponse response) {
+        //查询角色列表
+        List<TbRole> roleList = iRoleService.findRoleAll();
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("roleList", roleList);
+        modelAndView.setViewName("webuser-list");
+        return modelAndView;
+    }
+
+    /**
+     * 查询用户列表数据(wap用户)
+     */
+    @RequestMapping("wapUserListData")
+    public void wapUserListData(HttpServletRequest request, HttpServletResponse response, WapUserCondition wapUserCondition) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            PageInfo pageInfo = new PageInfo();
+            int pageSize = pageInfo.getPageSize();
+            int start = Integer.parseInt(request.getParameter("start"));//第一条数据的起始位置，比如0代表第一条数据
+            int currePage = start / pageSize + 1; //当前页
+            pageInfo = iUserService.loadWapUserInfoPage(currePage, wapUserCondition);
+            //处理数据
+            int recordSum = pageInfo.getRecordSum();
+
+            //输出参数
+            JSONObject dataJson = new JSONObject();
+            dataJson.put("draw", Integer.parseInt(request.getParameter("draw")));
+            dataJson.put("recordsTotal", recordSum);
+            dataJson.put("recordsFiltered", recordSum);
+            dataJson.put("data", pageInfo.getResultListMap());
+            writer.print(dataJson);
+            writer.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 查询用户列表数据(wap用户)
+     */
+    @RequestMapping("wapUserBangListData")
+    public void wapUserBangListData(HttpServletRequest request, HttpServletResponse response, int userId) {
+        PrintWriter writer = null;
+        try {
+            JSONObject dataJson = new JSONObject();
+            writer = response.getWriter();
+            List<TbUserSns> list = iUserService.loaduserSns(userId);
+            // 1、腾讯微博；2、新浪微博；3、人人网；4、微信；5、服务窗；6、一起沃；7、QQ;
+            Map<Integer, String> snsTypeMap = new HashMap<>();
+            snsTypeMap.put(1, "腾讯微博");
+            snsTypeMap.put(2, "新浪微博");
+            snsTypeMap.put(3, "人人网");
+            snsTypeMap.put(4, "微信");
+            snsTypeMap.put(5, "服务窗");
+            snsTypeMap.put(6, "一起沃");
+            snsTypeMap.put(7, "QQ");
+            Map<Integer, String> statusMap = new HashMap<>();
+            statusMap.put(0, "无效");
+            statusMap.put(1, "正常");
+            statusMap.put(2, "已解绑");
+            List<Map<String, Object>> outList = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                TbUserSns sns = list.get(i);
+                Map<String, Object> map = new HashMap<>();
+                map.put("sns_id", sns.getSnsId());
+                map.put("user_id", sns.getUserId());
+                map.put("sns_type_name", snsTypeMap.get(sns.getSnsType()));
+                map.put("uid", sns.getUid());
+                map.put("openkey", sns.getOpenkey());
+                map.put("sns_name", sns.getSnsName());
+                map.put("sns_account", sns.getSnsAccount());
+                map.put("sns_img", sns.getSnsImg());
+                map.put("is_use_img", sns.getIsUseImg());
+                map.put("createtime", DatetimeUtil.timeStamp2Date(sns.getCreatetime().getTime(), DatetimeUtil.DEFAULT_DATE_FORMAT_STRING));
+                map.put("status_name", statusMap.get(sns.getStatus()));
+                outList.add(map);
+            }
+            dataJson.put("data", outList);
+            writer.print(dataJson);
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();

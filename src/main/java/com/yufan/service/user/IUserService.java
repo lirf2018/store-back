@@ -1,10 +1,15 @@
 package com.yufan.service.user;
 
 import com.yufan.bean.AdminCondition;
+import com.yufan.bean.WapUserCondition;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbMemberId;
 import com.yufan.pojo.TbUserRole;
+import com.yufan.pojo.TbUserSns;
 import com.yufan.utils.PageInfo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 创建人: lirf
@@ -21,7 +26,7 @@ public interface IUserService {
 
     void updateAdminStatus(int adminId, int status);
 
-    TbAdmin saveAdmin(TbAdmin admin,int roleId);
+    TbAdmin saveAdmin(TbAdmin admin, int roleId);
 
     /**
      * 查询系统用户角色
@@ -33,10 +38,11 @@ public interface IUserService {
 
     /**
      * 修改登录用户密码
+     *
      * @param newPasswd
      * @param loginId
      */
-    public void updateLoginPasswd(String newPasswd,int loginId);
+    public void updateLoginPasswd(String newPasswd, int loginId);
 
 
     PageInfo loadMemberIdPage(int currePage, TbMemberId memberId);
@@ -46,4 +52,11 @@ public interface IUserService {
     void saveObj(Object obj);
 
     void deleteMemberCode(Integer id);
+
+    PageInfo loadWapUserInfoPage(int currePage, WapUserCondition wapUserCondition);
+
+
+    List<TbUserSns> loaduserSns(int userId);
+
+    List<Map<String, Object>> loadSnsBangList(int userId);
 }

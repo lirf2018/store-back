@@ -438,7 +438,7 @@
                 <td colspan="4">
                     <input id="myBtn" type="button" value="返回列表" onclick="javascript:window.location.href = 'goods/goodsPage'" class="btn btn-info">
                     <input type="button" value="保存并继续添加" class="btn btn-success btn-save" data-mark="1" th:if="${goods.goodsId == null || goods.goodsId == 0}">
-                    <input type="button" value="保存" class="btn btn-success btn-save" data-mark="0">
+                    <input type="button" value="保存" class="btn btn-success btn-save" data-mark="0" th:if="${editorFlag != 0}">
                 </td>
             </tr>
             </tbody>

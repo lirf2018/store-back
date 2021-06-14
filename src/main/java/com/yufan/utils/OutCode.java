@@ -26,17 +26,21 @@ public enum OutCode {
     upload_fail("13", "上传失败"),
     upload_error_fail("14", "上传异常"),
     code_repeat("15", "编码已存在"),
-    old_passwd_error("16","旧密码不正确"),
-    is_deal_with("17","已处理"),
-    is_not_deal_with("18","未处理"),
-    is_on_sell("19","下架成功"),
-    is_not_on_sell("20","上架成功"),
-    cacel_success("21","取消成功"),
-    setting_success("22","设置成功"),
-    goods_exception_01("goods_exception_01","查询类目属性值数据异常"),
-    goods_exception_02("goods_exception_02","sku数据异常"),
-    file_out_size("23","文件大小超出规定大小"),
-    data_exist("24","数据{}已存在");
+    old_passwd_error("16", "旧密码不正确"),
+    is_deal_with("17", "已处理"),
+    is_not_deal_with("18", "未处理"),
+    is_on_sell("19", "下架成功"),
+    is_not_on_sell("20", "上架成功"),
+    cacel_success("21", "取消成功"),
+    setting_success("22", "设置成功"),
+    goods_exception_01("goods_exception_01", "查询类目属性值数据异常"),
+    goods_exception_02("goods_exception_02", "sku数据异常"),
+    file_out_size("23", "文件大小超出规定大小"),
+    data_exist("24", "数据{}已存在"),
+    qr_not_exist("25", "QR码不存在"),
+    qrcheck_not_exist("26", "QR校验码不正正确"),
+    qrcode_isbean_use("27", "QR码已兑换，不能重复兑换"),
+    qrcode_out_time("28", "QR码已超时,请用客户端重新刷新QR码");
 
 
     private String code;

@@ -14,6 +14,15 @@ function endWith(str, reg) {
 function myAlertSimple(text) {
     swal({
         title: "提示",
+        text: text,
+        timer: 3000,
+        showConfirmButton: false
+    });
+}
+
+function myAlertSimple2(text) {
+    swal({
+        title: "提示",
         text: text
     });
 }

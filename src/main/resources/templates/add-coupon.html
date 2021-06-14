@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <title>增加卡券</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <base th:href="@{/}">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/plugins/summernote/dist/summernote.css" rel="stylesheet">
+    <link href="css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <style>
+        table td{
+            text-align: center;
+        }
+        .tableLeft{
+            background-color: #f5f5f5;
+        }
+        .deleteImg{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            top: 27px;
+            right: 2px;
+            text-align: right;
+        }
+        .goods-info-img{
+            /*display: flex;*/
+            width: 100%;
+        }
+
+        .goods-info-img>div{
+            float: left;
+            width: 25%;
+            height: 300px;
+            padding: 0px 18px;
+        }
+        .goods-info-img>div>img{
+            border: 2px solid #ccc;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            top: -25px;
+            cursor:pointer;
+        }
+        .deleteImg0{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            top: 27px;
+            right: 2px;
+            text-align: right;
+        }
+        .deleteImg{
+            width: 100%;
+            height: 25px;
+            position: relative;
+            top: 10px;
+            right: 10px;
+            text-align: right;
+            z-index: 100;
+        }
+        .form-control-common{
+            width: auto;
+        }
+
+        .deleteSkuImg{
+            width: 100%;
+            height: 25px;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            text-align: right;
+            z-index: 100;
+        }
+        .skuImgDiv>img{
+            border: 2px solid #ccc;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            cursor:pointer;
+        }
+        .skuImgDiv{
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper wrapper-content animated">
+    <input type="hidden" id="couponId" th:value="${coupon.couponId}">
+    <input type="hidden" id="img" th:value="${coupon.couponImg}">
+    <div class="row" id="app">
+        <table class="table table-hover table-bordered">
+            <tbody>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>一级分类</td>
+                <td>
+                    <select  class="form-control form-control-common" name="levelId" id="levelId" onchange="setCategory()">
+                        <option value="">--选择一级分类--</option>
+                        <option th:each="lv:${listLevel}" th:value="${lv.level_id}" th:text="${lv.level_name}" th:selected="${lv.level_id == coupon.leve1Id}"></option>
+                    </select>
+                </td>
+                <td rowspan="3" class="tableLeft"><span style="color: red;font-weight: bold"> </span>头图<br><span style="color: red;padding-top: 3px">像素(宽*高):350*350</span></td>
+                <td rowspan="3" style="text-align: left">
+                    <div id = "imgShowDiv">
+                        <div class="deleteImg0" onclick="deleteImg(this)" delete-mark="0"><img src="./img/delete.png" width="25px" height="25px"></div>
+                        <img style="border: 1px solid #ccc" src="./img/null.jpg" width="80px" height="80px" >
+                    </div>
+                    <form id="fileForm" method="post" enctype="multipart/form-data" action="image/uploadFile">
+                        <input style="border: none" type="file" class="form-control" name="file" id="file" multiple="multiple"  onchange="uploadFile(this)">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>类目列表</td>
+                <td>
+                    <select  class="form-control form-control-common" name="categoryId" id="categoryId">
+                        <option value="">--选择类目--</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>卡券名称</td>
+                <td><input type="text" placeholder="请输入卡券名称" class="form-control" name="couponName" id="couponName" th:value="${coupon.couponName}" ></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>卡券标题</td>
+                <td><input type="text" placeholder="请输入卡券标题" class="form-control" name="title" id="title" th:value="${coupon.title}" ></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>权重</td>
+                <td>
+                    <div style="display: flex">
+                        <input type="text" placeholder="请输入权重" class="form-control form-control-common" id="weight" name="weight" th:value="${coupon.weight}">
+                        <div style="color: red;padding-left: 10px;line-height: 45px">数值越大越靠前</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>上架状态</td>
+                <td>
+                    <select  class="form-control form-control-common" name="isPutaway" id="isPutaway" >
+                        <option value="0" th:selected="${coupon.isPutaway == 0}">下架</option>
+                        <option value="2" th:selected="${coupon.isPutaway == 2}">上架</option>
+                    </select>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>卡券数量</td>
+                <td>
+                    <div style="display: flex">
+                        <input type="text" placeholder="请输入卡券数量" class="form-control form-control-common" id="couponNum" name="weight" th:value="${coupon.couponNum}">
+                        <div style="color: red;padding-left: 10px;line-height: 45px"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>开始时间</td>
+                <td>
+                    <input type="text" class="form-control form-control-common"  placeholder="请选择开始时间"  readonly th:value="${#dates.format(coupon.startTime, 'yyyy-MM-dd')}" id="startTime" name="startTime" >
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>结束时间</td>
+                <td>
+                    <input type="text" class="form-control form-control-common" readonly placeholder="请选择结束时间" th:value="${#dates.format(coupon.endTime, 'yyyy-MM-dd')}" id="endTime" name="endTime" >
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>卡券类型</td>
+                <td>
+                    <select  class="form-control form-control-common" id="couponType" >
+                        <option value="2" th:selected="${coupon.couponType == 2}">兑换券</option>
+                        <option value="1" th:selected="${coupon.couponType == 1}">代金券</option>
+                        <option value="3" th:selected="${coupon.couponType == 3}">折扣券</option>
+                        <option value="4" th:selected="${coupon.couponType == 4}">满减券</option>
+                    </select>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>是否前端显示</td>
+                <td>
+                    <select  class="form-control form-control-common" name="isShow" id="isShow" >
+                        <option value="1" th:selected="${coupon.isShow == 1}">显示</option>
+                        <option value="0" th:selected="${coupon.isShow == 0}">不显示</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>过期方式</td>
+                <td>
+                    <select  class="form-control form-control-common"  id="appointType" >
+                        <option value="0" th:selected="${coupon.appointType == 0}">过期天前使用(含当天)</option>
+                        <option value="1" th:selected="${coupon.appointType == 1}">指定过期时间</option>
+                        <option value="2" th:selected="${coupon.appointType == 2}">指定使用时间</option>
+                    </select>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>店铺</td>
+                <td>
+                    <select  class="form-control form-control-common" name="shopId" id="shopId" >
+                        <option value="0">--选择店铺--</option>
+                        <option th:each="s:${shopList}" th:selected="${coupon.shopId == s.shopId}" th:if="${s.status == 1}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>兑换过期天</td>
+                <td>
+                    <input type="text" placeholder="请输入兑换过期天" class="form-control"  id="outDate" th:value="${coupon.outDate}" >
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>领取方式</td>
+                <td>
+                    <select  class="form-control form-control-common"  id="getType" >
+                        <option value="0" th:selected="${coupon.getType == 0}">免费</option>
+                        <option value="1" th:selected="${coupon.getType == 1}">积分兑换</option>
+                        <option value="2" th:selected="${coupon.getType == 2}">购买</option>
+                        <option value="3" th:selected="${coupon.getType == 3}">指定用户领取</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>指定时间</td>
+                <td>
+                    <input type="text" class="form-control form-control-common" readonly placeholder="请选择指定时间" th:value="${#dates.format(coupon.appointDate, 'yyyy-MM-dd')}" id="appointDate" name="appointDate" >
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>卡券金额(依赖领取方式)</td>
+                <td>
+                    <input type="text" placeholder="请输入卡券金额" class="form-control"  id="couponPrice" th:value="${coupon.couponPrice}" >
+                </td>
+            </tr>
+            <tr>
+                <td colspan="10">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th>卡券图文介绍  <span style="color: red;padding-top: 3px">(建议像素(宽*高):750*高)</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td style="text-align: left">
+                                <div  class="summernote"  id="summernote"></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>限购方式</td>
+                <td>
+                    <select  class="form-control form-control-common" name="limitWay" id="limitWay" >
+                        <option th:each="p:${listParam}" th:if="${p.paramCode == 'limit_way'}" th:value="${p.paramKey}" th:selected="${p.paramKey == (coupon.limitWay+'')}"><span th:text="${p.paramValue}"></span></option>
+                    </select>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>状态</td>
+                <td>
+                    <select  class="form-control form-control-common" name="status" id="status" >
+                        <option value="1" th:selected="${coupon.status == 1}">有效</option>
+                        <option value="0" th:selected="${coupon.status == 0}">无效</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>限购数</td>
+                <td>
+                    <div style="display: flex">
+                        <input type="text" placeholder="请输入限购数" class="form-control form-control-common" id="limitNum" name="limitNum" th:value="${coupon.limitNum}">
+                        <div style="color: red;padding-left: 10px;line-height: 45px"></div>
+                    </div>
+                </td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>限购统计开始时间</td>
+                <td>
+                    <input type="text" class="form-control form-control-common"  placeholder="请选择限购统计开始时间"  readonly th:value="${#dates.format(coupon.limitBeginTime, 'yyyy-MM-dd HH:mm:ss')}" id="limitBeginTime" name="limitBeginTime" >
+                </td>
+            </tr>
+            <tr>
+                <td class="tableLeft">使用须知</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="4"  id="needKnow" name="needKnow" th:text="${coupon.needKnow}"></textarea></td>
+            </tr>
+            <tr>
+                <td class="tableLeft">备注</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="4"  id="remark" name="remark" th:text="${coupon.remark}"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <input id="myBtn" type="button" value="返回列表" onclick="javascript:window.location.href = 'coupon/couponPage'" class="btn btn-info">
+                    <input type="button" value="保存并继续添加" class="btn btn-success btn-save" data-mark="1" th:if="${coupon.couponId == null || coupon.couponId == 0}">
+                    <input type="button" value="保存" class="btn btn-success btn-save" data-mark="0" th:if="${editorFlag != 0}">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--sku图片上传-->
+    <form style="display: none" id="fileSkuForm" method="post" enctype="multipart/form-data" action="image/uploadFile">
+        <input style="border: none" type="file" class="form-control" name="file" multiple="multiple"  onchange="uploadFileSku(this)">
+    </form>
+</div>
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- Data picker -->
+<script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<!-- 自定义js -->
+<script src="js/common.js" th:inline="javascript"></script>
+<script src="js/coupon.js" th:inline="javascript"></script>
+<script src="js/imgUtils.js" th:inline="javascript"></script>
+<script src="js/laydate/laydate.js"></script>
+<!-- Sweet alert -->
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- SUMMERNOTE -->
+<script src="js/plugins/summernote/dist/summernote.js"></script>
+<script src="js/plugins/summernote/summernote-zh-CN.js"></script>
+<script th:inline="javascript">
+
+    var editorFlag = [[${editorFlag}]];
+    if(editorFlag == 0){
+        $(function(){
+            $("select").each(function () {
+                $(this).attr("disabled","disabled");
+            });
+            $("textarea").each(function () {
+                $(this).attr("disabled","disabled");
+            });
+            $("input").each(function () {
+                $(this).attr("disabled","disabled");
+            });
+            $('#app').css("pointer-events","none")
+            $('#myBtn').css("pointer-events","auto")
+            $('#myBtn').removeAttr("disabled");
+        });
+    }
+
+    //$(document).ready(function () {
+    var $summernote = $('.summernote').summernote({
+        lang: 'zh-CN'
+        ,height: 300
+        ,toolbar: [
+            ['edit',['undo','redo']],//编辑
+            ['headline', ['style']],//大字标题
+            ['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],//样式
+            ['fontface', ['fontname','color','fontsize']],//字体
+            ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],//对齐方式
+            ['height', ['height']],//行高(自定义行高时一定不要忘记写这个)
+            ['table', ['table']],//表单
+            ['insert', ['link','picture','hr']],//插入链接，图片，下划线
+            ['view', ['fullscreen', 'codeview']]//全屏，代码视图
+        ]
+        //调用图片上传
+        ,callbacks: {
+            onImageUpload: function (files) {
+                sendFile($summernote, files[0]);
+            }
+        }
+    });
+
+    //ajax上传图片
+    function sendFile($summernote, file) {
+        var formData = new FormData();
+        formData.append("file", file);
+
+        $.ajax({
+            url: "image/uploadFile",//路径是你控制器中上传图片的方法
+            data: formData,
+            dataType: 'JSON',
+            cache: false,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function (data) {
+                $('#summernote').summernote('insertImage', data.imgWebUrl, 'imageName');
+            }
+        });
+    }
+    // });
+    $('#summernote').summernote('code', [[${coupon.intro}]]);
+    var categoryId = [[${coupon.classifyId}]];
+    setCategory();
+    var categoryHtml = $("#categoryId").html();
+    // 根据一级分类设置类目
+    function setCategory() {
+        let levelId = $("#levelId").val();
+        $("#categoryId").html(categoryHtml);//设置类目初始化
+        if(levelId == ''){
+            return;
+        }
+        $.ajax({
+            url: "category/loadLevelCategoryData",
+            type: 'POST',
+            data: {
+                "levelId":levelId,
+                "status":1
+            },// 要提交的表单 ,category_id category_name
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var list = data.data;
+                var html = "";
+                for (var i = 0; i < list.length; i++) {
+                    if(categoryId == list[i].category_id){
+                        html = html + "<option value='"+list[i].category_id+"' selected>"+list[i].category_name+"</option>";
+                    }else{
+                        html = html + "<option value='"+list[i].category_id+"'>"+list[i].category_name+"</option>";
+                    }
+                }
+                $("#categoryId").append(html);
+            }
+        });
+    }
+</script>
+<script th:inline="javascript">
+    var nowDate = [[${nowDate}]];
+    var startTime = laydate.render({
+        elem: '#startTime' //指定元素
+        ,type: 'date'
+        ,closeStop: '#startTime'
+        ,position: 'abolute'
+        , min: nowDate
+        ,done: function(value, date){
+            if(null!=value){
+                date.month = date.month-1;
+                endTime.config.min = date;
+            }
+        }
+    });
+
+    var endTime = laydate.render({
+        elem: '#endTime' //指定元素
+        ,type: 'date'
+        ,closeStop: '#endTime'
+        , position: 'abolute'
+    });
+
+    laydate.render({
+        elem: '#limitBeginTime' //指定元素
+        ,type: 'datetime'
+        ,position: 'abolute'
+    });
+    laydate.render({
+        elem: '#appointDate' //指定元素
+        ,type: 'date'
+        ,closeStop: '#appointDate'
+        ,position: 'abolute'
+    });
+</script>
+<script>
+    $(".btn-save").on("click",function (e) {
+        let couponId = $("#couponId").val()
+        let levelId = $("#levelId").val();
+        let categoryId = $("#categoryId").val();
+        let couponName = $("#couponName").val();
+        let title = $("#title").val();
+        let img = $("#img").val();
+        let weight = $("#weight").val();
+        let isPutaway = $("#isPutaway").val();
+        let couponNum = $("#couponNum").val();
+        let startTime = $("#startTime").val();
+        let endTime = $("#endTime").val();
+        let couponType = $("#couponType").val();
+        let isShow = $("#isShow").val();
+        let shopId = $("#shopId").val();
+        let appointType = $("#appointType").val();
+        let appointDate = $("#appointDate").val();
+        let getType = $("#getType").val();
+        let couponPrice = $("#couponPrice").val();
+        let outDate = $("#outDate").val();
+        let summernote = $('#summernote').summernote('code');
+        let limitWay = $("#limitWay").val();
+        let status = $("#status").val();
+        let limitNum = $("#limitNum").val();
+        let limitBeginTime = $("#limitBeginTime").val();
+        let needKnow = $("#needKnow").val();
+        let remark = $("#remark").val();
+        //
+        if(levelId == ''){
+            $("#levelId").focus();
+            return myAlertSimple("选择选择一级分类");
+            $("#levelId").focus();
+        }
+        if(categoryId == ''){
+            $("#categoryId").focus();
+            return myAlertSimple("选择类目");
+        }
+        if(couponName == ''){
+            $("#couponName").focus();
+            return myAlertSimple("卡券名称不能为空");
+        }
+        if(couponName.length>24){
+            $("#couponName").focus();
+            return myAlertSimple("卡券名称不能超过24个汉字");
+        }
+        if(title == ''){
+            $("#title").focus();
+            return myAlertSimple("商品title不能为空");
+        }
+        if(!checknumber(weight)){
+            $("#weight").focus();
+            return myAlertSimple("非法权重");
+        }
+        if(!checknumber(couponNum)){
+            $("#couponNum").focus();
+            return myAlertSimple("非法卡券数");
+        }
+        if(startTime == ''){
+            return myAlertSimple("开始时间不能为空")
+        }
+        if(endTime == ''){
+            return myAlertSimple("结束时间不能为空")
+        }
+        if(startTime>endTime){
+            return myAlertSimple("开始时间不能大于结束时间")
+        }
+        if(couponType != '2'){
+            $("#couponType").focus();
+            return myAlertSimple("待开发功能,请选择相应卡券规则")
+        }
+        if(appointType == 0){
+            if(!checknumber(outDate)){
+                $("#outDate").focus();
+                return myAlertSimple("非法兑换过期天");
+            }
+        }else{
+            if(appointDate == '' || appointDate == null){
+                return myAlertSimple("指定时间不能为空");
+            }
+            outDate = null;
+        }
+        if(!numAndpoint(limitWay)){
+            $("#limitWay").focus();
+            return myAlertSimple("非法卡券金额");
+        }
+        if(limitWay != '4'){
+            if(!checknumber(limitNum)){
+                $("#limitNum").focus();
+                return myAlertSimple("非法限购数");
+            }
+            if(limitBeginTime == '' || limitBeginTime == null){
+                return myAlertSimple("限购统计开始时间不能为空");
+            }
+        }else{
+            limitNum = null;
+        }
+        let data = {
+            couponId:couponId,
+            leve1Id:levelId,
+            classifyId:categoryId,
+            couponName:couponName,
+            title:title,
+            couponImg:img,
+            weight:weight,
+            isPutaway:isPutaway,
+            couponNum:couponNum,
+            startTimeStr:startTime,
+            endTimeStr:endTime,
+            couponType:couponType,
+            isShow:isShow,
+            shopId:shopId,
+            appointType:appointType,
+            appointDateStr:appointDate,
+            getType:getType,
+            couponPrice:couponPrice,
+            outDate:outDate,
+            intro:summernote,
+            limitWay:limitWay,
+            status:status,
+            limitNum:limitNum,
+            limitBeginTimeStr:limitBeginTime,
+            needKnow:needKnow,
+            remark:remark
+        }
+
+        var mark = $(this).attr("data-mark");//1保存并继续添加
+        //上传完得到id 或者路径 标志上传成功
+        $.ajax({
+            url: "coupon/saveCouponData",
+            type: 'POST',
+            data: data,// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                if (code == "1" ) {
+                    myAlertSimple("操作成功");
+                    if(mark == 1){
+                        setTimeout("javascript:window.location.href = 'coupon/toAddcouponPage'",1000);
+                    }else {
+                        setTimeout("javascript:window.location.href = 'coupon/couponPage'",1000);
+                    }
+                }else{
+                    myAlertSimple(data.msg);
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                myAlertSimple("操作失败");
+            }
+        });
+    })
+</script>
+</body>
+</html>

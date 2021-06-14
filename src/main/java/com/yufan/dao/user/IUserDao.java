@@ -2,9 +2,14 @@ package com.yufan.dao.user;
 
 
 import com.yufan.bean.AdminCondition;
+import com.yufan.bean.WapUserCondition;
 import com.yufan.pojo.TbMemberId;
 import com.yufan.pojo.TbUserRole;
+import com.yufan.pojo.TbUserSns;
 import com.yufan.utils.PageInfo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 创建人: lirf
@@ -69,4 +74,10 @@ public interface IUserDao {
     void saveObj(Object object);
 
     void deleteMemberCode(Integer id);
+
+    public PageInfo loadWapUserInfoPage(int currePage, WapUserCondition wapUserCondition);
+
+    public List<TbUserSns> loaduserSns(int userId);
+
+    List<Map<String, Object>> loadSnsBangList(int userId);
 }

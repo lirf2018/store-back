@@ -276,12 +276,12 @@
                 }
                 , {
                     data: function (obj) {
-                        var idPutway = obj.is_putaway;
-                        if (idPutway == '0') {
+                        var isPutway = obj.is_putaway;
+                        if (isPutway == '0') {
                             return '已下架';
-                        } else if (idPutway == '1') {
+                        } else if (isPutway == '1') {
                             return '确认中';
-                        } else if (idPutway == '2') {
+                        } else if (isPutway == '2') {
                             return '<span style="color: #0e9aef">销售中</span>'
                         }
                         return '<span style="color: red">未知</span>';

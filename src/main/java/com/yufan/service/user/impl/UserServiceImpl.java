@@ -1,11 +1,13 @@
 package com.yufan.service.user.impl;
 
 import com.yufan.bean.AdminCondition;
+import com.yufan.bean.WapUserCondition;
 import com.yufan.dao.user.IUserDao;
 import com.yufan.dao.user.IUserJpaDao;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbMemberId;
 import com.yufan.pojo.TbUserRole;
+import com.yufan.pojo.TbUserSns;
 import com.yufan.service.user.IUserService;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 创建人: lirf
@@ -119,5 +123,20 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void deleteMemberCode(Integer id) {
         iUserDao.deleteMemberCode(id);
+    }
+
+    @Override
+    public PageInfo loadWapUserInfoPage(int currePage, WapUserCondition wapUserCondition) {
+        return iUserDao.loadWapUserInfoPage(currePage, wapUserCondition);
+    }
+
+    @Override
+    public List<TbUserSns> loaduserSns(int userId) {
+        return iUserDao.loaduserSns(userId);
+    }
+
+    @Override
+    public List<Map<String, Object>> loadSnsBangList(int userId) {
+        return iUserDao.loadSnsBangList(userId);
     }
 }
