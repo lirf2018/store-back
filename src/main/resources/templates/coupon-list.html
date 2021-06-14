@@ -117,6 +117,7 @@
                             <th>类目</th>
                             <th>一级分类</th>
                             <th>状态</th>
+                            <th>已领取数</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
@@ -233,7 +234,7 @@
                         } else if (isPutway == '1') {
                             return '确认中';
                         } else if (isPutway == '2') {
-                            return '<span style="color: #0e9aef">销售中</span>'
+                            return '<span style="color: #0e9aef">已上架</span>'
                         }
                         return '<span style="color: red">未知</span>';
                     }
@@ -294,12 +295,17 @@
                 }
                 , {
                     data: function (obj) {
+                        return obj.count_get == null ? "0" : obj.count_get;
+                    }
+                }
+                , {
+                    data: function (obj) {
                         return obj.createtime == null ? "" : obj.createtime;
                     }
                 }
             ]
             , columnDefs: [{
-                targets: 19,
+                targets: 20,
                 data: null,
                 render: function (data, type, row) {
                     var html = "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData(" + data.coupon_id + ",1)'><i class='fa fa-paste'></i> 编辑</button> ";

@@ -496,7 +496,7 @@
             $("#couponName").focus();
             return myAlertSimple("卡券名称不能为空");
         }
-        if(couponName.length>24){
+        if(couponName.length>30){
             $("#couponName").focus();
             return myAlertSimple("卡券名称不能超过24个汉字");
         }
@@ -607,6 +607,22 @@
             }
         });
     })
+</script>
+<script th:inline="javascript">
+    //图片设置
+    setShopInfoImg();
+    function setShopInfoImg(){
+        var couponId = [[${coupon.couponId}]];
+        if (!couponId > 0) {
+            return;
+        }
+        var webImg = [[${webImg}]];//图片访问前缀
+
+        var img0 = [[${coupon.couponImg}]];
+        if (null != img0 && img0 != '') {
+            setPageImg(webImg + img0, img0, 0)
+        }
+    }
 </script>
 </body>
 </html>

@@ -33,8 +33,8 @@ public class CouponDaoImpl implements ICouponDao {
     public PageInfo loadCouponPage(int currePage, CouponCondition couponCondition) {
         StringBuffer sql = new StringBuffer();
         sql.append(" select c.coupon_id,c.coupon_name,c.title,CONCAT('").append(Constants.IMG_WEB_URL).append("',c.coupon_img) as coupon_img,c.intro,c.shop_id,c.weight,c.classify_id,c.area_id, ");
-        sql.append(" c.is_show,c.coupon_type,DATE_FORMAT(c.start_time,'%Y-%m-%d')  as start_time,DATE_FORMAT(c.end_time,'%Y-%m-%d')  as end_time,c.valid_date,c.out_date,c.createman, ");
-        sql.append(" DATE_FORMAT(c.createtime,'%Y-%m-%d %T')  as createtime,c.lastaltertime,c.lastalterman,c.status,c.remark,c.need_know, ");
+        sql.append(" c.is_show,c.coupon_type,DATE_FORMAT(c.start_time,'%Y-%m-%d')  as start_time,DATE_FORMAT(c.end_time,'%Y-%m-%d')  as end_time,c.out_date,c.createman, ");
+        sql.append(" DATE_FORMAT(c.createtime,'%Y-%m-%d %T')  as createtime,c.lastaltertime,c.lastalterman,c.status,c.remark,c.need_know,c.count_get, ");
         sql.append(" c.coupon_num,c.is_putaway,c.limit_num,c.limit_way,c.leve1_id,c.appoint_type,DATE_FORMAT(c.appoint_date,'%Y-%m-%d')  as appoint_date,c.limit_begin_time,c.get_type,c.coupon_price, ");
         sql.append(" if(c.end_time<NOW(),0,1) as ac_type ,l.level_name,ca.category_name ");
         sql.append(" from tb_coupon c  LEFT JOIN tb_category_level l on l.level_id=c.leve1_id and l.status=1 LEFT JOIN tb_category ca on ca.category_id=c.classify_id and ca.status=1 where 1=1 ");
