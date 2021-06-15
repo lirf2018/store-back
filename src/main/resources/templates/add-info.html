@@ -143,11 +143,11 @@
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>开始时间</td>
                 <td>
-                    <input type="text" class="form-control form-control-common"  placeholder="请选择开始时间"  readonly th:value="${#dates.format(info.startTime, 'yyyy-MM-dd HH:mm:ss')}" id="startTime" name="startTime" >
+                    <input type="text" class="form-control form-control-common"  placeholder="请选择开始时间"  readonly th:value="${#dates.format(info.startTime, 'yyyy-MM-dd')}" id="startTime" name="startTime" >
                 </td>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>结束时间</td>
                 <td>
-                    <input type="text" class="form-control form-control-common" readonly placeholder="请选择结束时间" th:value="${#dates.format(info.endTime, 'yyyy-MM-dd HH:mm:ss')}" id="endTime" name="endTime" >
+                    <input type="text" class="form-control form-control-common" readonly placeholder="请选择结束时间" th:value="${#dates.format(info.endTime, 'yyyy-MM-dd')}" id="endTime" name="endTime" >
                 </td>
             </tr>
             <tr>
@@ -253,7 +253,12 @@
         var startTime = $("#startTime").val();
         var endTime = $("#endTime").val();
         var markMsg = $("#markMsg").val();
-
+        if(startTime != '' && startTime != null){
+            startTime = startTime + " 00:00:00";
+        }
+        if(endTime != '' && endTime != null){
+            endTime = endTime + " 23:59:59";
+        }
         var infoImg = $("#img").val();
 
         if (infoTitle == '') {
@@ -333,7 +338,7 @@
     var nowDate = [[${nowDate}]];
     var startTime = laydate.render({
         elem: '#startTime' //指定元素
-        ,type: 'datetime'
+        ,type: 'date'
         ,closeStop: '#startTime'
         ,position: 'abolute'
         , min: nowDate
@@ -347,7 +352,7 @@
 
     var endTime = laydate.render({
         elem: '#endTime' //指定元素
-        ,type: 'datetime'
+        ,type: 'date'
         ,closeStop: '#endTime'
         , position: 'abolute'
     });

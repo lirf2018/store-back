@@ -200,23 +200,26 @@ public class CouponController {
             coupon.setCreatetime(new Timestamp(System.currentTimeMillis()));
             coupon.setLastalterman(user.getLoginName());
             coupon.setLastaltertime(new Timestamp(System.currentTimeMillis()));
-            // 时间处理
-            String startTimeStr = request.getParameter("startTimeStr");
-            if (StringUtils.isNotEmpty(startTimeStr)) {
-                coupon.setStartTime(new Timestamp(DatetimeUtil.convertStrToDate(startTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT).getTime()));
-            }
-            String endTimeStr = request.getParameter("endTimeStr");
-            if (StringUtils.isNotEmpty(endTimeStr)) {
-                coupon.setEndTime(new Timestamp(DatetimeUtil.convertStrToDate(endTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT).getTime()));
-            }
-            String appointDateStr = request.getParameter("appointDateStr");
-            if (StringUtils.isNotEmpty(appointDateStr)) {
-                coupon.setAppointDate(new Timestamp(DatetimeUtil.convertStrToDate(appointDateStr, DatetimeUtil.DEFAULT_DATE_FORMAT).getTime()));
-            }
-            String limitBeginTimeStr = request.getParameter("limitBeginTimeStr");
-            if (StringUtils.isNotEmpty(limitBeginTimeStr)) {
-                coupon.setLimitBeginTime(new Timestamp(DatetimeUtil.convertStrToDate(limitBeginTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT).getTime()));
-            }
+//            // 时间处理
+//            String startTimeStr = request.getParameter("startTimeStr");
+//            if (StringUtils.isNotEmpty(startTimeStr)) {
+//                startTimeStr = startTimeStr.split(" ")[0] + " 00:00:00";
+//                coupon.setStartTime(new Timestamp(DatetimeUtil.convertStrToDate(startTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
+//            }
+//            String endTimeStr = request.getParameter("endTimeStr");
+//            if (StringUtils.isNotEmpty(endTimeStr)) {
+//                endTimeStr = endTimeStr.split(" ")[0] + " 23:59:59";
+//                coupon.setEndTime(new Timestamp(DatetimeUtil.convertStrToDate(endTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
+//            }
+//            String appointDateStr = request.getParameter("appointDateStr");
+//            if (StringUtils.isNotEmpty(appointDateStr)) {
+//                appointDateStr = appointDateStr.split(" ")[0] + " 23:59:59";
+//                coupon.setAppointDate(new Timestamp(DatetimeUtil.convertStrToDate(appointDateStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
+//            }
+//            String limitBeginTimeStr = request.getParameter("limitBeginTimeStr");
+//            if (StringUtils.isNotEmpty(limitBeginTimeStr)) {
+//                coupon.setLimitBeginTime(new Timestamp(DatetimeUtil.convertStrToDate(limitBeginTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
+//            }
             out = iCouponService.saveCouponData(coupon);
             writer.print(out);
             writer.close();

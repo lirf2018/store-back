@@ -41,7 +41,7 @@ public class GoodsDaoImpl implements IGoodsDao {
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT g.goods_id,g.goods_name,g.title,CONCAT(g.true_money,'') as true_money,CONCAT(g.now_money,'') as now_money,g.intro,g.shop_id,g.is_yuding,g.get_way, ");
         sql.append(" g.is_invoice,g.is_putaway,CONCAT('").append(Constants.IMG_WEB_URL).append("',g.goods_img) as goods_img,g.data_index,g.category_id,g.area_id,g.property, ");
-        sql.append(" DATE_FORMAT(g.start_time,'%Y-%m-%d %T') as start_time,DATE_FORMAT(g.end_time,'%Y-%m-%d %T') as end_time, ");
+        sql.append(" DATE_FORMAT(g.start_time,'%Y-%m-%d') as start_time,DATE_FORMAT(g.end_time,'%Y-%m-%d') as end_time, ");
         sql.append(" g.goods_code,g.goods_unit,g.is_single,if(g.is_single=1,g.goods_num,(select sum(sku.sku_num) from tb_goods_sku sku where sku.`status`=1 and sku.goods_id=g.goods_id)) as goods_num,g.is_return,g.coupon_id,DATE_FORMAT(g.createtime,'%Y-%m-%d %T') as createtime, ");
         sql.append(" g.status,g.remark,g.goods_type,g.is_pay_online,g.out_code,CONCAT(g.deposit_money,'') as deposit_money,g.peisong_zc_desc,g.peisong_pei_desc, ");
         sql.append(" CONCAT(g.purchase_price,'') as purchase_price,g.is_time_goods,g.limit_num,g.bar_code,g.bar_code_shop,g.sell_count, ");

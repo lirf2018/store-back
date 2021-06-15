@@ -485,6 +485,15 @@
         let limitBeginTime = $("#limitBeginTime").val();
         let needKnow = $("#needKnow").val();
         let remark = $("#remark").val();
+        if(startTime != '' && startTime != null){
+            startTime = startTime + " 00:00:00";
+        }
+        if(endTime != '' && endTime != null){
+            endTime = endTime + " 23:59:59";
+        }
+        if(appointDate != '' && appointDate != null){
+            appointDate = appointDate + " 23:59:59";
+        }
         //
         if(levelId == ''){
             $("#levelId").focus();
@@ -538,6 +547,10 @@
                 return myAlertSimple("指定时间不能为空");
             }
             outDate = null;
+            // 指定过期时间生指定使用时间必须大于等于优惠券的结束时间
+            if (appointDate < endTime) {
+                return myAlertSimple("指定过期时间或指定使用时间不能小于优惠券的结束时间");
+            }
         }
         if(!numAndpoint(limitWay)){
             $("#limitWay").focus();
@@ -564,13 +577,13 @@
             weight:weight,
             isPutaway:isPutaway,
             couponNum:couponNum,
-            startTimeStr:startTime,
-            endTimeStr:endTime,
+            startTime:startTime,
+            endTime:endTime,
             couponType:couponType,
             isShow:isShow,
             shopId:shopId,
             appointType:appointType,
-            appointDateStr:appointDate,
+            appointDate:appointDate,
             getType:getType,
             couponPrice:couponPrice,
             outDate:outDate,

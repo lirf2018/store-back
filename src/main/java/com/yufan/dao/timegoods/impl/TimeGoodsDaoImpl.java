@@ -25,7 +25,7 @@ public class TimeGoodsDaoImpl implements ITimeGoodsDao {
     @Override
     public PageInfo loadDataPage(int currePage, TimeGoodsCondition timeGoodsCondition) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT tg.id,tg.goods_id,DATE_FORMAT(tg.begin_time,'%Y-%m-%d %T') as begin_time,DATE_FORMAT(tg.end_time,'%Y-%m-%d %T') as end_time,CONCAT(tg.time_price,'') as time_price,tg.goods_store,tg.limit_num,tg.time_way,tg.weight,tg.`status`,DATE_FORMAT(tg.createtime,'%Y-%m-%d %T') as createtime,DATE_FORMAT(tg.limit_begin_time,'%Y-%m-%d %T') as limit_begin_time ");
+        sql.append(" SELECT tg.id,tg.goods_id,DATE_FORMAT(tg.begin_time,'%Y-%m-%d') as begin_time,DATE_FORMAT(tg.end_time,'%Y-%m-%d') as end_time,CONCAT(tg.time_price,'') as time_price,tg.goods_store,tg.limit_num,tg.time_way,tg.weight,tg.`status`,DATE_FORMAT(tg.createtime,'%Y-%m-%d %T') as createtime,DATE_FORMAT(tg.limit_begin_time,'%Y-%m-%d %T') as limit_begin_time ");
         sql.append(" ,g.goods_name,CONCAT(g.now_money,'') as now_money ");
         sql.append(" from tb_time_goods tg  JOIN tb_goods g on g.goods_id=tg.goods_id where 1=1 ");
 
