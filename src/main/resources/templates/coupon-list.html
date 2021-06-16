@@ -253,9 +253,9 @@
                 , {
                     data: function (obj) {
                         // 用于直接赠送券,不会在前端显示0不在前端显示1在前端显示
-                        if (obj.get_type == '0') {
+                        if (obj.is_show == '0') {
                             return '不显示';
-                        } else if (obj.get_type == '1') {
+                        } else if (obj.is_show == '1') {
                             return '显示';
                         }
                         return '<span style="color: red">未知</span>';

@@ -211,11 +211,11 @@ public class CouponController {
 //                endTimeStr = endTimeStr.split(" ")[0] + " 23:59:59";
 //                coupon.setEndTime(new Timestamp(DatetimeUtil.convertStrToDate(endTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
 //            }
-//            String appointDateStr = request.getParameter("appointDateStr");
-//            if (StringUtils.isNotEmpty(appointDateStr)) {
-//                appointDateStr = appointDateStr.split(" ")[0] + " 23:59:59";
-//                coupon.setAppointDate(new Timestamp(DatetimeUtil.convertStrToDate(appointDateStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
-//            }
+            String appointDateStr = request.getParameter("appointDateStr");
+            if (StringUtils.isNotEmpty(appointDateStr)) {
+                appointDateStr = appointDateStr.split(" ")[0] + " 23:59:59";
+                coupon.setAppointDate(new Timestamp(DatetimeUtil.convertStrToDate(appointDateStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
+            }
 //            String limitBeginTimeStr = request.getParameter("limitBeginTimeStr");
 //            if (StringUtils.isNotEmpty(limitBeginTimeStr)) {
 //                coupon.setLimitBeginTime(new Timestamp(DatetimeUtil.convertStrToDate(limitBeginTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
