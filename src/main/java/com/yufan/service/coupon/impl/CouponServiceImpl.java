@@ -2,15 +2,19 @@ package com.yufan.service.coupon.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.bean.CouponCondition;
+import com.yufan.bean.RequestData;
+import com.yufan.bean.ResponeData;
 import com.yufan.dao.coupon.ICouponDao;
 import com.yufan.dao.coupon.ICouponJapDao;
+import com.yufan.dao.user.IInfAccountJpaDao;
 import com.yufan.pojo.TbCoupon;
-import com.yufan.pojo.TbCouponDownQr;
+import com.yufan.pojo.TbInfAccount;
 import com.yufan.service.coupon.ICouponService;
-import com.yufan.utils.CommonMethod;
-import com.yufan.utils.DatetimeUtil;
-import com.yufan.utils.PageInfo;
+import com.yufan.utils.*;
+import io.netty.util.internal.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -30,6 +34,15 @@ public class CouponServiceImpl implements ICouponService {
 
     @Autowired
     private ICouponJapDao iCouponJapDao;
+
+    @Autowired
+    private IInfAccountJpaDao iInfAccountJpaDao;
+
+    @Value("${info.service}")
+    private String SERVICE;
+
+    @Value("${info.account}")
+    private String ACCOUNT;
 
     @Override
     public PageInfo loadCouponPage(int currePage, CouponCondition couponCondition) {
@@ -53,7 +66,7 @@ public class CouponServiceImpl implements ICouponService {
 
     @Override
     public JSONObject saveCouponData(TbCoupon coupon) {
-        JSONObject result = CommonMethod.packagMsg("1");
+        JSONObject result = HelpCommon.packagMsg("1");
         if (coupon.getCouponId() > 0) {
             Map<String, Object> map = iCouponDao.loadCouponDataMap(coupon.getCouponId());
             if (map.get("createtime") != null) {
@@ -80,31 +93,32 @@ public class CouponServiceImpl implements ICouponService {
 
     @Override
     public JSONObject changeQrCode(String qrCoode, String checkCode) {
-        JSONObject out = CommonMethod.packagMsg("1");
-        TbCouponDownQr qr = iCouponDao.loadCouponDownQr(qrCoode.trim(), 1);
+        JSONObject out = HelpCommon.packagMsg("0");
         try {
-            if (qr != null) {
-                out = CommonMethod.packagMsg("25");
+            TbInfAccount account = iInfAccountJpaDao.findByAccount(ACCOUNT);
+            if (null == account) {
+                out = HelpCommon.packagMsg("33");
                 return out;
             }
-            if (!checkCode.equals(qr.getCheckCode())) {
-                out = CommonMethod.packagMsg("26");
-                return out;
+            String reqType = Constants.BUSINESS_TYPE_1;
+            String sid = account.getSid();
+            String appsecret = account.getSecretKey();
+            JSONObject data = new JSONObject();
+            data.put("qrCode", qrCoode);
+            RequestData requestData = new RequestData(reqType, sid, appsecret, data);
+            String param = requestData.requestParam().toJSONString();
+            String result = HttpRequest.httpPost(SERVICE, param);
+            if (StringUtils.isNotEmpty(result)) {
+                JSONObject obj = JSONObject.parseObject(result);
+                ResponeData responeData = JSONObject.toJavaObject(obj, ResponeData.class);
+                if (responeData.getRespCode() == 1) {
+                    out = HelpCommon.packagMsg("1");
+                } else {
+                    out = HelpCommon.packagMsg("-100", responeData.getRespDesc());
+                }
             }
-            if (qr.getRecodeState() != 1) {
-                out = CommonMethod.packagMsg("27");
-                return out;
-            }
-            // 二维码每次生成的有效时间
-            long outTime = qr.getQrCodeOuttime().getTime();
-            long nowTime = System.currentTimeMillis();
-            if (nowTime > outTime) {
-                out = CommonMethod.packagMsg("28");
-                return out;
-            }
-            iCouponDao.updateCouponDownQr(qr.getId(), 2);
         } catch (Exception e) {
-            throw new RuntimeException("兑换异常");
+            e.printStackTrace();
         }
         return out;
     }

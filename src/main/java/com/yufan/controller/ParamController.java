@@ -6,8 +6,9 @@ import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbParam;
 import com.yufan.service.param.IParamCodeService;
 import com.yufan.utils.CacheData;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +115,7 @@ public class ParamController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = CommonMethod.packagMsg("1");
+            JSONObject result = HelpCommon.packagMsg("1");
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             paramCode.setCreateman(user.getLoginName());
             paramCode.setCreatetime(new Timestamp(new Date().getTime()));
@@ -161,7 +162,7 @@ public class ParamController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = CommonMethod.packagMsg("1");
+            JSONObject result = HelpCommon.packagMsg("1");
             iParamCodeService.updateParamCodeStatus(paramId, status);
             writer.print(result);
             writer.close();

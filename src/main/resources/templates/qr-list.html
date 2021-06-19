@@ -40,6 +40,8 @@
                             <input class="form-control" id="couponName" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
                             <label>兑换码:</label>
                             <input class="form-control input-width120" id="changeCode" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
+                            <label>用户手机号:</label>
+                            <input class="form-control input-width120" id="phone" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
                            <label>卡券类型:</label>
                             <select class="form-control" id="couponType" onchange="searchData()">
                                 <option value="">--选择卡券类型--</option>
@@ -59,17 +61,16 @@
                             <label>过期方式:</label>
                             <select class="form-control" id="appointType" onchange="searchData()">
                                 <option value="">--选择过期方式--</option>
-                                <option value="0">过期天前使用(含当天)</option>
+<!--                                <option value="0">过期天前使用(含当天)</option>-->
                                 <option value="1">指定过期时间</option>
                                 <option value="2">指定使用时间</option>
                             </select>
-                            <label>qr状态:</label>
+                            <label>QR码状态:</label>
                             <select class="form-control" id="recodeState" onchange="searchData()">
-                                <option value="">生成</option>
-                                <option value="0">有效</option>
-                                <option value="1">已下载</option>
-                                <option value="2">已兑换</option>
-                                <option value="3">检验中</option>
+                                <option value="">--选择QR码状态--</option>
+                                <option value="1">未使用</option>
+                                <option value="2">已使用</option>
+                                <option value="4">已过期</option>
                             </select>
                             <input type="button" class="btn btn-primary" value="查询" onclick="searchData()">
                         </div>
@@ -91,14 +92,16 @@
                             <th>兑换码</th>
                             <th>验证码</th>
                             <th>信息内容</th>
-                            <th>qr状态</th>
-                            <th>过期方式</th>
+                            <th>QR码状态</th>
+<!--                            <th>过期方式</th>-->
                             <th>兑换日期</th>
                             <th>卡券类型</th>
                             <th>卡券类型规则值</th>
                             <th>领取方式</th>
                             <th>卡券金额</th>
                             <th>描述</th>
+                            <th>用户</th>
+                            <th>兑换时间</th>
                             <th>创建时间</th>
                         </tr>
                         </thead>
@@ -156,6 +159,7 @@
                     d.getType = $("#getType").val();
                     d.changeCode1 = $("#changeCode1").val();
                     d.checkCode = $("#checkCode").val();
+                    d.phone = $("#phone").val();
                 }
             },
             columns: [
@@ -192,29 +196,34 @@
                 }
                 , {
                     data: function (obj) {
-                        //记录状态 0生成二维码1已下载2已兑换3生成检验中
+                        //记录状态 0生成二维码1已下载2已兑换3生成检验中4已过期失效
                         var recodeState = obj.recode_state;
                         if (recodeState == '0') {
-                            return '生成';
+                            return '已生成';
                         } else if (recodeState == '1') {
-                            return '已下载';
+                            return '未使用';
                         } else if (recodeState == '2') {
-                            return '已兑换'
-                        }else if (recodeState == '3') {
-                            return '检验中'
+                            return '已使用'
+                        }else if (recodeState == '4') {
+                            return '已过期'
                         }
                         return '<span style="color: red">未知</span>';
                     }
                 }
+                // , {
+                //     data: function (obj) {
+                //         // 是否指定使用方式：0按兑换过期天计算过期时间1指定过期时间2指定使用时间
+                //         return obj.appoint_type_name == null ? "" : obj.appoint_type_name;
+                //     }
+                // }
                 , {
                     data: function (obj) {
                         // 是否指定使用方式：0按兑换过期天计算过期时间1指定过期时间2指定使用时间
-                        return obj.appoint_type_name == null ? "" : obj.appoint_type_name;
-                    }
-                }
-                , {
-                    data: function (obj) {
-                        return obj.change_date == null ? "" : obj.change_date;
+                        var appointType = obj.appoint_type;
+                        if (appointType == 2) {
+                            return "当日使用<br/>"+obj.change_out_date ;
+                        }
+                        return "有效期至<br/>"+obj.change_out_date ;
                     }
                 }
                 , {
@@ -244,6 +253,16 @@
                 }
                 , {
                     data: function (obj) {
+                        return obj.phone == null ? "" : obj.phone;
+                    }
+                }
+                , {
+                    data: function (obj) {
+                        return obj.change_date == null ? "" : obj.change_date;
+                    }
+                }
+                , {
+                    data: function (obj) {
                         return obj.createtime == null ? "" : obj.createtime;
                     }
                 }
@@ -264,9 +283,9 @@
         if(changeCode == null || changeCode == ''){
             return myAlertSimple2("兑换码不能为空");
         }
-        if(checkCode == null || checkCode == ''){
-            return myAlertSimple2("校验码不能为空");
-        }
+        // if(checkCode == null || checkCode == ''){
+        //     return myAlertSimple2("校验码不能为空");
+        // }
 
         let data = {
             changeCode:changeCode.trim(),

@@ -5,7 +5,8 @@ import com.yufan.common.dao.IGeneralDao;
 import com.yufan.dao.addr.IAddrDao;
 import com.yufan.pojo.TbPlatformAddr;
 import com.yufan.pojo.TbRegion;
-import com.yufan.utils.CommonMethod;
+
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -102,7 +103,7 @@ public class AddrDaoImpl implements IAddrDao {
             sql.append(" and `region_level`=" + regionCondition.getRegionLevel() + " ");
         }
         if (!StringUtils.isEmpty(regionCondition.getRegionNameStr())) {
-            List<String> regionNameArray = CommonMethod.replaceSpecialChar(regionCondition.getRegionNameStr());
+            List<String> regionNameArray = HelpCommon.replaceSpecialChar(regionCondition.getRegionNameStr());
             sql.append(" and (");
             for (int i = 0; i < regionNameArray.size(); i++) {
                 if (i == regionNameArray.size() - 1) {

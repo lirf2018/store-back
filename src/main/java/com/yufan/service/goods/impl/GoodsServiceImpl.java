@@ -14,9 +14,10 @@ import com.yufan.pojo.TbGoodsAttribute;
 import com.yufan.pojo.TbGoodsSku;
 import com.yufan.pojo.TbImg;
 import com.yufan.service.goods.IGoodsService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
 import com.yufan.utils.DatetimeUtil;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -67,7 +68,7 @@ public class GoodsServiceImpl implements IGoodsService {
     @Transactional
     @Override
     public JSONObject saveGoods(TbGoods goods, GoodsDataObj goodsDataObj) {
-        JSONObject out = CommonMethod.packagMsg("0");
+        JSONObject out = HelpCommon.packagMsg(0);
         try {
             boolean flag = goods.getGoodsId() > 0 ? true : false;
             //默认值
@@ -212,7 +213,7 @@ public class GoodsServiceImpl implements IGoodsService {
                     String propId = mapValueProp.get(unsellPropArray[i]);
                     if (StringUtils.isEmpty(propId)) {
                         LOG.info("------异常1----------");
-                        out = CommonMethod.packagMsg("goods_exception_01");
+                        out = HelpCommon.packagMsg(30);
                         throw new RuntimeException();
                     }
                     attribute.setPropId(Integer.parseInt(propId));
@@ -270,7 +271,7 @@ public class GoodsServiceImpl implements IGoodsService {
 
             boolean isSingle = true;//单品0
             Map<String, String> mapValueIds = new HashMap<>();
-            out = CommonMethod.packagMsg("goods_exception_02");
+            out = HelpCommon.packagMsg(31);
             for (int i = 0; i < skuPurchasePriceArray.length; i++) {
                 if (StringUtils.isEmpty(skuPurchasePriceArray[i])) {
                     continue;
@@ -348,7 +349,7 @@ public class GoodsServiceImpl implements IGoodsService {
                 String propId = mapValueProp.get(valueId);
                 if (StringUtils.isEmpty(propId)) {
                     LOG.info("------异常2----------");
-                    out = CommonMethod.packagMsg("goods_exception_01");
+                    out = HelpCommon.packagMsg(30);
                     throw new RuntimeException();
                 }
                 attribute.setPropId(Integer.parseInt(propId));
@@ -356,9 +357,9 @@ public class GoodsServiceImpl implements IGoodsService {
                 iGoodsDao.saveObject(attribute);
             }
 
-            out = CommonMethod.packagMsg("6");
+            out = HelpCommon.packagMsg(6);
             if (flag) {
-                out = CommonMethod.packagMsg("5");
+                out = HelpCommon.packagMsg(5);
             }
 
             return out;

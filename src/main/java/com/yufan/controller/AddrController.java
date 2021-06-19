@@ -5,8 +5,9 @@ import com.yufan.bean.RegionCondition;
 import com.yufan.pojo.*;
 import com.yufan.service.addr.IAddrService;
 import com.yufan.service.shop.IShopService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -219,7 +220,7 @@ public class AddrController {
                 }
             }
             iAddrService.savePlatformAddrList(addrslist);
-            result = CommonMethod.packagMsg("1");
+            result = HelpCommon.packagMsg(1);
             writer.print(result);
             writer.close();
         } catch (Exception e) {
@@ -240,7 +241,7 @@ public class AddrController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = CommonMethod.packagMsg("1");
+            JSONObject result = HelpCommon.packagMsg(1);
             iAddrService.updatePlatformAddrStatus(id, status);
             writer.print(result);
             writer.close();
@@ -374,7 +375,7 @@ public class AddrController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = status == 0 ? CommonMethod.packagMsg("3") : CommonMethod.packagMsg("4");
+            JSONObject out = status == 0 ? HelpCommon.packagMsg(3) : HelpCommon.packagMsg(4);
             iAddrService.updateGlobleAddrStatus(id, status);
             writer.print(out);
             writer.close();
@@ -455,10 +456,10 @@ public class AddrController {
             // 检验是否在
             List<Map<String, Object>>  list = iAddrService.findCheckGlobleAddrRegionCode(region.getRegionId(), region.getRegionCode());
             if(!CollectionUtils.isEmpty(list)){
-                result = CommonMethod.packagMsg("24","【行政区划代码】"+region.getRegionCode());
+                result = HelpCommon.packagMsg(24,"【行政区划代码】"+region.getRegionCode());
             }else{
                 iAddrService.saveRegion(region);
-                result = CommonMethod.packagMsg("1");
+                result = HelpCommon.packagMsg(1);
             }
             writer.print(result);
             writer.close();
@@ -480,7 +481,7 @@ public class AddrController {
             writer = response.getWriter();
             JSONObject result = new JSONObject();
             iAddrService.updateGlobleAddrFreight(regionId, freight);
-            result = CommonMethod.packagMsg("1");
+            result = HelpCommon.packagMsg(1);
             writer.print(result);
             writer.close();
         } catch (Exception e) {

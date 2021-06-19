@@ -47,7 +47,7 @@ public class ImageController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = CommonMethod.packagMsg("13");
+            JSONObject out = HelpCommon.packagMsg(13);
             out.put("from", from);
             out.put("imgType", imgType);
             if (null == file) {
@@ -55,11 +55,11 @@ public class ImageController {
                 writer.close();
                 return;
             }
-            out = CommonMethod.packagMsg("14");
+            out = HelpCommon.packagMsg(14);
 
             //测试
 //            if(1==1){
-//                out = CommonMethod.packagMsg("12");
+//                out = HelpCommon.packagMsg("12");
 //                out.put("imgfdfsUrl", "/1/1/"+Math.random());
 //                out.put("imgWebUrl", Constants.IMG_URL + "" + Math.random());//图片访问地址
 //                writer.print(out);
@@ -75,7 +75,7 @@ public class ImageController {
             String unit = "K";
             boolean flagImg = checkFileSize(file.getSize(), size, unit);
             if (!flagImg) {
-                out = CommonMethod.packagMsg("23");
+                out = HelpCommon.packagMsg("23");
                 out.put("msg", out.getString("msg") + ";文件大小不能超过" + size + unit + "B");
                 out.put("msg", "图片大小不能超过" + size + unit + "B");
                 out.put("from", from);
@@ -126,7 +126,7 @@ public class ImageController {
 
             if (!StringUtils.isEmpty(path)) {
                 path = path.replace("\\", "/");
-                out = CommonMethod.packagMsg("12");
+                out = HelpCommon.packagMsg(12);
                 out.put("imgfdfsUrl", path);
                 out.put("imgWebUrl", Constants.IMG_WEB_URL + "" + path);//图片访问地址
                 LOG.info("--------------响应结果" + out);

@@ -9,8 +9,9 @@ import com.yufan.pojo.TbShop;
 import com.yufan.service.order.IOrderService;
 import com.yufan.service.param.IParamCodeService;
 import com.yufan.service.shop.IShopService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.MD5;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -276,7 +277,7 @@ public class OrderController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = CommonMethod.packagMsg("1");
+            JSONObject out = HelpCommon.packagMsg("1");
             iOrderService.updateOrderDetailStatus(detailId, status);
             writer.print(out);
             writer.close();
@@ -292,12 +293,12 @@ public class OrderController {
     public void orderReset(HttpServletRequest request, HttpServletResponse response, Integer orderId) {
         PrintWriter writer = null;
         try {
-            JSONObject out = CommonMethod.packagMsg("1");
+            JSONObject out = HelpCommon.packagMsg("1");
             writer = response.getWriter();
             String resetKey = request.getParameter("resetKey");
             String resetKeyMd5 = MD5.enCodeStandard(resetKey);
             if (!resetKeyMd5.equals(Constants.ORDER_RESET_KEY)) {
-                out = CommonMethod.packagMsg("11");
+                out = HelpCommon.packagMsg("11");
                 writer.print(out);
                 writer.close();
                 return;
@@ -340,7 +341,7 @@ public class OrderController {
     public void updateOrderInfo(HttpServletRequest request, HttpServletResponse response, Integer orderId, Integer orderStatus, String serviceRemark) {
         PrintWriter writer = null;
         try {
-            JSONObject out = CommonMethod.packagMsg("5");
+            JSONObject out = HelpCommon.packagMsg("5");
             writer = response.getWriter();
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             String lastalterman = user.getLoginName();

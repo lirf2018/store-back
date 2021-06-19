@@ -9,9 +9,10 @@ import com.yufan.pojo.TbShop;
 import com.yufan.service.commonrel.ICommonRelService;
 import com.yufan.service.complain.IComplainService;
 import com.yufan.service.shop.IShopService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
 import com.yufan.utils.DatetimeUtil;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -135,7 +136,7 @@ public class ComplainController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = CommonMethod.packagMsg("3");
+            JSONObject out = HelpCommon.packagMsg("3");
             iComplainService.updateComplainStatus(complainId, status);
             writer.print(out);
             writer.close();
@@ -153,7 +154,7 @@ public class ComplainController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = CommonMethod.packagMsg("17");
+            JSONObject out = HelpCommon.packagMsg("17");
             iComplainService.updateComlpainIsRead(complainId, isRead);
             writer.print(out);
             writer.close();
@@ -170,7 +171,7 @@ public class ComplainController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = CommonMethod.packagMsg("1");
+            JSONObject out = HelpCommon.packagMsg("1");
             iComplainService.updateAnswer(complainId, answer);
             writer.print(out);
             writer.close();

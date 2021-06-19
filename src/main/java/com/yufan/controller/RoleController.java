@@ -8,7 +8,8 @@ import com.yufan.pojo.TbFunctions;
 import com.yufan.pojo.TbRole;
 import com.yufan.service.func.IMenuService;
 import com.yufan.service.role.IRoleService;
-import com.yufan.utils.CommonMethod;
+
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -142,7 +143,7 @@ public class RoleController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = status == 0 ? CommonMethod.packagMsg("3") : CommonMethod.packagMsg("4");
+            JSONObject result = status == 0 ? HelpCommon.packagMsg("3") : HelpCommon.packagMsg("4");
             iRoleService.updateRoleStatus(roleId, status);
             writer.print(result);
             writer.close();
@@ -164,7 +165,7 @@ public class RoleController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = roleId != 0 ? CommonMethod.packagMsg("5") : CommonMethod.packagMsg("6");
+            JSONObject result = roleId != 0 ? HelpCommon.packagMsg("5") : HelpCommon.packagMsg("6");
             TbRole role = new TbRole();
             if (roleId != 0) {
                 role.setRoleId(roleId);
@@ -274,10 +275,10 @@ public class RoleController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = CommonMethod.packagMsg("7");
+            JSONObject result = HelpCommon.packagMsg("7");
             int index = iRoleService.saveRoleFun(roleId, checkValues);
             if (index > 0) {
-                result = CommonMethod.packagMsg("6");
+                result = HelpCommon.packagMsg("6");
             }
             writer.print(result);
             writer.close();

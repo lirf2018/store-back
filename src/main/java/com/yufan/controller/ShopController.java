@@ -7,9 +7,10 @@ import com.yufan.pojo.TbImg;
 import com.yufan.pojo.TbShop;
 import com.yufan.service.commonrel.ICommonRelService;
 import com.yufan.service.shop.IShopService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
 import com.yufan.utils.DatetimeUtil;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import io.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,7 +203,7 @@ public class ShopController {
             //校验店铺编码
             boolean flag = iShopService.checkShopCode(shop.getShopId(), shop.getShopCode());
             if (flag) {
-                out = CommonMethod.packagMsg("15");
+                out = HelpCommon.packagMsg("15");
                 writer.print(out);
                 writer.close();
                 return;
@@ -239,7 +240,7 @@ public class ShopController {
                 listImg.add(imgObj4);
             }
 
-            out = StringUtils.isEmpty(shopId) || "0".equals(shopId) ? CommonMethod.packagMsg("6") : CommonMethod.packagMsg("5");
+            out = StringUtils.isEmpty(shopId) || "0".equals(shopId) ? HelpCommon.packagMsg("6") : HelpCommon.packagMsg("5");
             iShopService.saveShop(shop, listImg);
             writer.print(out);
             writer.close();
@@ -256,7 +257,7 @@ public class ShopController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = status == 1 ? CommonMethod.packagMsg("4") : CommonMethod.packagMsg("3");
+            JSONObject out = status == 1 ? HelpCommon.packagMsg("4") : HelpCommon.packagMsg("3");
             iShopService.updateShopStatus(shopId, status);
             writer.print(out);
             writer.close();

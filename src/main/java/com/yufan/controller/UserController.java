@@ -7,8 +7,9 @@ import com.yufan.pojo.*;
 import com.yufan.service.role.IRoleService;
 import com.yufan.service.shop.IShopService;
 import com.yufan.service.user.IUserService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.DatetimeUtil;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.MD5;
 import com.yufan.utils.PageInfo;
 import org.apache.log4j.Logger;
@@ -141,7 +142,7 @@ public class UserController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = CommonMethod.packagMsg("1");
+            JSONObject result = HelpCommon.packagMsg("1");
             iUserService.updateAdminStatus(adminId, status);
             writer.print(result);
             writer.close();
@@ -163,7 +164,7 @@ public class UserController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = CommonMethod.packagMsg("1");
+            JSONObject result = HelpCommon.packagMsg("1");
             if (!StringUtils.isEmpty(request.getParameter("admin.adminId"))) {
                 admin.setAdminId(Integer.parseInt(request.getParameter("admin.adminId")));
             }
@@ -249,7 +250,7 @@ public class UserController {
             //判断旧密码是否正确
             String oldPasswdMd5 = MD5.enCodeStandard(loginName + oldPasswd);
             if (!oldPasswdMd5.equals(nowPasswd)) {
-                out = CommonMethod.packagMsg("16");
+                out = HelpCommon.packagMsg("16");
                 writer.print(out);
                 writer.close();
                 return;
@@ -257,7 +258,7 @@ public class UserController {
             String newPasswd = request.getParameter("newPasswd");
             String newPasswdMd5 = MD5.enCodeStandard(loginName + newPasswd);
             iUserService.updateLoginPasswd(newPasswdMd5, user.getAdminId());
-            out = CommonMethod.packagMsg("5");
+            out = HelpCommon.packagMsg("5");
             writer.print(out);
             writer.close();
         } catch (Exception e) {
@@ -319,12 +320,12 @@ public class UserController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = CommonMethod.packagMsg("1");
+            JSONObject result = HelpCommon.packagMsg("1");
             memberId.setCreateTime(new Timestamp(System.currentTimeMillis()));
             memberId.setMemberType(0);
             // check
             if (iUserService.checkMemberCode(memberId.getMemberId())) {
-                result = CommonMethod.packagMsg("24", memberId.getMemberId());
+                result = HelpCommon.packagMsg("24", memberId.getMemberId());
             } else {
                 iUserService.saveObj(memberId);
             }
@@ -346,7 +347,7 @@ public class UserController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = CommonMethod.packagMsg("1");
+            JSONObject result = HelpCommon.packagMsg("1");
             iUserService.deleteMemberCode(id);
             writer.print(result);
             writer.close();

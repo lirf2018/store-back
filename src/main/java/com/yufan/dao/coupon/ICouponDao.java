@@ -33,6 +33,4 @@ public interface ICouponDao {
 
     public TbCouponDownQr loadCouponDownQr(String qrCoode, Integer qrStatus);
 
-    public void updateCouponDownQr(int id, int recodeState);
-
 }

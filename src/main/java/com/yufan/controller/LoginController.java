@@ -5,9 +5,10 @@ import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbFunctions;
 import com.yufan.service.func.IMenuService;
 import com.yufan.service.user.IUserService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
 import com.yufan.utils.DatetimeUtil;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.MD5;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,7 @@ public class LoginController {
             //如果是系统管理员,则密码固定规则(密码-实时时间)
             /*if ("admin".equals(loginName)) {
                 if (loginPasswd.length() < 13) {
-                    obj = CommonMethod.packagMsg("10");
+                    obj = HelpCommon.packagMsg("10");
                     writer.print(obj);
                     writer.close();
                     return;
@@ -79,7 +80,7 @@ public class LoginController {
                 String sysAdminPasswd = Constants.ADMINPASSWORD + DatetimeUtil.getNow("yyyyMMddHHmm");
                 String psMD5 = MD5.enCodeStandard("admin" + loginPasswd.substring(0, loginPasswd.length() - 11)) + loginPasswd.substring(loginPasswd.length() - 12, loginPasswd.length());
                 if (!sysAdminPasswd.equals(psMD5)) {
-                    obj = CommonMethod.packagMsg("10");
+                    obj = HelpCommon.packagMsg("10");
                     writer.print(obj);
                     writer.close();
                     return;
@@ -87,7 +88,7 @@ public class LoginController {
             } else {
                 String loginPasswdMd5 = MD5.enCodeStandard(loginName + loginPasswd);
                 if (null == admin || !loginPasswdMd5.equals(admin.getLoginPassword())) {
-                    obj = CommonMethod.packagMsg("10");
+                    obj = HelpCommon.packagMsg("10");
                     writer.print(obj);
                     writer.close();
                     return;
@@ -95,7 +96,7 @@ public class LoginController {
             }*/
             String loginPasswdMd5 = MD5.enCodeStandard(loginName + loginPasswd);
             if (null == admin || !loginPasswdMd5.equals(admin.getLoginPassword())) {
-                obj = CommonMethod.packagMsg("10");
+                obj = HelpCommon.packagMsg("10");
                 writer.print(obj);
                 writer.close();
                 return;
@@ -106,7 +107,7 @@ public class LoginController {
 
             request.getSession().setAttribute("user", admin);
 
-            obj = CommonMethod.packagMsg("9");
+            obj = HelpCommon.packagMsg("9");
             writer.print(obj);
             writer.close();
             return;

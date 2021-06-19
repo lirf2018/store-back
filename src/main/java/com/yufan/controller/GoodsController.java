@@ -16,9 +16,10 @@ import com.yufan.service.commonrel.ICommonRelService;
 import com.yufan.service.goods.IGoodsService;
 import com.yufan.service.param.IParamCodeService;
 import com.yufan.service.shop.IShopService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
 import com.yufan.utils.DatetimeUtil;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -198,7 +199,7 @@ public class GoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = status == 0 ? CommonMethod.packagMsg("3") : CommonMethod.packagMsg("4");
+            JSONObject out = status == 0 ? HelpCommon.packagMsg("3") : HelpCommon.packagMsg("4");
             iGoodsService.updateGoodsStatus(goodsId, status);
             writer.print(out);
             writer.close();
@@ -220,7 +221,7 @@ public class GoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = isPutway == 2 ? CommonMethod.packagMsg("20") : CommonMethod.packagMsg("19");
+            JSONObject out = isPutway == 2 ? HelpCommon.packagMsg("20") : HelpCommon.packagMsg("19");
             iGoodsService.updateGoodsOnSell(goodsId, isPutway);
             writer.print(out);
             writer.close();
@@ -241,7 +242,7 @@ public class GoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = CommonMethod.packagMsg("21");
+            JSONObject out = HelpCommon.packagMsg("21");
             iGoodsService.deleteTimeGoods(goodsId);
             writer.print(out);
             writer.close();

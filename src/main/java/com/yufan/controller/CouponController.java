@@ -12,9 +12,10 @@ import com.yufan.service.category.ICategoryService;
 import com.yufan.service.coupon.ICouponService;
 import com.yufan.service.param.IParamCodeService;
 import com.yufan.service.shop.IShopService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
 import com.yufan.utils.DatetimeUtil;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,26 +201,11 @@ public class CouponController {
             coupon.setCreatetime(new Timestamp(System.currentTimeMillis()));
             coupon.setLastalterman(user.getLoginName());
             coupon.setLastaltertime(new Timestamp(System.currentTimeMillis()));
-//            // 时间处理
-//            String startTimeStr = request.getParameter("startTimeStr");
-//            if (StringUtils.isNotEmpty(startTimeStr)) {
-//                startTimeStr = startTimeStr.split(" ")[0] + " 00:00:00";
-//                coupon.setStartTime(new Timestamp(DatetimeUtil.convertStrToDate(startTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
-//            }
-//            String endTimeStr = request.getParameter("endTimeStr");
-//            if (StringUtils.isNotEmpty(endTimeStr)) {
-//                endTimeStr = endTimeStr.split(" ")[0] + " 23:59:59";
-//                coupon.setEndTime(new Timestamp(DatetimeUtil.convertStrToDate(endTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
-//            }
             String appointDateStr = request.getParameter("appointDateStr");
             if (StringUtils.isNotEmpty(appointDateStr)) {
                 appointDateStr = appointDateStr.split(" ")[0] + " 23:59:59";
                 coupon.setAppointDate(new Timestamp(DatetimeUtil.convertStrToDate(appointDateStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
             }
-//            String limitBeginTimeStr = request.getParameter("limitBeginTimeStr");
-//            if (StringUtils.isNotEmpty(limitBeginTimeStr)) {
-//                coupon.setLimitBeginTime(new Timestamp(DatetimeUtil.convertStrToDate(limitBeginTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
-//            }
             out = iCouponService.saveCouponData(coupon);
             writer.print(out);
             writer.close();
@@ -239,7 +225,7 @@ public class CouponController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = status == 0 ? CommonMethod.packagMsg("3") : CommonMethod.packagMsg("4");
+            JSONObject out = status == 0 ? HelpCommon.packagMsg("3") : HelpCommon.packagMsg("4");
             iCouponService.updateStatus(id, status);
             writer.print(out);
             writer.close();
@@ -247,6 +233,8 @@ public class CouponController {
             e.printStackTrace();
         }
     }
+
+    //=====================================QR码===================================================================
 
 
     /**

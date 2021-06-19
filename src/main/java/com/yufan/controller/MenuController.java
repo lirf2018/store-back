@@ -7,8 +7,9 @@ import com.yufan.pojo.*;
 import com.yufan.service.category.ICategoryService;
 import com.yufan.service.func.IMenuService;
 import com.yufan.service.param.IParamCodeService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -152,7 +153,7 @@ public class MenuController {
                 Integer menuId = Integer.parseInt(request.getParameter("func.functionId"));
                 func.setFunctionId(menuId);
             }
-            JSONObject result = 0 == func.getFunctionId() ? CommonMethod.packagMsg("6") : CommonMethod.packagMsg("5");
+            JSONObject result = 0 == func.getFunctionId() ? HelpCommon.packagMsg("6") : HelpCommon.packagMsg("5");
             iMenuService.saveFuntion(func);
             writer.print(result);
             writer.close();
@@ -174,7 +175,7 @@ public class MenuController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = status == 0 ? CommonMethod.packagMsg("3") : CommonMethod.packagMsg("4");
+            JSONObject result = status == 0 ? HelpCommon.packagMsg("3") : HelpCommon.packagMsg("4");
             iMenuService.updateMenuStatus(menuId, status);
             writer.print(result);
             writer.close();
@@ -194,7 +195,7 @@ public class MenuController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject result = CommonMethod.packagMsg("3");
+            JSONObject result = HelpCommon.packagMsg("3");
             Integer menuId = Integer.parseInt(request.getParameter("menuId"));
             Integer parentId = Integer.parseInt(request.getParameter("parentId"));
             iMenuService.deleteMenu(menuId, parentId);
@@ -270,7 +271,7 @@ public class MenuController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = status == 0 ? CommonMethod.packagMsg("3") : CommonMethod.packagMsg("4");
+            JSONObject out = status == 0 ? HelpCommon.packagMsg("3") : HelpCommon.packagMsg("4");
             iMenuService.updateMenuWebStatus(id, status);
             writer.print(out);
             writer.close();
@@ -388,7 +389,7 @@ public class MenuController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = CommonMethod.packagMsg("6");
+            JSONObject out = HelpCommon.packagMsg("6");
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             pageMenu.setCreatetime(new Timestamp(new Date().getTime()));
             // 校验是否已关联 用于分类页面的关联类型 1关联一级分类 2 关联2级分类
@@ -411,7 +412,7 @@ public class MenuController {
                 pageMenu.setCategoryIds(categoryIds.substring(0,categoryIds.length()-1));
             }
             if (pageMenu.getId() > 0) {
-                out = CommonMethod.packagMsg("5");
+                out = HelpCommon.packagMsg("5");
             }
             iMenuService.savePageMenuData(pageMenu);
             writer.print(out);

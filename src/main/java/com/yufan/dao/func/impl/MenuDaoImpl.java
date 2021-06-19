@@ -7,7 +7,7 @@ import com.yufan.pojo.TbActivity;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbFunctions;
 import com.yufan.pojo.TbPageMenu;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

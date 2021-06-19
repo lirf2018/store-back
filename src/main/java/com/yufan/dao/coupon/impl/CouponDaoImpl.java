@@ -123,9 +123,10 @@ public class CouponDaoImpl implements ICouponDao {
     public PageInfo loadCouponQrPage(int currePage, CouponCondition couponCondition) {
         StringBuffer sql = new StringBuffer();
 
-        sql.append(" select  q.id,q.coupon_id,q.coupon_name,q.user_id,q.channel_id,q.qr_img,q.change_code,q.check_code,q.content,DATE_FORMAT(q.qr_code_outtime,'%Y-%m-%d') as qr_code_outtime,q.recode_state,q.appoint_type, ");
-        sql.append(" q.change_date,q.change_user_id,q.change_partners_id,q.status,q.remark,q.coupon_type,q.coupon_value,q.shop_id,q.qr_desc,q.get_type,q.coupon_price,DATE_FORMAT(q.createtime,'%Y-%m-%d %T') as createtime ");
-        sql.append(" from tb_coupon_down_qr q where 1=1 ");
+        sql.append(" select  q.id,q.coupon_id,q.coupon_name,q.user_id,q.channel_id,q.qr_img,q.change_code,q.check_code,q.content,DATE_FORMAT(q.change_out_date,'%Y-%m-%d') as change_out_date,q.recode_state,q.appoint_type, ");
+        sql.append(" q.change_user_id,q.change_partners_id,q.status,q.remark,q.coupon_type,q.coupon_value,q.shop_id,q.qr_desc,q.get_type,q.coupon_price,DATE_FORMAT(q.createtime,'%Y-%m-%d %T') as createtime ");
+        sql.append(" ,DATE_FORMAT(q.change_date,'%Y-%m-%d %T') as change_date,u.user_mobile as phone  ");
+        sql.append(" from tb_coupon_down_qr q JOIN tb_user_info u on u.user_id=q.user_id where 1=1 ");
         if (couponCondition.getId() != null) {
             sql.append("  and q.id=").append(couponCondition.getId()).append(" ");
         }
@@ -148,7 +149,10 @@ public class CouponDaoImpl implements ICouponDao {
             sql.append(" and q.coupon_name like '%").append(couponCondition.getCouponName().trim()).append("%' ");
         }
         if (StringUtils.isNotEmpty(couponCondition.getChangeCode())) {
-            sql.append(" and q.change_code = '").append(couponCondition.getChangeCode().trim()).append("' ");
+            sql.append(" and q.change_code like '%").append(couponCondition.getChangeCode().trim()).append("%' ");
+        }
+        if(StringUtils.isNotEmpty(couponCondition.getPhone())){
+            sql.append(" and u.user_mobile = '").append(couponCondition.getPhone().trim()).append("' ");
         }
 
         sql.append(" ORDER BY q.createtime desc ");
@@ -166,9 +170,4 @@ public class CouponDaoImpl implements ICouponDao {
         return iGeneralDao.queryUniqueByHql(hql, qrCoode, qrStatus);
     }
 
-    @Override
-    public void updateCouponDownQr(int id, int recodeState) {
-        String sql = " update tb_coupon_down_qr set recode_state=?,lastaltertime=now() where id=? ";
-        iGeneralDao.executeUpdateForSQL(sql, recodeState, id);
-    }
 }

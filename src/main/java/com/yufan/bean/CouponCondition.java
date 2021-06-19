@@ -25,5 +25,6 @@ public class CouponCondition {
     private Integer id;
     private Integer appointType;
     private Integer getType;
+    private String phone;
 
 }

@@ -9,8 +9,9 @@ import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbCategory;
 import com.yufan.pojo.TbCategoryLevel;
 import com.yufan.service.category.ICategoryService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -205,7 +206,7 @@ public class CategroyController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = status == 0 ? CommonMethod.packagMsg("3") : CommonMethod.packagMsg("4");
+            JSONObject out = status == 0 ? HelpCommon.packagMsg("3") : HelpCommon.packagMsg("4");
             iCategoryService.updateLevelStatus(LevelId, status);
             writer.print(out);
             writer.close();
@@ -369,7 +370,7 @@ public class CategroyController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = status == 0 ? CommonMethod.packagMsg("3") : CommonMethod.packagMsg("4");
+            JSONObject out = status == 0 ? HelpCommon.packagMsg("3") : HelpCommon.packagMsg("4");
             iCategoryService.updateCategoryStatus(categoryId, status);
             writer.print(out);
             writer.close();
@@ -386,7 +387,7 @@ public class CategroyController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = status == 0 ? CommonMethod.packagMsg("3") : CommonMethod.packagMsg("4");
+            JSONObject out = status == 0 ? HelpCommon.packagMsg("3") : HelpCommon.packagMsg("4");
             iCategoryService.updateCategoryPropStatus(propId, status);
             writer.print(out);
             writer.close();
@@ -503,14 +504,14 @@ public class CategroyController {
             //校验编码
             boolean flag = iCategoryService.checkCategoryCode(category.getCategoryId(), category.getCategoryCode());
             if (flag) {
-                JSONObject out = CommonMethod.packagMsg("15");
+                JSONObject out = HelpCommon.packagMsg("15");
                 writer.print(out);
                 writer.close();
                 return;
             }
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             category.setCreateman(user.getLoginName());
-            JSONObject out = category.getCategoryId() > 0 ? CommonMethod.packagMsg("5") : CommonMethod.packagMsg("6");
+            JSONObject out = category.getCategoryId() > 0 ? HelpCommon.packagMsg("5") : HelpCommon.packagMsg("6");
             iCategoryService.saveCategory(category, levelId);
             writer.print(out);
             writer.close();

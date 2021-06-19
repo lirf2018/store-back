@@ -6,8 +6,9 @@ import com.yufan.pojo.TbSecondGoods;
 import com.yufan.pojo.TbShop;
 import com.yufan.service.second.ISecondGoodsService;
 import com.yufan.service.shop.IShopService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -128,7 +129,7 @@ public class SecondGoodsController {
         } else {
             shopList = iShopService.findShopAll(user.getShopId());
         }
-        if(goodsId == null || goodsId ==0){
+        if (goodsId == null || goodsId == 0) {
             //新增加
             goods.setShopId(user.getShopId());
             goods.setNewInfo(0);
@@ -153,10 +154,10 @@ public class SecondGoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = secondGoods.getGoodsId() == 0 ? CommonMethod.packagMsg("6") : CommonMethod.packagMsg("5");
+            JSONObject out = secondGoods.getGoodsId() == 0 ? HelpCommon.packagMsg(6) : HelpCommon.packagMsg(5);
             boolean flag = iSecondGoodsService.saveSecondGoods(secondGoods);
             if (!flag) {
-                out = CommonMethod.packagMsg("0");
+                out = HelpCommon.packagMsg(0);
             }
             writer.print(out);
             writer.close();
@@ -176,7 +177,7 @@ public class SecondGoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = CommonMethod.packagMsg("1");
+            JSONObject out = HelpCommon.packagMsg(1);
             iSecondGoodsService.updateSecondGoodsStatus(goodsId, status);
             writer.print(out);
             writer.close();

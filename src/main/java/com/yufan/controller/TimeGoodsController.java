@@ -7,9 +7,10 @@ import com.yufan.service.goods.IGoodsService;
 import com.yufan.service.param.IParamCodeService;
 import com.yufan.service.shop.IShopService;
 import com.yufan.service.timegoods.ITimeGoodsService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
 import com.yufan.utils.DatetimeUtil;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -127,7 +128,7 @@ public class TimeGoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = status == 0 ? CommonMethod.packagMsg("3") : CommonMethod.packagMsg("4");
+            JSONObject out = status == 0 ? HelpCommon.packagMsg("3") : HelpCommon.packagMsg("4");
             iTimeGoodsService.updateTimeGoodsStatus(goodsId, timeGoodsId, status);
             writer.print(out);
             writer.close();
@@ -189,9 +190,9 @@ public class TimeGoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            JSONObject out = CommonMethod.packagMsg("6");
+            JSONObject out = HelpCommon.packagMsg("6");
             if (timeGoods.getId() > 0) {
-                out = CommonMethod.packagMsg("5");
+                out = HelpCommon.packagMsg("5");
             }
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             timeGoods.setCreatetime(new Timestamp(new Date().getTime()));

@@ -7,8 +7,9 @@ import com.yufan.dao.category.ICategoryDao;
 import com.yufan.dao.category.ICategoryJpaDao;
 import com.yufan.pojo.*;
 import com.yufan.service.category.ICategoryService;
-import com.yufan.utils.CommonMethod;
+
 import com.yufan.utils.Constants;
+import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,7 +82,7 @@ public class CategoryServiceImpl implements ICategoryService {
             //检验编码是否重复
             boolean flag = iCategoryDao.checkLevelCode(levelCode, levelId);
             if (flag) {
-                return CommonMethod.packagMsg("15");
+                return HelpCommon.packagMsg("15");
             }
             //不保留
             if (levelId != null && levelId > 0 && retain == 0) {
@@ -146,7 +147,7 @@ public class CategoryServiceImpl implements ICategoryService {
                     }
                 }
             }
-            return CommonMethod.packagMsg(code);
+            return HelpCommon.packagMsg(code);
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -252,7 +253,7 @@ public class CategoryServiceImpl implements ICategoryService {
         try {
             boolean flag = iCategoryDao.checkCategoryPropCode(itempropObj.getCategoryId(), itempropObj.getPropId(), itempropObj.getPropCode());
             if (flag) {
-                return CommonMethod.packagMsg("15");
+                return HelpCommon.packagMsg("15");
             }
 
             flag = false;//新增
@@ -334,9 +335,9 @@ public class CategoryServiceImpl implements ICategoryService {
                 iCategoryDao.deletePropValue(itempropObj.getPropId(), null);
             }
 
-            JSONObject out = CommonMethod.packagMsg("6");
+            JSONObject out = HelpCommon.packagMsg("6");
             if (flag) {
-                out = CommonMethod.packagMsg("5");
+                out = HelpCommon.packagMsg("5");
             }
             return out;
         } catch (Exception e) {
