@@ -77,6 +77,13 @@ public class CouponController {
         modelAndView.addObject("listLevel", listLevel);
         modelAndView.addObject("listParam", listParam);
         modelAndView.addObject("shopList", shopList);
+        Object show = request.getParameter("show");
+        if (null != show) {
+            if (Integer.parseInt(show.toString()) == 0) {
+                modelAndView.setViewName("pcoupon-list");
+                return modelAndView;
+            }
+        }
         modelAndView.setViewName("coupon-list");
         return modelAndView;
     }

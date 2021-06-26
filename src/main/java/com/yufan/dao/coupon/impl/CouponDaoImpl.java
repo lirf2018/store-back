@@ -71,6 +71,9 @@ public class CouponDaoImpl implements ICouponDao {
         if (couponCondition.getShopId() != null) {
             sql.append(" and c.shop_id = ").append(couponCondition.getShopId()).append(" ");
         }
+        if (null != couponCondition.getShow()) {
+            sql.append(" and c.is_show = ").append(couponCondition.getShow()).append(" ");
+        }
         sql.append(" ORDER BY c.coupon_id desc ");
 
         PageInfo pageInfo = new PageInfo();
@@ -151,7 +154,7 @@ public class CouponDaoImpl implements ICouponDao {
         if (StringUtils.isNotEmpty(couponCondition.getChangeCode())) {
             sql.append(" and q.change_code like '%").append(couponCondition.getChangeCode().trim()).append("%' ");
         }
-        if(StringUtils.isNotEmpty(couponCondition.getPhone())){
+        if (StringUtils.isNotEmpty(couponCondition.getPhone())) {
             sql.append(" and u.user_mobile = '").append(couponCondition.getPhone().trim()).append("' ");
         }
 

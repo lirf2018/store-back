@@ -12,8 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderCondition {
-
-
     private String orderNo;
     private String userPhone;
     private String userName;
@@ -28,10 +26,13 @@ public class OrderCondition {
     private String endPayDate;
     private Integer businessType;
     private String traceNo;
-    private String goodsName;
     private String iccid;
     private Integer postWay;
     private Integer orderId;
     private Integer shopId;
+    private String goodsName;
+    private Integer goodsId;
+    private Integer skuId;
+    private Integer timeGoodsId;
 
 }

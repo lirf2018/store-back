@@ -74,6 +74,16 @@
                                     <option value="">--选择店铺--</option>
                                     <option th:each="s:${shopList}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
                                 </select>
+                            </div>
+                            <div>
+                                <label>商品标识:</label>
+                                <input class="form-control input-width100" id="goodsId"  type="text" value="">
+                                <label>商品名称:</label>
+                                <input class="form-control input-width120" id="goodsName" type="text" value="">
+                                <label>商品SKU标识:</label>
+                                <input class="form-control input-width100" id="skuId"  type="text" value="">
+                                <label>抢购商品标识:</label>
+                                <input class="form-control input-width100" id="timeGoodsId"  type="text" value="">
                                 <input type="button" class="btn btn-primary" value="查询" onclick="searchOrder()">
                             </div>
                         </div>
@@ -183,6 +193,10 @@
                         d.postWay = $('#postWay').val();
                         d.orderId = $('#orderId').val();
                         d.shopId = $('#shopId').val();
+                        d.goodsName = $('#goodsName').val();
+                        d.goodsId = $('#goodsId').val();
+                        d.skuId = $('#skuId').val();
+                        d.timeGoodsId = $('#timeGoodsId').val();
                     }
                 }
                 ,columns:[

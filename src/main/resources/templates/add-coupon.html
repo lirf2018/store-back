@@ -183,10 +183,13 @@
                 </td>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>是否前端显示</td>
                 <td>
-                    <select  class="form-control form-control-common" name="isShow" id="isShow" >
-                        <option value="1" th:selected="${coupon.isShow == 1}">显示</option>
-                        <option value="0" th:selected="${coupon.isShow == 0}">不显示</option>
-                    </select>
+                    <div style="display: flex">
+                        <select  class="form-control form-control-common" name="isShow" id="isShow" >
+                            <option value="1" th:selected="${coupon.isShow == 1}">前端显示</option>
+                            <option value="0" th:selected="${coupon.isShow == 0}">前端不显示</option>
+                        </select>
+                        <div style="color: red;padding-left: 10px;line-height: 45px">不显示(私人优惠券、指定优惠券)</div>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -201,7 +204,6 @@
                 <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>店铺</td>
                 <td>
                     <select  class="form-control form-control-common" name="shopId" id="shopId" >
-<!--                        <option value="0">&#45;&#45;选择店铺&#45;&#45;</option>-->
                         <option th:each="s:${shopList}" th:selected="${coupon.shopId == s.shopId}" th:if="${s.status == 1}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
                     </select>
                 </td>
@@ -594,7 +596,7 @@
             limitWay:limitWay,
             status:status,
             limitNum:limitNum,
-            limitBeginTimeStr:limitBeginTime,
+            limitBeginTime:limitBeginTime,
             needKnow:needKnow,
             countGet:countGet,
             remark:remark

@@ -150,7 +150,8 @@ public class UserDaoImpl implements IUserDao {
         sql.append(" DATE_FORMAT(createtime,'%Y-%m-%d %T') as createtime,DATE_FORMAT(lastlogintime,'%Y-%m-%d %T') as lastlogintime,DATE_FORMAT(lastaltertime,'%Y-%m-%d %T') as lastaltertime,  ");
         sql.append(" CONCAT('").append(Constants.IMG_WEB_URL).append("',user_img) as user_img,  ");
         sql.append(" shop_id,member_id,money,inviter_num,inviter_jf,inviter_money,jifen,  ");
-        sql.append(" DATE_FORMAT(start_time,'%Y-%m-%d') as start_time,DATE_FORMAT(end_time,'%Y-%m-%d') as end_time from tb_user_info where 1=1  ");
+        sql.append(" DATE_FORMAT(start_time,'%Y-%m-%d') as start_time,DATE_FORMAT(end_time,'%Y-%m-%d') as end_time   ");
+        sql.append(" from tb_user_info where 1=1 ");
         if (!StringUtils.isEmpty(wapUserCondition.getUserMobile())) {
             sql.append(" and user_mobile like '%").append(wapUserCondition.getUserMobile()).append("%'  ");
         }
@@ -179,11 +180,66 @@ public class UserDaoImpl implements IUserDao {
     @Override
     public List<TbUserSns> loaduserSns(int userId) {
         String hql = " from TbUserSns where userId=?1 order by createtime desc ";
-        return (List<TbUserSns>)iGeneralDao.queryListByHql(hql, userId);
+        return (List<TbUserSns>) iGeneralDao.queryListByHql(hql, userId);
     }
 
     @Override
     public List<Map<String, Object>> loadSnsBangList(int userId) {
         return null;
+    }
+
+    @Override
+    public PageInfo loadWapUserPrivatePage(int currePage, WapUserCondition wapUserCondition) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select pc.id,pc.user_id,DATE_FORMAT(pc.pay_time,'%Y-%m-%d %T') as pay_time,pc.private_code,DATE_FORMAT(pc.reservation_time,'%Y-%m-%d %T') as reservation_time,  ");
+        sql.append(" pc.status,pc.contents,DATE_FORMAT(pc.get_time,'%Y-%m-%d') as get_time,pc.post_way,pc.is_yuyue,u.user_mobile,p1.param_value as post_way_name  ");
+        sql.append(" ,pc.flow_status ,if(DATE_FORMAT(NOW(),'%Y-%m-%d')>DATE_FORMAT(pc.get_time,'%Y-%m-%d'),if(pc.`status`=1,0,1),1) as out_time_flag ");
+        sql.append(" ,if(DATE_FORMAT(NOW(),'%Y-%m-%d')=DATE_FORMAT(pc.get_time,'%Y-%m-%d'),if(pc.`status`=1,1,0),0) as get_time_flag ");
+        sql.append(" ,p2.param_value as flow_status_name,DATE_FORMAT(pc.update_time,'%Y-%m-%d %T') as update_time ");
+        sql.append(" ,pc.goods_id,pc.goods_name ");
+        sql.append(" from tb_private_custom pc JOIN tb_user_info u on u.user_id=pc.user_id  ");
+        sql.append(" LEFT JOIN tb_param p1 on p1.param_code='post_way' and p1.param_key=pc.post_way  ");
+        sql.append(" LEFT JOIN tb_param p2 on p2.param_code='prepare_flow_status' and p2.param_key=pc.flow_status ");
+        sql.append(" where 1=1  ");
+        if (wapUserCondition.getId() != null) {
+            sql.append(" and pc.id=").append(wapUserCondition.getId()).append("  ");
+        }
+        if (wapUserCondition.getGoodsId() != null) {
+            sql.append(" and pc.goods_id=").append(wapUserCondition.getGoodsId()).append("  ");
+        }
+        if (!StringUtils.isEmpty(wapUserCondition.getUserMobile())) {
+            sql.append(" and u.user_mobile like '%").append(wapUserCondition.getUserMobile().trim()).append("%'  ");
+        }
+        if (!StringUtils.isEmpty(wapUserCondition.getGoodsName())) {
+            sql.append(" and pc.goods_name like '%").append(wapUserCondition.getGoodsName().trim()).append("%'  ");
+        }
+        if (!StringUtils.isEmpty(wapUserCondition.getPrivateCode())) {
+            sql.append(" and pc.private_code like '%").append(wapUserCondition.getPrivateCode().trim()).append("%'  ");
+        }
+        if (!StringUtils.isEmpty(wapUserCondition.getGetTime())) {
+            sql.append(" and DATE_FORMAT(pc.get_time,'%Y-%m-%d')='").append(wapUserCondition.getGetTime().trim()).append("'  ");
+        }
+        if (wapUserCondition.getStatus() != null && wapUserCondition.getStatus() != -1) {
+            sql.append(" and pc.status=").append(wapUserCondition.getStatus()).append("  ");
+        }
+        if (wapUserCondition.getPostWay() != null && wapUserCondition.getPostWay() != -1) {
+            sql.append(" and pc.post_way=").append(wapUserCondition.getPostWay()).append("  ");
+        }
+        if (wapUserCondition.getFlowStatus() != null && wapUserCondition.getFlowStatus() != -1) {
+            sql.append(" and pc.flow_status=").append(wapUserCondition.getFlowStatus()).append("  ");
+        }
+        sql.append("  ORDER BY DATE_FORMAT(NOW(),'%Y-%m-%d')=DATE_FORMAT(pc.get_time,'%Y-%m-%d') desc,pc.get_time ,pc.is_yuyue desc   ");
+
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setCurrePage(currePage);
+        pageInfo.setSqlQuery(sql.toString());
+        pageInfo = iGeneralDao.loadPageInfoSQLListMap(pageInfo);
+        return pageInfo;
+    }
+
+    @Override
+    public void updateFlowStatus(int id, int flowStatus) {
+        String sql = " update tb_private_custom set flow_status=? where id=? ";
+        iGeneralDao.executeUpdateForSQL(sql, flowStatus, id);
     }
 }

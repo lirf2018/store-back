@@ -74,6 +74,23 @@ public class OrderDaoImpl implements IOrderDao {
         if (null != orderCondition.getShopId()) {
             sql.append(" and o.shop_id = ").append(orderCondition.getShopId()).append(" ");
         }
+        if (!StringUtils.isEmpty(orderCondition.getGoodsName()) || null != orderCondition.getGoodsId() || null != orderCondition.getSkuId()
+                || null != orderCondition.getTimeGoodsId()) {
+            sql.append(" and o.order_id in (select dd.order_id from tb_order_detail dd where 1=1 ");
+            if (!StringUtils.isEmpty(orderCondition.getGoodsName())) {
+                sql.append(" and dd.goods_name like '%").append(orderCondition.getGoodsName().trim()).append("%' ");
+            }
+            if (null != orderCondition.getGoodsId()) {
+                sql.append(" and dd.goods_id =").append(orderCondition.getGoodsId()).append(" ");
+            }
+            if (null != orderCondition.getSkuId()) {
+                sql.append(" and dd.sku_id =").append(orderCondition.getSkuId()).append(" ");
+            }
+            if (null != orderCondition.getTimeGoodsId()) {
+                sql.append(" and dd.time_goods_id =").append(orderCondition.getTimeGoodsId()).append(" ");
+            }
+            sql.append(" ) ");
+        }
         sql.append(" ORDER BY o.order_id desc ");
         PageInfo pageInfo = new PageInfo();
         pageInfo.setCurrePage(currePage);

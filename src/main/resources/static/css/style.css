@@ -7903,6 +7903,9 @@ body.skin-3 {
     .form-inline .form-control.input-width120 {
         width: 120px;
     }
+    .form-inline .form-control.input-width130 {
+        width: 130px;
+    }
     .form-inline .form-control.input-width150 {
         width: 150px;
     }

@@ -139,4 +139,14 @@ public class UserServiceImpl implements IUserService {
     public List<Map<String, Object>> loadSnsBangList(int userId) {
         return iUserDao.loadSnsBangList(userId);
     }
+
+    @Override
+    public PageInfo loadWapUserPrivatePage(int currePage, WapUserCondition wapUserCondition) {
+        return iUserDao.loadWapUserPrivatePage(currePage, wapUserCondition);
+    }
+
+    @Override
+    public void updateFlowStatus(int id, int flowStatus) {
+        iUserDao.updateFlowStatus(id, flowStatus);
+    }
 }

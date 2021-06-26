@@ -8,10 +8,7 @@ import com.yufan.service.role.IRoleService;
 import com.yufan.service.shop.IShopService;
 import com.yufan.service.user.IUserService;
 
-import com.yufan.utils.DatetimeUtil;
-import com.yufan.utils.HelpCommon;
-import com.yufan.utils.MD5;
-import com.yufan.utils.PageInfo;
+import com.yufan.utils.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -356,7 +353,6 @@ public class UserController {
         }
     }
 
-
     //--------------------------------wap----user---------------------------------------
 
     /**
@@ -454,5 +450,71 @@ public class UserController {
         }
     }
 
+    //--------------------------------wap----user------私人定制---------------------------------
+
+    /**
+     * 私人定制
+     *
+     * @return
+     */
+    @RequestMapping("wapUserPrivatePage")
+    public ModelAndView wapUserPrivatePage(HttpServletRequest request, HttpServletResponse response) {
+        //查询角色列表
+        List<TbParam> paramList = CacheData.PARAMLIST;
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("paramList", paramList);
+        modelAndView.setViewName("private-list");
+        return modelAndView;
+    }
+
+    /**
+     * 私人定制
+     */
+    @RequestMapping("wapUserPrivateListData")
+    public void wapUserPrivateListData(HttpServletRequest request, HttpServletResponse response, WapUserCondition wapUserCondition) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            PageInfo pageInfo = new PageInfo();
+            int pageSize = pageInfo.getPageSize();
+            int start = Integer.parseInt(request.getParameter("start"));//第一条数据的起始位置，比如0代表第一条数据
+            int currePage = start / pageSize + 1; //当前页
+            pageInfo = iUserService.loadWapUserPrivatePage(currePage, wapUserCondition);
+            //处理数据
+            int recordSum = pageInfo.getRecordSum();
+
+            //输出参数
+            JSONObject dataJson = new JSONObject();
+            dataJson.put("draw", Integer.parseInt(request.getParameter("draw")));
+            dataJson.put("recordsTotal", recordSum);
+            dataJson.put("recordsFiltered", recordSum);
+            dataJson.put("data", pageInfo.getResultListMap());
+            writer.print(dataJson);
+            writer.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 删除会员号
+     *
+     * @param request
+     * @param response
+     */
+    @PostMapping("updateFlowStatus")
+    public void updateFlowStatus(HttpServletRequest request, HttpServletResponse response, Integer id, Integer flowStatus) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject result = HelpCommon.packagMsg("1");
+            iUserService.updateFlowStatus(id, flowStatus);
+            writer.print(result);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

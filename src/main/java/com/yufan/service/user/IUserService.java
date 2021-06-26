@@ -59,4 +59,8 @@ public interface IUserService {
     List<TbUserSns> loaduserSns(int userId);
 
     List<Map<String, Object>> loadSnsBangList(int userId);
+
+    PageInfo loadWapUserPrivatePage(int currePage, WapUserCondition wapUserCondition);
+
+    public void updateFlowStatus(int id, int flowStatus);
 }
