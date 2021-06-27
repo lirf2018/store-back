@@ -2,6 +2,7 @@ package com.yufan.dao.order;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.bean.OrderCondition;
+import com.yufan.pojo.TbOrder;
 import com.yufan.utils.PageInfo;
 
 import java.util.List;
@@ -24,10 +25,12 @@ public interface IOrderDao {
 
     public List<Map<String, Object>> queryOrderStatusLogByOrderNo(String orderNo);
 
-    public void updateOrderDetailStatus(int detailId,int status);
+    public void updateOrderDetailStatus(int detailId, int status);
 
-    public void updateOrderStatus(int orderId, int status, String serviceRemark,String lastalterman);
+    public void updateOrderStatus(int orderId, int status, String serviceRemark, String lastalterman);
 
     public void updateOrderInfo(JSONObject orderData);
+
+    public TbOrder loadOrder(String orderNo);
 
 }

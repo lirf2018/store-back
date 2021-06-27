@@ -31,9 +31,11 @@ public interface IOrderService {
 
     List<Map<String, Object>> queryOrderStatusLogByOrderNo(String orderNo);
 
-    void updateOrderDetailStatus(int detailId,int status);
+    void updateOrderDetailStatus(int detailId, int status);
 
-    void updateOrderStatus(int orderId,int status,String serviceRemark,String lastalterman);
+    void updateOrderStatus(int orderId, int status, String serviceRemark, String lastalterman);
 
     void updateOrderInfo(JSONObject orderData);
+
+    JSONObject createPrivateGoods(String orderId);
 }

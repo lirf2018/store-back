@@ -191,6 +191,19 @@ public class OrderController {
         try {
             writer = response.getWriter();
             List<Map<String, Object>> detailList = iOrderService.queryOrderDetailById(orderId);
+            List<Map<String, Object>> propList = iOrderService.queryOrderDetailPropByOrderId(orderId);
+            for (int i = 0; i < detailList.size(); i++) {
+                Map<String, Object> detailMap = detailList.get(i);
+                String detailId = detailMap.get("detail_id").toString();
+                for (int j = 0; j < propList.size(); j++) {
+                    Map<String, Object> propMap = propList.get(j);
+                    String detailId_ = propMap.get("detail_id").toString();
+                    if (detailId.equals(detailId_)) {
+                        detailMap.putAll(propMap);
+                    }
+                }
+            }
+
             //输出参数
             JSONObject dataJson = new JSONObject();
             dataJson.put("data", detailList);
@@ -346,6 +359,22 @@ public class OrderController {
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             String lastalterman = user.getLoginName();
             iOrderService.updateOrderStatus(orderId, orderStatus, serviceRemark, lastalterman);
+            writer.print(out);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 修改详情状态
+     */
+    @PostMapping("createPrivateGoods")
+    public void createPrivateGoods(HttpServletRequest request, HttpServletResponse response, String orderNo) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject out = iOrderService.createPrivateGoods(orderNo);
             writer.print(out);
             writer.close();
         } catch (Exception e) {

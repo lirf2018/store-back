@@ -68,7 +68,7 @@ public class GoodsDaoImpl implements IGoodsDao {
         }
         if (goodsCondition.getIsPutaway() != null) {
             sql.append(" and g.is_putaway=").append(goodsCondition.getIsPutaway()).append(" ");
-            if(goodsCondition.getIsPutaway() == 2){
+            if (goodsCondition.getIsPutaway() == 2) {
                 sql.append(" and NOW()>= g.start_time AND NOW()<= g.end_time ");
             }
         }
@@ -102,8 +102,11 @@ public class GoodsDaoImpl implements IGoodsDao {
         if (goodsCondition.getShopId() != null) {
             sql.append(" and g.shop_id=").append(goodsCondition.getShopId()).append(" ");
         }
-        if (goodsCondition.getIsZiYin() != null&&goodsCondition.getIsZiYin()>-1) {
+        if (goodsCondition.getIsZiYin() != null && goodsCondition.getIsZiYin() > -1) {
             sql.append(" and g.is_zi_yin=").append(goodsCondition.getIsZiYin()).append(" ");
+        }
+        if (goodsCondition.getYuding() != null && goodsCondition.getYuding() > -1) {
+            sql.append(" and g.is_yuding=").append(goodsCondition.getYuding()).append(" ");
         }
         sql.append(" ORDER BY g.data_index DESC,g.goods_id desc ");
         PageInfo pageInfo = new PageInfo();
@@ -122,7 +125,7 @@ public class GoodsDaoImpl implements IGoodsDao {
     public void updateGoodsSku(TbGoodsSku goodsSku) {
         String sql = " update tb_goods_sku set goods_id =? ,sku_name=? ,true_money=? ,now_money=? ,sku_code=?,prop_code=?,prop_code_name=?,goods_spec_name_str=?,sku_num=?,sku_img=?,purchase_price=? where sku_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, goodsSku.getGoodsId(), goodsSku.getSkuName(), goodsSku.getTrueMoney(), goodsSku.getNowMoney(),
-                goodsSku.getSkuCode(), goodsSku.getPropCode(),goodsSku.getPropCodeName(),goodsSku.getGoodsSpecNameStr(), goodsSku.getSkuNum(), goodsSku.getSkuImg(), goodsSku.getPurchasePrice(), goodsSku.getSkuId());
+                goodsSku.getSkuCode(), goodsSku.getPropCode(), goodsSku.getPropCodeName(), goodsSku.getGoodsSpecNameStr(), goodsSku.getSkuNum(), goodsSku.getSkuImg(), goodsSku.getPurchasePrice(), goodsSku.getSkuId());
     }
 
     @Override

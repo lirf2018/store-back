@@ -42,4 +42,6 @@ public class GoodsCondition {
     @JSONField(name = "page_size")
     private Integer pageSize;
 
+     private Integer yuding;
+
 }

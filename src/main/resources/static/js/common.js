@@ -20,10 +20,12 @@ function myAlertSimple(text) {
     });
 }
 
-function myAlertSimple2(text) {
+function myAlertSimple2(text,time) {
     swal({
         title: "提示",
-        text: text
+        text: text,
+        timer: time,
+        showConfirmButton: false
     });
 }
 

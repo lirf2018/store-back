@@ -214,15 +214,19 @@
                         <option value="0" th:selected="${goods.isZiYin == 0}">非自营</option>
                     </select>
                 </td>
-                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>商品类型</td>
                 <td>
+                    <select  class="form-control form-control-common" name="goodsType" id="goodsType">
+                        <option th:each="p:${listParam}" th:if="${p.paramCode == 'goods_type'}" th:value="${p.paramKey}" th:selected="${p.paramKey == (goods.goodsType+'')}"><span th:text="${p.paramValue}"></span></option>
+                    </select>
                 </td>
             </tr>
             <tr>
-                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>商品类型</td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>是否预定</td>
                 <td>
-                    <select  class="form-control form-control-common" name="goodsType" id="goodsType" onchange="onchangeGoodsType()">
-                        <option th:each="p:${listParam}" th:if="${p.paramCode == 'goods_type'}" th:value="${p.paramKey}" th:selected="${p.paramKey == (goods.goodsType+'')}"><span th:text="${p.paramValue}"></span></option>
+                    <select  class="form-control form-control-common" name="isYuding" id="isYuding"  onchange="onchangeGoodsType()">
+                        <option value="0" th:selected="${goods.isYuding == 0}">非预定商品</option>
+                        <option value="1" th:selected="${goods.isYuding == 1}">预定商品</option>
                     </select>
                 </td>
                 <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>是否卡券</td>
@@ -233,8 +237,8 @@
                 </td>
             </tr>
             <tr>
-                <td class="tableLeft">商品类型说明</td>
-                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;" readonly  rows="1" disabled  id="goodsKnow" name="goodsKnow"></textarea></td>
+                <td class="tableLeft">预定说明</td>
+                <td colspan="3" style="text-align: left"><textarea style="width: 100%;resize: none;border: 1px solid #ccc;"  rows="2"  id="goodsKnow" name="goodsKnow"></textarea></td>
             </tr>
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>开始时间</td>
@@ -358,15 +362,8 @@
                 </td>
             </tr>
             <tr>
-                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>是否预定</td>
-                <td>
-                    <select  class="form-control form-control-common" name="isYuding" id="isYuding" >
-                        <option value="0" th:selected="${goods.isYuding == 0}">非预定商品</option>
-                        <option value="1" th:selected="${goods.isYuding == 1}">预定商品</option>
-                    </select>
-                </td>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>是否线上支付</td>
-                <td>
+                <td colspan="3">
                     <select  class="form-control form-control-common" name="isPayOnline" id="isPayOnline" >
                         <option value="0" th:selected="${goods.isPayOnline == 0}">可以不用线上支付</option>
                     </select>
@@ -1006,11 +1003,14 @@
     function onchangeGoodsType(){
         var listParam = [[${listParam}]];
         $("#goodsKnow").val("");
-        var goodsType = $("#goodsType").val();
+        var isYuding = $("#isYuding").val();
+        if(isYuding !=1){
+            return;
+        }
         let str = "";
         for (let i = 0; i < listParam.length; i++) {
             let item = listParam[i];
-            if(item.paramKey == goodsType && item.paramCode == 'goods_type'){
+            if(item.paramCode == 'yuding_desc'){
                 str = str + item.paramValue2;
             }
         }

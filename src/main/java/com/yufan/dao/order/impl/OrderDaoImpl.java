@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yufan.bean.OrderCondition;
 import com.yufan.common.dao.IGeneralDao;
 import com.yufan.dao.order.IOrderDao;
+import com.yufan.pojo.TbOrder;
 import com.yufan.utils.Constants;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,12 @@ public class OrderDaoImpl implements IOrderDao {
             }
             sql.append(" ) ");
         }
+        if (orderCondition.getGoodsYuding() != null && orderCondition.getGoodsYuding() == 1) {
+            sql.append(" and o.order_id in (select pp.order_id from tb_order_detail_property pp where 1=1 and  pp.property_type=0 and pp.property_key='is_yuding' and pp.property_value='1') ");
+        }
+        if (orderCondition.getGoodsYuding() != null && orderCondition.getGoodsYuding() == 0) {
+            sql.append(" and o.order_id not in (select pp.order_id from tb_order_detail_property pp where 1=1 and  pp.property_type=0 and pp.property_key='is_yuding' and pp.property_value='1') ");
+        }
         sql.append(" ORDER BY o.order_id desc ");
         PageInfo pageInfo = new PageInfo();
         pageInfo.setCurrePage(currePage);
@@ -152,6 +159,12 @@ public class OrderDaoImpl implements IOrderDao {
     }
 
     @Override
+    public TbOrder loadOrder(String orderNo) {
+        String hql = " from TbOrder where orderNo=?1 ";
+        return iGeneralDao.queryUniqueByHql(hql, orderNo);
+    }
+
+    @Override
     public void updateOrderInfo(JSONObject orderData) {
         String lastalterman = orderData.getString("lastalterman");
         int orderStatus = orderData.getInteger("orderStatus");
@@ -163,6 +176,5 @@ public class OrderDaoImpl implements IOrderDao {
         int orderId = orderData.getInteger("orderId");
         String sql = " update tb_order set lastalterman=?,lastaltertime=NOW(),order_status=?,refund_price=?,refund_remark=?,service_remark=?,post_man=?,post_phone=?,finish_time=NOW(),user_read_mark=1 where order_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, lastalterman, orderStatus, refundPrice, refundRemark, serviceRemark, postMan, postPhone, orderId);
-
     }
 }

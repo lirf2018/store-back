@@ -87,6 +87,12 @@
                                 <option value="0">不是抢购商品</option>
                                 <option value="1">抢购商品</option>
                             </select>
+                            <label>是否预定:</label>
+                            <select class="form-control" id="yuding" name="yuding" onchange="searchData()">
+                                <option value="">--选择是否预定--</option>
+                                <option value="0">不是预定商品</option>
+                                <option value="1">预定商品</option>
+                            </select>
                             <label>取货方式:</label>
                             <select class="form-control" id="getWay" name="getWay" onchange="">
                                 <option value="">--选择取货方式--</option>
@@ -132,6 +138,7 @@
                             <th>类目</th>
                             <th>一级分类</th>
                             <th>抢购商品</th>
+                            <th>预定商品</th>
                             <th>销售数</th>
                             <th>状态</th>
                             <th>创建时间</th>
@@ -221,6 +228,7 @@
                     d.status = $("#status").val();
                     d.shopId = $("#shopId").val();
                     d.isZiYin = $("#isZiYin").val();
+                    d.yuding = $("#yuding").val();
                 }
             }
             , columns: [
@@ -357,6 +365,16 @@
                 }
                 , {
                     data: function (obj) {
+                        if(obj.is_yuding == 0){
+                            return '否';
+                        }else if(obj.is_yuding == 1){
+                            return '是';
+                        }
+                        return '';
+                    }
+                }
+                , {
+                    data: function (obj) {
                         return obj.sell_count == null ? '' : obj.sell_count;
                     }
                 }
@@ -372,7 +390,7 @@
             ]
             , columnDefs: [
                 {
-                    targets: 24,
+                    targets: 25,
                     data: null,
                     render: function (data, type, row) {
                         var html = "";

@@ -34,5 +34,6 @@ public class OrderCondition {
     private Integer goodsId;
     private Integer skuId;
     private Integer timeGoodsId;
+    private Integer goodsYuding;
 
 }
