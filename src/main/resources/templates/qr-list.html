@@ -281,10 +281,10 @@
         let changeCode = $("#changeCode1").val();
         let checkCode = $("#checkCode").val();
         if(changeCode == null || changeCode == ''){
-            return myAlertSimple2("兑换码不能为空");
+            return myAlertSimple4("兑换码不能为空");
         }
         // if(checkCode == null || checkCode == ''){
-        //     return myAlertSimple2("校验码不能为空");
+        //     return myAlertSimple4("校验码不能为空");
         // }
 
         let data = {
@@ -311,11 +311,11 @@
                 success: function (data) {
                     var code = data.code;
                     if (code == "1") {
-                        myAlertSimple("操作成功");
+                        myAlertSimple4("操作成功");
                         // setTimeout("javascript:window.location.href = 'shop/shopPage'",1000);
                         searchData();
                     }else{
-                        myAlertSimple(data.msg);
+                        myAlertSimple4(data.msg);
                     }
                 }
             });

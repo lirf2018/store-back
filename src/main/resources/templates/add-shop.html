@@ -351,31 +351,31 @@
 
         if(shopName == ''){
             $("#shopName").focus();
-            return myAlertSimple("店铺名称不能为空");
+            return myAlertSimple4("店铺名称不能为空");
         }
         if(shopCode == ''){
             $("#shopCode").focus();
-            return myAlertSimple("店铺编码不能为空");
+            return myAlertSimple4("店铺编码不能为空");
         }
         if(enterEndTime == ''){
-            return myAlertSimple("到期时间不能为空");
+            return myAlertSimple4("到期时间不能为空");
         }
         if(shopTel1 == ''){
             $("#shopTel1").focus();
-            return myAlertSimple("电话不能为空");
+            return myAlertSimple4("电话不能为空");
         }
         if(isOutShop == -1){
             $("#isOutShop").focus();
-            return myAlertSimple("请选择店铺归属");
+            return myAlertSimple4("请选择店铺归属");
         }
         if(secretKey == ''){
             $("#secretKey").focus();
-            return myAlertSimple("店铺秘钥不能为空");
+            return myAlertSimple4("店铺秘钥不能为空");
         }
         var regNum=/^[0-9]*$/;
         if(!regNum.test($.trim(dataIndex))){
             $("#dataIndex").focus();
-            return myAlertSimple("非法权重");
+            return myAlertSimple4("非法权重");
         }
         if(null == img0 || img0 == ''){
             img0 = "null.jpg";
@@ -417,7 +417,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "5" || code == '6') {
                     if(mark == 1){
                         setTimeout("javascript:window.location.href = 'shop/addShopPage'",1000);

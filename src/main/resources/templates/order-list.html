@@ -413,7 +413,7 @@
         function createPrivateGoods() {
             let orderNo = $("#orderNo_").val();
             if(orderNo == null || orderNo == ''){
-                myAlertSimple("订单号不能为空");
+                myAlertSimple4("订单号不能为空");
                 $("#orderNo_").focus();
                 return
             }
@@ -427,12 +427,7 @@
                 cache: false,
                 dataType: "json",
                 success: function (data) {
-                    if (data.code == '1') {
-                        myAlertSimple2(data.msg,1000);
-                    }else{
-                        myAlertSimple2(data.msg);
-                    }
-
+                    myAlertSimple4(data.msg);
                 }
             });
         }

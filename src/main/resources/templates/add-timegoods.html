@@ -227,40 +227,40 @@
         //
         var regNum=/^[0-9]*$/;
         if(!regNum.test($.trim(dataIndex))){
-            return myAlertSimple("非法权重");
+            return myAlertSimple4("非法权重");
         }
         if(!regNum.test($.trim(goodsStore))){
-            return myAlertSimple("非法库存");
+            return myAlertSimple4("非法库存");
         }
         if(!regNum.test($.trim(limitNum))){
-            return myAlertSimple("非法限购数");
+            return myAlertSimple4("非法限购数");
         }
         if(!numAndpoint(timePrice)){
-            return myAlertSimple("非法抢购价");
+            return myAlertSimple4("非法抢购价");
         }
         var nowPrice = $("#nowPrice").val();
         if (timePrice > nowPrice) {
-            return myAlertSimple("抢购价不能大于商品销售价格");
+            return myAlertSimple4("抢购价不能大于商品销售价格");
         }
 
         if(beginTime == null || beginTime == ''){
-            return myAlertSimple("开始时间不能为空");
+            return myAlertSimple4("开始时间不能为空");
         }
         if(endTime == null || endTime == ''){
-            return myAlertSimple("结束时间不能为空");
+            return myAlertSimple4("结束时间不能为空");
         }
         if(endTime < beginTime){
-            return myAlertSimple("结束时间不能小于开始时间");
+            return myAlertSimple4("结束时间不能小于开始时间");
         }
         if(limitBeginTime == null || limitBeginTime == ''){
-            return myAlertSimple("限购统计开始时间不能为空");
+            return myAlertSimple4("限购统计开始时间不能为空");
         }
         if(timeWay == -1){
-            return myAlertSimple("选择限购方式");
+            return myAlertSimple4("选择限购方式");
         }
         var advancePrice = $("#advancePrice").val();
         if (advancePrice > timePrice) {
-            return myAlertSimple("抢购价不能小于对应商品的预付款, 请在商品详情页面修改预付款");
+            return myAlertSimple4("抢购价不能小于对应商品的预付款, 请在商品详情页面修改预付款");
         }
         var data = {
             "id":timeGoodsId,
@@ -286,7 +286,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "5" || code == '6') {
                     var fromPage = [[${fromPage}]];
                     if(fromPage == 1){

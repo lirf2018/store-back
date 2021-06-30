@@ -187,7 +187,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "3" || code == '4') {
                     setTimeout("javascript:window.location.href = 'banner/bannerPage'",1000);
                 }

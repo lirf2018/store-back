@@ -330,40 +330,40 @@
 
         if(goodsName == ''){
             $("#goodsName").focus();
-            return myAlertSimple("商品名称不能为空");
+            return myAlertSimple4("商品名称不能为空");
         }
         if(goodsName.length>24){
             $("#goodsName").focus();
-            return myAlertSimple("商品名称不能超过24个汉字");
+            return myAlertSimple4("商品名称不能超过24个汉字");
         }
         var regNum=/^[0-9]*$/;
         if(!regNum.test($.trim(dataIndex))){
             $("#dataIndex").focus();
-            return myAlertSimple("非法权重");
+            return myAlertSimple4("非法权重");
         }
         if(!numAndpoint(truePrice)){
             $("#truePrice").focus();
-            return myAlertSimple("非法原价");
+            return myAlertSimple4("非法原价");
         }
         if(!numAndpoint(nowPrice)){
             $("#nowPrice").focus();
-            return myAlertSimple("非法销售价");
+            return myAlertSimple4("非法销售价");
         }
         if (Number(truePrice) < Number(nowPrice)) {
             $("#nowPrice").focus();
-            return myAlertSimple("价格不合理: 销售价("+nowPrice+")不能大于原价("+truePrice+")");
+            return myAlertSimple4("价格不合理: 销售价("+nowPrice+")不能大于原价("+truePrice+")");
         }
         if(!numAndpoint(purchasePrice)){
             $("#purchasePrice").focus();
-            return myAlertSimple("非法进货价");
+            return myAlertSimple4("非法进货价");
         }
         if(newInfo == -1){
             $("#newInfo").focus();
-            return myAlertSimple("选择商品新旧");
+            return myAlertSimple4("选择商品新旧");
         }
         if(shopId == ''){
             $("#shopId").focus();
-            return myAlertSimple("选择店铺");
+            return myAlertSimple4("选择店铺");
         }
         if(null == img0 || img0 == ''){
             img0 = "null.jpg";
@@ -399,7 +399,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "5" || code == '6') {
                     if(mark == 1){
                         setTimeout("javascript:window.location.href = 'second/addSecondGoodsPage'",1000);

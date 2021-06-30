@@ -195,7 +195,7 @@
             var remark = $("#remark").val();
             var roleName = $("#roleName").val();
             if(roleName == ''){
-                return myAlertSimple("角色名称不能为空");
+                return myAlertSimple4("角色名称不能为空");
             }
             var status = $("input[name='status']:checked").val();
 
@@ -214,7 +214,7 @@
                 success: function (data) {
                     var code = data.code;
                     if (code == "5" || code == '6') {
-                        myAlertSimple(data.msg);
+                        myAlertSimple4(data.msg);
                         setTimeout("javascript:window.location.href = 'role/rolePage'",1000);
                     }
                 }
@@ -238,7 +238,7 @@
                 success: function (data) {
                     var code = data.code;
                     if (code == "3" || code == '4') {
-                        myAlertSimple(data.msg);
+                        myAlertSimple4(data.msg);
                         setTimeout("javascript:window.location.href = 'role/rolePage'",1000);
                     }
                 }

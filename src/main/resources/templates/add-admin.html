@@ -176,37 +176,37 @@
         var sex = $("input[name='sex']:checked").val();
         var status = $("input[name='status']:checked").val();
         if (memberType == -1) {
-            return myAlertSimple("请选择账号类型");
+            return myAlertSimple4("请选择账号类型");
         }
         if(memberType != 0 && shopId == 0){
-            return myAlertSimple("请选择店铺");
+            return myAlertSimple4("请选择店铺");
         }
 
         if(shopId != 0 && memberType == 0){
-            return myAlertSimple("账号类型只能选择店长或店员");
+            return myAlertSimple4("账号类型只能选择店长或店员");
         }
 
         if(loginName == ''){
-            return myAlertSimple("登录名称不能为空");
+            return myAlertSimple4("登录名称不能为空");
         }
         if(userName == ''){
-            return myAlertSimple("用户名称不能为空");
+            return myAlertSimple4("用户名称不能为空");
         }
         if(idcard == '' || idcard.length != 18){
-            return myAlertSimple("非法身份证号");
+            return myAlertSimple4("非法身份证号");
         }
         if(phone == '' || phone.length > 12){
-            return myAlertSimple("非法电话号码");
+            return myAlertSimple4("非法电话号码");
         }
         if(password == ''){
-            return myAlertSimple("密码不能为空");
+            return myAlertSimple4("密码不能为空");
         }
         if(sDate == '' || eDate == '' || sDate>eDate){
-            return myAlertSimple("账号到期时间不能为空,且开始时间不能小于结束时间");
+            return myAlertSimple4("账号到期时间不能为空,且开始时间不能小于结束时间");
         }
 
         if(roleId == '-1'){
-            return myAlertSimple("用户角色不能为空");
+            return myAlertSimple4("用户角色不能为空");
         }
         var mark = $(this).attr("data-mark");
         if (adminId > 0) {
@@ -240,7 +240,7 @@
             success: function (data) {
                 var code = data.code;
                 if (code == "1") {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     if(mark == 1){
                         setTimeout("javascript:window.location.href = 'user/addAdminPage'",1000);
                     }else {

@@ -213,7 +213,7 @@
     function addOrUpdateData(regionId) {
         var loginName =[[${loginName}]];
         if(loginName != "admin"){
-            return  myAlertSimple("权限不足");
+            return  myAlertSimple4("权限不足");
         }
         window.location.href = "addr/addGloblePage?regionId="+regionId;
     }
@@ -222,7 +222,7 @@
     function updateData(id,status) {
         var loginName =[[${loginName}]];
         if(loginName != "admin"){
-            return  myAlertSimple("权限不足");
+            return  myAlertSimple4("权限不足");
         }
         $.ajax({
             url: "addr/updateGlobleAddrStatus",
@@ -236,7 +236,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "3" || code == '4') {
                     searchData()
                 }

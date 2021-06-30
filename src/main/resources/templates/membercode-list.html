@@ -146,10 +146,10 @@
         var userPhone = $("#userPhone").val();
         var memberId = $("#memberId").val();
         if(userPhone == ''){
-            return myAlertSimple("手机号码不能为空");
+            return myAlertSimple4("手机号码不能为空");
         }
         if(memberId == ''){
-            return myAlertSimple("会员号码不能为空");
+            return myAlertSimple4("会员号码不能为空");
         }
 
         $.ajax({
@@ -164,7 +164,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "1") {
                     setTimeout("javascript:window.location.href = 'user/toMemberCodePage'",1000);
                 }
@@ -196,7 +196,7 @@
                 dataType: "json",
                 success: function (data) {
                     var code = data.code;
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     if (code == "1") {
                         setTimeout("javascript:window.location.href = 'user/toMemberCodePage'",1000);
                     }

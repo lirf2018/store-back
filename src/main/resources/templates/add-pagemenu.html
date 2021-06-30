@@ -257,12 +257,12 @@
 
         if(menuName == ''){
             $("#menuName").focus();
-            return myAlertSimple("菜单名称不能为空");
+            return myAlertSimple4("菜单名称不能为空");
         }
         var regNum=/^[0-9]*$/;
         if(menuSort == '' ||!regNum.test($.trim(menuSort))){
             $("#dataIndex").focus();
-            return myAlertSimple("非法排序");
+            return myAlertSimple4("非法排序");
         }
 
         if(relType == 1){
@@ -313,7 +313,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "5" || code == '6') {
                     if(mark == 1){
                         setTimeout("javascript:window.location.href = 'menu/toMenuAddPage'",1000);

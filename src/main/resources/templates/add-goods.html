@@ -584,99 +584,99 @@
 
         if(levelId == ''){
             $("#levelId").focus();
-            return myAlertSimple("选择选择一级分类");
+            return myAlertSimple4("选择选择一级分类");
         }
         if(goodsName == ''){
             $("#goodsName").focus();
-            return myAlertSimple("商品名称不能为空");
+            return myAlertSimple4("商品名称不能为空");
         }
         if(goodsName.length>30){
             $("#goodsName").focus();
-            return myAlertSimple("商品名称不能超过24个汉字");
+            return myAlertSimple4("商品名称不能超过24个汉字");
         }
         if(title == ''){
             $("#title").focus();
-            return myAlertSimple("商品title不能为空");
+            return myAlertSimple4("商品title不能为空");
         }
         if(!numAndpoint(trueMoney)){
             $("#trueMoney").focus();
-            return myAlertSimple("非法原价");
+            return myAlertSimple4("非法原价");
         }
         if(!numAndpoint(nowMoney)){
             $("#nowMoney").focus();
-            return myAlertSimple("非法销售价");
+            return myAlertSimple4("非法销售价");
         }
         if(shopId == '' || shopId == null){
             $("#shopId").focus();
-            return myAlertSimple("选择店铺");
+            return myAlertSimple4("选择店铺");
         }
         if(getWay == ''){
             $("#getWay").focus();
-            return myAlertSimple("选择取货方式");
+            return myAlertSimple4("选择取货方式");
         }
         if(!checknumber(dataIndex)){
             $("#dataIndex").focus();
-            return myAlertSimple("非法权重");
+            return myAlertSimple4("非法权重");
         }
         if(categoryId == ''){
             $("#categoryId").focus();
-            return myAlertSimple("选择类目")
+            return myAlertSimple4("选择类目")
         }
         if(startTime == ''){
-            return myAlertSimple("开始时间不能为空")
+            return myAlertSimple4("开始时间不能为空")
         }
         if(endTime == ''){
-            return myAlertSimple("结束时间不能为空")
+            return myAlertSimple4("结束时间不能为空")
         }
         if(startTime>endTime){
-            return myAlertSimple("开始时间不能大于结束时间")
+            return myAlertSimple4("开始时间不能大于结束时间")
         }
         if(!checknumber(goodsNum)){
             $("#goodsNum").focus();
-            return myAlertSimple("非法库存");
+            return myAlertSimple4("非法库存");
         }
         if(goodsType == ''){
             $("#goodsType").focus();
-            return myAlertSimple("选择商品类型")
+            return myAlertSimple4("选择商品类型")
         }
         if(goodsUnit == ''){
             $("#goodsUnit").focus();
-            return myAlertSimple("选择商品单位")
+            return myAlertSimple4("选择商品单位")
         }
         if(!numAndpoint(depositMoney)){
             $("#depositMoney").focus();
-            return myAlertSimple("非法押金");
+            return myAlertSimple4("非法押金");
         }
         if(!numAndpoint(purchasePrice)){
             $("#purchasePrice").focus();
-            return myAlertSimple("非法成本价");
+            return myAlertSimple4("非法成本价");
         }
         if(!checknumber(limitNum)){
             $("#limitNum").focus();
-            return myAlertSimple("非法限购数");
+            return myAlertSimple4("非法限购数");
         }
         if(limitWay == ''){
             $("#limitWay").focus();
-            return myAlertSimple("选择限购方式");
+            return myAlertSimple4("选择限购方式");
         }
         if(limitBeginTime == ''){
-            return myAlertSimple("限购统计开始时间不能为空");
+            return myAlertSimple4("限购统计开始时间不能为空");
         }
         if(!numAndpoint(advancePrice)){
             $("#advancePrice").focus();
-            return myAlertSimple("非法预付款");
+            return myAlertSimple4("非法预付款");
         }
 
         if (Number(trueMoney) < Number(nowMoney)) {
             $("#nowMoney").focus();
-            return myAlertSimple("销售价不能大于原价");
+            return myAlertSimple4("销售价不能大于原价");
         }
 
         //处理商品sku(销售属性) propValueArrays propNameArrays
         if (propNameArrays.length != propValueArrays.length || salesCount != propValueArrays.length) {
             $("#goodsName").focus();
             $("#goodsName").blur();
-            return myAlertSimple("选择商品sku规格");
+            return myAlertSimple4("选择商品sku规格");
         }
         //校验 多个用``相连
         var skuCodeObj = $("input[name='skuCode']");
@@ -699,7 +699,7 @@
             }
         });
         if(flag){
-            return myAlertSimple("商品sku名称不能为空");
+            return myAlertSimple4("商品sku名称不能为空");
         }
 
         var skuPurchasePriceObj = $("input[name='skuPurchasePrice']");
@@ -713,7 +713,7 @@
             }
         });
         if(flag){
-            return myAlertSimple("非法商品sku成本价");
+            return myAlertSimple4("非法商品sku成本价");
         }
 
         var skuTrueMoneyObj = $("input[name='skuTrueMoney']");
@@ -727,7 +727,7 @@
             }
         });
         if(flag){
-            return myAlertSimple("非法商品sku原价");
+            return myAlertSimple4("非法商品sku原价");
         }
 
         var skuNowMoneyObj = $("input[name='skuNowMoney']");
@@ -741,7 +741,7 @@
             }
         });
         if(flag){
-            return myAlertSimple("非法商品sku销售价");
+            return myAlertSimple4("非法商品sku销售价");
         }
 
         var skuNumObj = $("input[name='skuNum']");
@@ -755,7 +755,7 @@
             }
         });
         if(flag){
-            return myAlertSimple("非法商品sku库存数");
+            return myAlertSimple4("非法商品sku库存数");
         }
 
         var skuImgObj = $("input[name='skuImg']");
@@ -796,11 +796,11 @@
             var t = skuTrueMoney.split("``");//原价
             for (var i = 0; i < n.length; i++) {
                 if(skuNowMoney != ''&&Number(n[i])>Number(t[i])){
-                    myAlertSimple("商品sku销售价格不能大于sku原价");
+                    myAlertSimple4("商品sku销售价格不能大于sku原价");
                     return;
                 }
                 if(advancePrice>skuNowMoney){
-                    myAlertSimple(" 商品预付款不能大于商品sku现价");
+                    myAlertSimple4(" 商品预付款不能大于商品sku现价");
                     return;
                 }
             }
@@ -808,7 +808,7 @@
 
         if (skuNowMoney == "" || skuNowMoney == null){
             if(advancePrice>nowMoney){
-                myAlertSimple(" 商品预付款不能大于商品现价");
+                myAlertSimple4(" 商品预付款不能大于商品现价");
                 return;
             }
         }
@@ -885,7 +885,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "5" || code == '6') {
                     if(mark == 1){
                         setTimeout("javascript:window.location.href = 'goods/addGoodsPage'",1000);
@@ -895,7 +895,7 @@
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
-                myAlertSimple("操作失败");
+                myAlertSimple4("操作失败");
             }
         });
     })

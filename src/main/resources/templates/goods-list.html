@@ -534,11 +534,11 @@
                 success: function (data) {
                     var code = data.code;
                     if (code == "21") {
-                        myAlertSimple(data.msg);
+                        myAlertSimple4(data.msg);
                         // setTimeout("javascript:window.location.href = 'goods/goodsPage'",1000);
                         searchData();
                     }else{
-                        myAlertSimple("取消失败");
+                        myAlertSimple4("取消失败");
                     }
                 }
             });
@@ -560,7 +560,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "3" || code == '4') {
                     // setTimeout("javascript:window.location.href = 'goods/goodsPage'",1000);
                     searchData();
@@ -588,7 +588,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "20" || code == '19') {
                     // setTimeout("javascript:window.location.href = 'goods/goodsPage'",1000);
                     searchData();

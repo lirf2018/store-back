@@ -257,13 +257,13 @@
         var menuRemark = $("#menuRemark").val();
         var status = $("#status").val();
         if(parentId>0 && menuUrl == ''){
-            return myAlertSimple("功能动作不能为空");
+            return myAlertSimple4("功能动作不能为空");
         }
         if(menuName == ''){
-            return myAlertSimple("功能名称不能为空");
+            return myAlertSimple4("功能名称不能为空");
         }
         if(menuCode == ''){
-            return myAlertSimple("功能编码不能为空");
+            return myAlertSimple4("功能编码不能为空");
         }
 
         var functionType = 0;//第一级菜单
@@ -295,10 +295,10 @@
             success: function (data) {
                 var code = data.code;
                 if (code === "6" || code === "5") {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     setTimeout("toPage("+parentId+")",1000);
                 }else {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                 }
             }
         });
@@ -319,7 +319,7 @@
             cache: false,
             dataType: "json",
             success: function (data) {
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 setTimeout("toPage("+parentId+")",1000);
             }
         });

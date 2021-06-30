@@ -136,7 +136,7 @@
         });
         var roleId = $("#choseRoleId").val();
         if (roleId == 0 || roleId == '') {
-            return myAlertSimple("请选择角色");
+            return myAlertSimple4("请选择角色");
         }
         $.ajax({
             url: "role/addRoleFun",
@@ -149,7 +149,7 @@
             cache: false,
             dataType: "json",
             success: function (data) {
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
             }
         });
     }

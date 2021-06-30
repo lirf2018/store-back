@@ -438,7 +438,7 @@
             success: function (data) {
                 var code = data.code;
                 if (code == '1') {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     setTimeout("javascript:location.reload()",1000);
                 }
             }
@@ -480,13 +480,13 @@
         var orderId = $("#orderId").val();
         //校验
         if(resetKey == ''){
-            return myAlertSimple("秘钥不能为空");
+            return myAlertSimple4("秘钥不能为空");
         }
         if(orderStatus == '-1'){
-            return myAlertSimple("选择订单状态");
+            return myAlertSimple4("选择订单状态");
         }
         if(!numAndpoint(refundPrice)){
-            return myAlertSimple("无效退款金额");
+            return myAlertSimple4("无效退款金额");
         }
 
         $.ajax({
@@ -508,10 +508,10 @@
             success: function (data) {
                 var code = data.code;
                 if (code == '1') {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     setTimeout("javascript:location.reload()",1000);
                 }else{
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                 }
             }
         });
@@ -562,10 +562,10 @@
             success: function (data) {
                 var code = data.code;
                 if (code == '5') {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     setTimeout("javascript:location.reload()",1000);
                 }else{
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                 }
             }
         });

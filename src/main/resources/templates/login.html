@@ -29,9 +29,9 @@
         function checkLogin() {
             var loginName = $("#loginName").val();
             var loginPasswd = $("#loginPasswd").val();
-            // if(loginName.trim() == "" || loginPasswd.trim() == ""){
-            //     return myAlertSimple("账号密码不能为空");
-            // }
+            if(loginName.trim() == "" || loginPasswd.trim() == ""){
+                return myAlertSimple4("账号密码不能为空");
+            }
             $.ajax({
                 type : "post",
                 data : {
@@ -42,11 +42,10 @@
                 url : "login/checkLogin",
                 success : function(data) {
                     var data = eval("("+data+")");
+                    myAlertSimple4(data.msg);
                     if (data.code == '9') {
-                        myAlertSimple(data.msg);
+
                         window.location.href = "login/indexPage";
-                    }else {
-                        myAlertSimple(data.msg);
                     }
                 }
             });

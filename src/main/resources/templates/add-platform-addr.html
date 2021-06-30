@@ -169,33 +169,33 @@
         var id = $("#id").val();
         var addrPrefix = $("#addrPrefix").val();
         if (addrPrefix == '') {
-            return myAlertSimple("请输入地址前缀");
+            return myAlertSimple4("请输入地址前缀");
         }
         var freight = $("#freight").val();
         var regPrice =  /^\d+(\.\d+)?$/;
         if (!regPrice.test($.trim(freight))) {
-            return myAlertSimple("非法运费");
+            return myAlertSimple4("非法运费");
         }
         var responsibleMan = $("#responsibleMan").val();
         if (responsibleMan == '') {
-            return myAlertSimple("请输入负责人");
+            return myAlertSimple4("请输入负责人");
         }
         var responsiblePhone = $("#responsiblePhone").val();
         if (responsiblePhone == '') {
-            return myAlertSimple("请输入负责人电话");
+            return myAlertSimple4("请输入负责人电话");
         }
         var sortChar = $("#sortChar").val()
         if(sortChar == null || $.trim(sortChar) == ''){
-            return myAlertSimple("地址排序字母,大写A到Z");
+            return myAlertSimple4("地址排序字母,大写A到Z");
         }
         var az = /^[A-Z]{0,1}$/;
         if( !az.test($.trim(sortChar))){
-            return myAlertSimple("地址排序字母,大写A到Z");
+            return myAlertSimple4("地址排序字母,大写A到Z");
         }
         var addrSort = $("#addrSort").val();
         var regNum=/^[0-9]*$/;
         if(!regNum.test($.trim(addrSort))){
-            return myAlertSimple("非法排序");
+            return myAlertSimple4("非法排序");
         }
         var addrTypes = "";
         if (id > 0) {
@@ -212,15 +212,15 @@
         var shopId = $("#shopId").val();
 
         if(addrTypes == ''){
-            return myAlertSimple("请选择地址类型");
+            return myAlertSimple4("请选择地址类型");
         }
         var addrName = $("#addrName").val();
         if (addrName == '') {
-            return myAlertSimple("请输入地址名称");
+            return myAlertSimple4("请输入地址名称");
         }
         var detailAddr = $("#detailAddr").val();
         if (detailAddr == '') {
-            return myAlertSimple("请输入详细地址");
+            return myAlertSimple4("请输入详细地址");
         }
         var addrDesc = $("#addrDesc").val();
         var remark = $("#remark").val();
@@ -263,7 +263,7 @@
             success: function (data) {
                 var code = data.code;
                 if (code == "1") {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     if(mark == 1){
                         setTimeout("javascript:window.location.href = 'addr/addPlatformAddrPage'",1000);
                     }else {

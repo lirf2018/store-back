@@ -262,27 +262,27 @@
         var infoImg = $("#img").val();
 
         if (infoTitle == '') {
-            return myAlertSimple("标题不能为空");
+            return myAlertSimple4("标题不能为空");
         }
         if(infoContent == ''){
-            return myAlertSimple("内容不能为空");
+            return myAlertSimple4("内容不能为空");
         }
         var regNum=/^[0-9]*$/;
         if(!regNum.test($.trim(infoIndex))){
-            return myAlertSimple("非法权重");
+            return myAlertSimple4("非法权重");
         }
 
         if(shopId == null || shopId == ''){
-            return myAlertSimple("店铺不能为空");
+            return myAlertSimple4("店铺不能为空");
         }
         if(startTime == null || startTime == ''){
-            return myAlertSimple("开始时间不能为空");
+            return myAlertSimple4("开始时间不能为空");
         }
         if(endTime == null || endTime == ''){
-            return myAlertSimple("结束时间不能为空");
+            return myAlertSimple4("结束时间不能为空");
         }
         if(endTime < startTime){
-            return myAlertSimple("结束时间不能小于开始时间");
+            return myAlertSimple4("结束时间不能小于开始时间");
         }
         if(null == infoImg || infoImg == ''){
             infoImg = "null.jpg";
@@ -311,7 +311,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "5" || code == '6') {
                     setTimeout("javascript:window.location.href = 'info/infoPage'",1000);
                 }

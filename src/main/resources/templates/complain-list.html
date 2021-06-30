@@ -260,7 +260,7 @@
                 success: function (data) {
                     var code = data.code;
                     if (code == "3") {
-                        myAlertSimple(data.msg);
+                        myAlertSimple4(data.msg);
                         // setTimeout("javascript:window.location.href = 'complain/complainPage'",1000);
                         searchData();
                     }
@@ -285,7 +285,7 @@
             success: function (data) {
                 var code = data.code;
                 if (code == "17") {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     // setTimeout("javascript:window.location.href = 'complain/complainPage'",1000);
                     searchData();
                 }
@@ -317,7 +317,7 @@
     function updateAnswer() {
         var answer = $("#answerContents").val();
         if(answer.trim() == ''){
-            return myAlertSimple("回复不能为空");
+            return myAlertSimple4("回复不能为空");
         }
         $.ajax({
             url: "complain/updateAnswer",
@@ -331,7 +331,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == '1') {
                     // setTimeout("javascript:location.reload()",1000);
                     searchData();

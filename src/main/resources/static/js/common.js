@@ -29,6 +29,24 @@ function myAlertSimple2(text,time) {
     });
 }
 
+function myAlertSimple3(text) {
+    swal({
+        title: "提示",
+        text: text,
+        confirmButtonText: "确认"
+    });
+}
+
+
+function myAlertSimple4(text) {
+    swal({
+        title: "提示",
+        text: text,
+        timer: 1000,
+        showConfirmButton: false
+    });
+}
+
 //将时间戳格式化
 function getMyDate(time) {
     if (typeof(time) == "undefined") {

@@ -183,23 +183,23 @@
         var status = $("#status").val();
         if(regionCode == ''){
             $("#regionCode").focus();
-            return myAlertSimple("行政区划代码不能为空");
+            return myAlertSimple4("行政区划代码不能为空");
         }
         if(regionName == ''){
             $("#regionName").focus();
-            return myAlertSimple("行政区划名称不能为空");
+            return myAlertSimple4("行政区划名称不能为空");
         }
         if(parentId == ''){
             $("#parentId").focus();
-            return myAlertSimple("上级行政区划代码不能为空");
+            return myAlertSimple4("上级行政区划代码不能为空");
         }
         if(!checknumber(regionOrder)){
             $("#regionOrder").focus();
-            return myAlertSimple("非法排序");
+            return myAlertSimple4("非法排序");
         }
         if(!numAndpoint(freight)){
             $("#freight").focus();
-            return myAlertSimple("非法运费");
+            return myAlertSimple4("非法运费");
         }
 
         var mark = $(this).attr("data-mark");
@@ -228,14 +228,14 @@
             success: function (data) {
                 var code = data.code;
                 if (code == "1") {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     if(mark == 1){
                         setTimeout("javascript:window.location.href = 'addr/addGloblePage'",1000);
                     }else {
                         setTimeout("javascript:window.location.href = 'addr/globleAddrPage'",1000);
                     }
                 }else{
-                    return myAlertSimple(data.msg);
+                    return myAlertSimple4(data.msg);
                 }
             }
         });

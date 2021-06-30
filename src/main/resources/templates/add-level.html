@@ -172,17 +172,17 @@
 
         if(levelName == ''){
             $("#levelName").focus();
-            return myAlertSimple("一级分类名称不能为空");
+            return myAlertSimple4("一级分类名称不能为空");
         }
         if(levelCode == ''){
             $("#levelCode").focus();
-            return myAlertSimple("一级分类编码不能为空");
+            return myAlertSimple4("一级分类编码不能为空");
         }
 
         var regNum=/^[0-9]*$/;
         if(dataIndex == '' ||!regNum.test($.trim(dataIndex))){
             $("#dataIndex").focus();
-            return myAlertSimple("非法权重");
+            return myAlertSimple4("非法权重");
         }
 
         var categoryIdsHasRel = [[${categoryIdsHasRel}]];//已关联的类目
@@ -223,7 +223,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "5" || code == '6') {
                     if(mark == 1){
                         setTimeout("javascript:window.location.href = 'category/addLevelPage'",1000);
@@ -283,7 +283,7 @@
                     "<img style='border: 1px solid #ccc' src='"+ret.imgWebUrl+"' width='80px' height='80px'>";
                 $("#imgShowDiv").html(html)
             }else{
-                return myAlertSimple(ret.msg);
+                return myAlertSimple4(ret.msg);
             }
         });
         $("#fileForm").html("<input style=\"border: none\" type=\"file\" class=\"form-control\" name=\"file\" multiple=\"multiple\"  onchange=\"uploadFile(this)\">")

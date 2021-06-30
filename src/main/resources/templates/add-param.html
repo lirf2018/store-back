@@ -117,10 +117,10 @@
         var remark = $("#remark").val();
 
         if (paramName == '') {
-            return myAlertSimple("请输入参数名称");
+            return myAlertSimple4("请输入参数名称");
         }
         if(paramCode == ''){
-            return myAlertSimple("请输入参数编码");
+            return myAlertSimple4("请输入参数编码");
         }
 
         var mark = $(this).attr("data-mark");
@@ -150,7 +150,7 @@
             success: function (data) {
                 var code = data.code;
                 if (code == "1") {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     if(mark == 1){
                         setTimeout("javascript:window.location.href = 'param/addParamPage'",1000);
                     }else {

@@ -81,13 +81,13 @@
         var newPasswd = $("#newPasswd").val();
         var newPasswd2 = $("#newPasswd2").val();
         if (null == oldPasswd) {
-            return myAlertSimple("旧密码不能为空");
+            return myAlertSimple4("旧密码不能为空");
         }
         if (null == newPasswd) {
-            return myAlertSimple("新密码不能为空");
+            return myAlertSimple4("新密码不能为空");
         }
         if(newPasswd != newPasswd2){
-            return myAlertSimple("两次输入的新密码不想等");
+            return myAlertSimple4("两次输入的新密码不想等");
         }
         var data = {
             "oldPasswd":oldPasswd.trim(),
@@ -103,7 +103,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple(data.msg);
+                myAlertSimple4(data.msg);
                 if (code == "5") {
                     // setTimeout("javascript:window.location.href = 'param/addParamPage'",1000);
                 }

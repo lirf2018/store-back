@@ -91,7 +91,7 @@
 </div>
 <div id="myModal" class="modal fade" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content animated bounceInRight">
+        <div class="modal-content animated ">
             <div class="modal-body">
                 <div class="row">
                     <input type="hidden" value="" id="roleId">
@@ -251,7 +251,7 @@
         var roleId = $("#roleId").val();
         var roleName = $("#roleName").val();
         if(roleName == ''){
-            return myAlertSimple("角色名称不能为空");
+            return myAlertSimple4("角色名称不能为空");
         }
         var status = $("input[name='status']:checked").val();
         var remark = $("#remark").val();
@@ -273,7 +273,7 @@
             success: function (data) {
                 var code = data.code;
                 if (code == "5" || code == '6') {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     setTimeout("javascript:window.location.href = 'role/rolePage'",1000);
                     //searchData();
                 }
@@ -298,7 +298,7 @@
             success: function (data) {
                 var code = data.code;
                 if (code == "3" || code == '4') {
-                    myAlertSimple(data.msg);
+                    myAlertSimple4(data.msg);
                     // setTimeout("javascript:window.location.href = 'role/rolePage'",1000);
                     searchData();
                 }
