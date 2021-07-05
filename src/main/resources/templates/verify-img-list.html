@@ -49,6 +49,9 @@
 </head>
 
 <body class="gray-bg">
+<form id="fileForm1" method="post" enctype="multipart/form-data" action="image/uploadFile" style="display: none">
+    <input style="border: none" type="file" class="form-control" name="file" id="file1" multiple="multiple"  onchange="uploadFile2(this)">
+</form>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
@@ -56,10 +59,19 @@
                 <div class="ibox-content">
                     <div class="form-inline">
                         <div>
-                            <label>校验分组码:</label>
                             <input class="form-control input-width100" id="verifyCode"  type="text" value="" onkeydown="searchData()" onkeyup="searchData()">&nbsp;&nbsp;
                             <label>uuid:</label>
-                            <input class="form-control" id="uuid"  type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
+                            <input class="form-control" id="uuid"  type="text" value="" onkeydown="searchData()" onkeyup="searchData()">&nbsp;&nbsp;
+                            <select class="form-control" id="status" name="status" onchange="searchData()">&nbsp;&nbsp;
+                                <option value="1">有效</option>
+                                <option value="">全部</option>
+                                <option value="0">无效</option>
+                            </select>
+                            <label>相似类型:</label>
+                            <select class="form-control" id="similarType"  onchange="searchData()">
+                                <option value="">--选择相似类型--</option>
+                                <option th:each="p:${listParam}" th:if="${p.paramCode == 'similar_type'}" th:value="${p.paramKey}"><span th:text="${p.paramValue}"></span></option>
+                            </select>
                             <input type="button" class="btn btn-primary" value="查询" onclick="searchData()">
                             <button data-toggle="modal" data-target="#myModal" class="btn btn-success" type="button"><i class=""></i><span class="bold">添加校验分组</span></button>
                         </div>
@@ -71,7 +83,9 @@
                             <th>标识</th>
                             <th>校验分组码</th>
                             <th>分组描述</th>
+                            <th>相似类型</th>
                             <th>状态</th>
+                            <th>非校验图片背景图片</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
@@ -92,7 +106,7 @@
                 <th>标识</th>
                 <th>校验分组码</th>
                 <th>校验类型</th>
-                <th>校验图片/校验word</th>
+                <th>校验图片/文字/表达式</th>
                 <th>状态</th>
                 <th>操作</th>
             </tr>
@@ -109,6 +123,7 @@
             <div class="modal-body">
                 <div class="row">
                     <input type="hidden" value="" id="id">
+                    <input type="hidden" value="" id="groupImg">
                     <div class="form-group">
                         <label><span style="color: red;font-weight: bold">* </span>校验分组码：</label>
                         <input type="text" placeholder="请输入校验分组码" class="form-control" id="code" value="">
@@ -116,6 +131,13 @@
                     <div class="form-group">
                         <label><span style="color: red;font-weight: bold">* </span>分组描述：</label>
                         <input type="text" placeholder="请输入分组描述" class="form-control" id="desc" value="">
+                    </div>
+                    <div class="form-group">
+                        <label>选择相似类型：</label>
+                        <select class="form-control"  id="similarType2">
+                            <option value="0">-- 选择相似类型 --</option>
+                            <option th:each="item : ${listParam}" th:value="${item.paramKey}" th:text="${item.paramValue}"></option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>状态：</label>
@@ -152,6 +174,7 @@
                         <select class="form-control" name="parentRoleId" id="imgType">
                             <option value="0">图片</option>
                             <option value="1">文字</option>
+                            <option value="2">表达式</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -169,7 +192,7 @@
                         </div>
                         <div style="float: left;width: 50%;padding-top: 10px">
                             <label><span style="color: red;font-weight: bold">* </span>校验文字：</label>
-                            <input type="text" placeholder="请输入文字" class="form-control" id="word" maxlength="4" value="">
+                            <input type="text" placeholder="请输入文字" class="form-control" id="word" maxlength="20" value="">
                         </div>
                     </div>
                     <div style="clear: both;height: 30px">
@@ -184,7 +207,8 @@
                     </div>
                     <div class="form-group" align="center">
                         <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>&nbsp;&nbsp;&nbsp;
-                        <button type="button" class="btn btn-success" onclick="addData2()">保存</button>
+                        <button id="addAgin" style="display: none" type="button" class="btn btn-success" onclick="addData2(1)">保存(继续添加)</button>
+                        <button type="button" class="btn btn-success" onclick="addData2(0)">保存</button>
                     </div>
                 </div>
             </div>
@@ -213,13 +237,78 @@
 
 <!-- Page-Level Scripts -->
 <script>
+    let backImgId = null;
+    function imgOnclick2(id) {
+        backImgId = id;
+        return $("#file1").click();
+    }
+
+    //上传图片
+    function uploadFile2(obj) {
+        var file = $("#file1").val();
+        var strFileName=file.replace(/^.+?\\([^\\]+?)(\.[^\.\\]*?)?$/gi,"$1");  //正则表达式获取文件名，不带后缀
+        var FileExt=file.replace(/.+\./,"");   //正则表达式获取后缀
+        if(strFileName == null || strFileName == ''){
+            return
+        }
+        //上传完得到id 或者路径 标志上传成功
+        var data = new FormData($('#fileForm1')[0]);
+        $.ajax({
+            url: "image/uploadFile",
+            type: 'POST',
+            data: data,
+            dataType: 'JSON',
+            cache: false,
+            processData: false,
+            contentType: false
+        }).done(function (ret) {
+            if(ret.code == 12){
+                let imgWebUrl = ret.imgWebUrl;// 图片访问地址
+                let imgfdfsUrl = ret.imgfdfsUrl;// 保存路径
+                updateGroupImg(backImgId,imgfdfsUrl);  //重置上传控件
+                $("#fileForm").html("<input style=\"border: none\" type=\"file\" class=\"form-control\" name=\"file\" id='file' multiple=\"multiple\"  onchange=\"uploadFile(this)\">");
+            }else{
+                return myAlertSimple4(ret.msg);
+                //重置上传控件
+                $("#fileForm").html("<input style=\"border: none\" type=\"file\" class=\"form-control\" name=\"file\" id='file' multiple=\"multiple\"  onchange=\"uploadFile(this)\">");
+            }
+        });
+        //重置上传控件
+        $("#fileForm").html("<input style=\"border: none\" type=\"file\" class=\"form-control\" name=\"file\" id='file' multiple=\"multiple\"  onchange=\"uploadFile(this)\">");
+    }
+
+    function updateGroupImg(id,img){
+        $.ajax({
+            url: "verify/updateBackImg",
+            type: 'POST',
+            data: {
+                "id": id,
+                "img":img
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                myAlertSimple4(data.msg);
+                searchData();
+            }
+        });
+    }
+</script>
+<script>
     var table;
+    var groupData = [];
+    var imgData = [];
+
     $(document).ready(function () {
+        groupData = [];
+        imgData = [];
         table = $('#orderTable').DataTable({
             serverSide: true,
             ordering: false,
             searching: false,
             bProcessing: false,
+            iDisplayLength:15,
             destroy:true,
             bLengthChange: false, //改变每页显示数据数量 [10, 20, 30, 40],
             // aLengthMenu : [10, 20, 30, 40],
@@ -233,6 +322,8 @@
                 data: function (d) {
                     d.verifyCode = $('#verifyCode').val();
                     d.imgUuid = $('#uuid').val();
+                    d.status = $("#status").val();
+                    d.similarType = $("#similarType").val();
                 }
             }
             ,columns:[
@@ -247,24 +338,45 @@
                 }
                 , {
                     data: function (obj) {
+                        var similarTypeName = obj.similar_type_name;
+                        return similarTypeName == null ? "" : similarTypeName;
+                    }
+                }
+                , {
+                    data: function (obj) {
                         var status = obj.status;
                         return status == '1' ? '有效' : '<span style="color: red">无效</span>';
+                    }
+                }
+                , {
+                    data: function (obj) {
+                        if(obj.back_img == '' || obj.back_img == null){
+                            return "";
+                        }
+                        return "<img src='" + obj.back_img_show + "' width='100px' height='100px'>";
                     }
                 }
                 ,{ data:'createtime'}
             ]
             ,columnDefs: [{
-                targets: 5,
-                width:350,
+                targets: 7,
                 data: null,
                 render: function (data, type, row) {
-                    var html = "<button class='btn btn-info' data-id='" + data + "' type='button' onclick='javascript:addOrUpdateData("+data.id+",\""+data.verify_code+"\",\""+data.verify_title+"\","+data.status+")'><i class='fa fa-paste'></i> 编辑</button> ";
+                    groupData.push(data);
+                    let backImg = data.back_img;
+                    var html  = "";
+                    if(backImg != null && backImg != ''){
+                        html = html + "<button class='btn btn-info btn-warning' data-id='" + data + "' type='button' onclick='javascript:updateGroupImg("+data.id+",\"\")'>删除背景图片</button> &nbsp;&nbsp;";
+                    }else{
+                        html = html + "<button class='btn btn-info btn-success' data-id='" + data + "' type='button' onclick='javascript:imgOnclick2("+data.id+")'>添加背景图片</button>&nbsp;&nbsp; ";
+                    }
+                    html = html + "<button class='btn btn-info' data-id='" + data + "' type='button' onclick='javascript:addOrUpdateData("+data.id+")'><i class='fa fa-paste'></i> 编辑</button> ";
                     if (data.status == 0) {
                         html = html + "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='updateVerifyGroupStatus(" + data.id + ",1)'><i class='fa fa-check'></i> 启用</button>&nbsp;&nbsp;";
                     }else{
                         html = html + "<button class='btn btn-info btn-danger' data-value='" + data + "' type='button' onclick='updateVerifyGroupStatus(" + data.id + ",0)'><i class='fa fa-warning'></i> 删除</button>&nbsp;&nbsp;";
                     }
-                    html = html + "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='javascript:addOrUpdateData2(0,\""+data.verify_code+"\",\"0\",\"\",\"\",\"\",\"1\","+data.id+")'><i class='fa fa-paste'></i> 添加校验图片/文字</button>";
+                    html = html + "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='javascript:addOrUpdateData2(0,\""+data.verify_code+"\",\"0\",\"\",\"\",\"\",\"1\","+data.id+")'><i class='fa fa-paste'></i> 添加校验图片/文字/表达式</button>";
                     return html + "<input type='hidden' id='oldCode-" + data.id + "' value='" + data.verify_code + "'>";
                 }
             }]
@@ -298,7 +410,6 @@
     //保存一份追加详情的html
     var tdApenHtml = $("#orderDetailDiv").html();
 
-
     //展现部分订单详情表html
     function orderDetailTableHtml(data){
         var id = data.id;
@@ -321,6 +432,7 @@
                 async: false,
                 data: function (d) {
                     d.verifyCode = verifyCode;
+                    d.status = $("#status").val();
                 }
             }
             , columns: [
@@ -339,17 +451,24 @@
                 , {
                     data: function (obj) {
                         var verifyType = obj.verify_type;
-                        return verifyType == '0' ? '图片' : '文字';
+                        if(verifyType == 0){
+                            return '图片';
+                        }else if(verifyType == 1){
+                            return '文字'
+                        }else if(verifyType ==2){
+                            return '表达式'
+                        }
+                        return "";
                     }
                 }
                 , {
                     data: function (obj) {
                         var verifyType = obj.verify_type;
-                        if(verifyType == 1){
-                            return obj.word
+                        if(verifyType == 0 ){
+                            var img = obj.verify_img == null ? "./img/null.jpg" : obj.verify_img;
+                            return "<img src='" + img + "' width='100px' height='100px'>";
                         }
-                        var img = obj.verify_img == null ? "./img/null.jpg" : obj.verify_img;
-                        return "<img src='" + img + "' width='100px' height='100px'>";
+                        return obj.word
                     }
                 }
                 , {
@@ -437,19 +556,33 @@
     });
     $('#myModal').modal('hide')
     $('#myModal').on('show.bs.modal', function () {
+        $("#groupImg").val("");
         $("#desc").val("");
         $("#code").val("");
+        $("#similarType2").val("0");
         $("#id").val("0");
     })
     $('#myModal').on('hidden.bs.modal', function () {
         //当模态框完全对用户隐藏时触发。
     });
 
-    function addOrUpdateData(id,code,desc,status) {
+    function addOrUpdateData(id) {
         $('#myModal').modal('show');
+        let data = null;
+        for (let i = 0; i < groupData.length; i++) {
+            let id_ = groupData[i].id;
+            if(id_ == id){
+                data = groupData[i];
+            }
+        }
+
+
+
         $("#id").val(id)
-        $("#code").val(code);
-        $("#desc").val(desc);
+        $("#code").val(data.verify_code);
+        $("#desc").val(data.verify_title);
+        $("#groupImg").val(data.back_img);
+        $("#similarType2").val(data.similar_type);
 
         var statusObj = $("input[name='status']");
         statusObj.each(function () {
@@ -464,8 +597,10 @@
     //增加或者修改
     function addData() {
         var id = $("#id").val();
+        var groupImg = $("#groupImg").val();
         var code = $("#code").val();
         var desc = $("#desc").val();
+        var similarType = $("#similarType2").val();
         if(code == ''){
             swal({
                 title: "提示",
@@ -495,9 +630,11 @@
             type: 'POST',
             data: {
                 "id":id,
+                "backImg":groupImg,
                 "status":status,
                 "verifyCode":code,
                 "verifyTitle":desc,
+                "similarType":similarType,
                 "oldCode":oldCode
             },// 要提交的表单 ,
             async: false,
@@ -534,19 +671,22 @@
     });
 
     function addOrUpdateData2(id, code, imgType, word, img,verifyImgUrl, status, groupId) {
+        if(id>0){
+            $("#addAgin").hide();
+        }else{
+            $("#addAgin").show();
+        }
         $('#myModal2').modal('show');
         $("#id2").val(id);
         $("#groupId").val(groupId);
         $("#code2").val(code);
         $("#imgType").val(imgType);
         $("#word").val(word);
-        if(id == 0 || imgType == 1){
-            deleteImg();
-        }else{
+        if(id > 0 && imgType == 0 ){
             initImg(verifyImgUrl,img);
+        }else{
+            deleteImg();
         }
-        debugger
-
         var statusObj = $("input[name='status2']");
         statusObj.each(function () {
             if(status == $(this).val()){
@@ -558,7 +698,7 @@
     }
 
     //增加或者修改
-    function addData2() {
+    function addData2(mark) {
         var id = $("#id2").val();
         var groupId = $("#groupId").val();
         var img = $("#img").val();
@@ -583,6 +723,14 @@
                 });
                 return;
             }
+
+            if(imgType == 1 && word.length>4){
+                swal({
+                    title: "提示",
+                    text: "不能超过4个汉字",
+                    confirmButtonText: "确认"
+                });
+            }
         }
         var status = $("input[name='status2']:checked").val();
 
@@ -603,7 +751,11 @@
             success: function (data) {
                 myAlertSimple4(data.msg);
                 if (data.code == "5" || data.code == "6") {
-                    $('#myModal2').modal('hide');
+                    if(mark == 0){
+                        $('#myModal2').modal('hide');
+                    }else{
+                        addOrUpdateData2(0, code, imgType, '', '', '', 1, groupId)
+                    }
                     var datas = {
                         id: groupId,
                         verify_code: code

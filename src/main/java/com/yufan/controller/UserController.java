@@ -498,7 +498,7 @@ public class UserController {
     }
 
     /**
-     * 删除会员号
+     * 备货状态修改
      *
      * @param request
      * @param response

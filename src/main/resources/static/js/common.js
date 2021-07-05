@@ -1,3 +1,9 @@
+//每页数
+let iDisplayLength = 15;
+function getDefaultPageSize() {
+    return iDisplayLength;
+}
+
 function endWith(str, reg) {
     var regLength = reg.length;
     var strLength = str.length;

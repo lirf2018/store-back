@@ -196,7 +196,7 @@ public class UserDaoImpl implements IUserDao {
         sql.append(" ,pc.flow_status ,if(DATE_FORMAT(NOW(),'%Y-%m-%d')>DATE_FORMAT(pc.get_time,'%Y-%m-%d'),if(pc.`status`=1,0,1),1) as out_time_flag ");
         sql.append(" ,if(DATE_FORMAT(NOW(),'%Y-%m-%d')=DATE_FORMAT(pc.get_time,'%Y-%m-%d'),if(pc.`status`=1,1,0),0) as get_time_flag ");
         sql.append(" ,p2.param_value as flow_status_name,DATE_FORMAT(pc.update_time,'%Y-%m-%d %T') as update_time ");
-        sql.append(" ,pc.goods_id,pc.goods_name ");
+        sql.append(" ,pc.goods_id,pc.goods_name,pc.get_time_str,pc.get_addr ");
         sql.append(" from tb_private_custom pc JOIN tb_user_info u on u.user_id=pc.user_id  ");
         sql.append(" LEFT JOIN tb_param p1 on p1.param_code='post_way' and p1.param_key=pc.post_way  ");
         sql.append(" LEFT JOIN tb_param p2 on p2.param_code='prepare_flow_status' and p2.param_key=pc.flow_status ");
@@ -228,7 +228,7 @@ public class UserDaoImpl implements IUserDao {
         if (wapUserCondition.getFlowStatus() != null && wapUserCondition.getFlowStatus() != -1) {
             sql.append(" and pc.flow_status=").append(wapUserCondition.getFlowStatus()).append("  ");
         }
-        sql.append("  ORDER BY DATE_FORMAT(NOW(),'%Y-%m-%d')=DATE_FORMAT(pc.get_time,'%Y-%m-%d') desc,pc.get_time ,pc.is_yuyue desc   ");
+        sql.append("  ORDER BY DATE_FORMAT(NOW(),'%Y-%m-%d')=DATE_FORMAT(pc.get_time,'%Y-%m-%d') desc,pc.get_time ,pc.is_yuyue desc,pc.index_sort   ");
 
         PageInfo pageInfo = new PageInfo();
         pageInfo.setCurrePage(currePage);
@@ -239,6 +239,11 @@ public class UserDaoImpl implements IUserDao {
 
     @Override
     public void updateFlowStatus(int id, int flowStatus) {
+        if (flowStatus == 2) {
+            String sql = " update tb_private_custom set flow_status=?,status=? where id=? ";
+            iGeneralDao.executeUpdateForSQL(sql, flowStatus, flowStatus, id);
+            return;
+        }
         String sql = " update tb_private_custom set flow_status=? where id=? ";
         iGeneralDao.executeUpdateForSQL(sql, flowStatus, id);
     }

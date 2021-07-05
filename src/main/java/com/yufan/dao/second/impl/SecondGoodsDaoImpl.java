@@ -123,7 +123,6 @@ public class SecondGoodsDaoImpl implements ISecondGoodsDao {
 
 
         PageInfo pageInfo = new PageInfo();
-        pageInfo.setPageSize(condition.getPageSize() == null ? 20 : condition.getPageSize());
         pageInfo.setCurrePage(condition.getCurrePage());
         pageInfo.setSqlQuery(sql.toString());
         pageInfo = iGeneralDao.loadPageInfoSQLListMap(pageInfo);

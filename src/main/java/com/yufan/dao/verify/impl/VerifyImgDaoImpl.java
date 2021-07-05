@@ -1,5 +1,6 @@
 package com.yufan.dao.verify.impl;
 
+import com.yufan.bean.VerifyImgGroupCondition;
 import com.yufan.common.dao.IGeneralDao;
 import com.yufan.dao.verify.IVerifyImgDao;
 import com.yufan.pojo.TbVerifyImg;
@@ -27,15 +28,24 @@ public class VerifyImgDaoImpl implements IVerifyImgDao {
     private IGeneralDao iGeneralDao;
 
     @Override
-    public PageInfo loadDataPage(int currePage, TbVerifyImg condition) {
+    public PageInfo loadDataPage(int currePage, VerifyImgGroupCondition condition) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" select g.id,g.verify_code,g.verify_title,g.status,DATE_FORMAT(g.createtime,'%Y-%m-%d %T') as createtime ");
-        sql.append(" from tb_verify_img_group g where 1=1 ");
+        sql.append(" select g.id,g.verify_code,g.verify_title,g.status,DATE_FORMAT(g.createtime,'%Y-%m-%d %T') as createtime,g.similar_type,p.param_value as similar_type_name ");
+        sql.append(" ,CONCAT('").append(Constants.IMG_WEB_URL).append("',g.back_img) as back_img_show,g.back_img ");
+        sql.append(" from tb_verify_img_group g ");
+        sql.append(" left join tb_param p on p.param_code='similar_type' and p.param_key=g.similar_type and p.`status`=1  ");
+        sql.append(" where 1=1  ");
         if (!StringUtils.isEmpty(condition.getVerifyCode())) {
             sql.append(" and g.verify_code like '%").append(condition.getVerifyCode().trim()).append("%' ");
         }
         if (!StringUtils.isEmpty(condition.getImgUuid())) {
             sql.append(" and g.verify_code in (select verify_code from tb_verify_img where img_uuid like '%").append(condition.getImgUuid().trim()).append("%' ) ");
+        }
+        if (condition.getStatus() != null) {
+            sql.append(" and g.status = ").append(condition.getStatus()).append(" ");
+        }
+        if (condition.getSimilarType() != null) {
+            sql.append(" and g.similar_type = ").append(condition.getSimilarType()).append(" ");
         }
         sql.append(" ORDER BY g.createtime desc  ");
 
@@ -53,13 +63,16 @@ public class VerifyImgDaoImpl implements IVerifyImgDao {
     }
 
     @Override
-    public List<Map<String, Object>> loadVerifyImgList(String verifyCode) {
+    public List<Map<String, Object>> loadVerifyImgList(String verifyCode, Integer status) {
         StringBuffer sql = new StringBuffer();
         sql.append(" select vi.id,vi.verify_code,CONCAT('").append(Constants.IMG_WEB_URL).append("',vi.verify_img) as verify_img,vi.img_uuid, ");
         sql.append(" vi.status,vi.verify_type,vi.word, vi.verify_img as verify_img_path, ");
         sql.append(" DATE_FORMAT(vi.createtime,'%Y-%m-%d %T') as createtime,ig.id as group_id ");
         sql.append(" from tb_verify_img vi join tb_verify_img_group ig on ig.verify_code = vi.verify_code where 1=1  ");
         sql.append(" and vi.verify_code = '").append(verifyCode.trim()).append("' ");
+        if (status != null) {
+            sql.append(" and vi.status = ").append(status).append(" ");
+        }
         sql.append(" ORDER BY vi.createtime desc ");
         return iGeneralDao.getBySQLListMap(sql.toString());
     }
@@ -108,5 +121,11 @@ public class VerifyImgDaoImpl implements IVerifyImgDao {
     @Override
     public void updateVerifyImg(TbVerifyImg verifyImg) {
         iGeneralDao.saveOrUpdate(verifyImg);
+    }
+
+    @Override
+    public void updateBackImg(int id, String img) {
+        String sql = " update tb_verify_img_group set back_img=? where id=? ";
+        iGeneralDao.executeUpdateForSQL(sql, img, id);
     }
 }

@@ -1,5 +1,6 @@
 package com.yufan.service.verify.impl;
 
+import com.yufan.bean.VerifyImgGroupCondition;
 import com.yufan.dao.verify.IVerifyImgDao;
 import com.yufan.pojo.TbVerifyImg;
 import com.yufan.pojo.TbVerifyImgGroup;
@@ -23,7 +24,7 @@ public class VerifyImgServiceImpl implements IVerifyImgService {
     private IVerifyImgDao iVerifyImgDao;
 
     @Override
-    public PageInfo loadDataPage(int currePage, TbVerifyImg condition) {
+    public PageInfo loadDataPage(int currePage, VerifyImgGroupCondition condition) {
         return iVerifyImgDao.loadDataPage(currePage, condition);
     }
 
@@ -33,8 +34,8 @@ public class VerifyImgServiceImpl implements IVerifyImgService {
     }
 
     @Override
-    public List<Map<String, Object>> loadVerifyImgList(String verifyCode) {
-        return iVerifyImgDao.loadVerifyImgList(verifyCode);
+    public List<Map<String, Object>> loadVerifyImgList(String verifyCode, Integer status) {
+        return iVerifyImgDao.loadVerifyImgList(verifyCode, status);
     }
 
     @Override
@@ -64,5 +65,10 @@ public class VerifyImgServiceImpl implements IVerifyImgService {
         } else {
             iVerifyImgDao.addVerifyImg(verifyImg);
         }
+    }
+
+    @Override
+    public void updateBackImg(int id, String img) {
+        iVerifyImgDao.updateBackImg(id, img);
     }
 }

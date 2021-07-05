@@ -31,7 +31,7 @@ public class ParamCodeDaoImpl implements IParamCodeDao {
         sql.append(" SELECT param_id,param_name,param_code,param_key,param_value,param_value1 ,param_value2,remark,DATE_FORMAT(createtime,'%Y-%m-%d %T') as createtime from tb_param ");
         sql.append(" where status=1 ");
         if(!StringUtils.isEmpty(param.getParamCode())){
-            sql.append(" and param_code='").append(param.getParamCode()).append("' ");
+            sql.append(" and param_code like '%").append(param.getParamCode()).append("%' ");
         }
         if(!StringUtils.isEmpty(param.getParamName())){
             sql.append(" and param_name='").append(param.getParamName()).append("' ");

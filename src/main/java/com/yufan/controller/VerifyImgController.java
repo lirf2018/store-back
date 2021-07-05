@@ -2,7 +2,9 @@ package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.bean.GoodsCondition;
+import com.yufan.bean.VerifyImgGroupCondition;
 import com.yufan.pojo.*;
+import com.yufan.service.param.IParamCodeService;
 import com.yufan.service.verify.IVerifyImgService;
 import com.yufan.utils.Constants;
 import com.yufan.utils.HelpCommon;
@@ -30,6 +32,9 @@ public class VerifyImgController {
     @Autowired
     private IVerifyImgService iVerifyImgService;
 
+    @Autowired
+    private IParamCodeService iParamCodeService;
+
     /**
      * 管理页面
      *
@@ -38,7 +43,12 @@ public class VerifyImgController {
     @RequestMapping("verifyImgPage")
     public ModelAndView toBannerPage(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
+
+        //查询参数列表
+        List<TbParam> listParam = iParamCodeService.loadTbParamCodeList(1, "similar_type");
+
         modelAndView.addObject("imgPath", Constants.IMG_WEB_URL);
+        modelAndView.addObject("listParam", listParam);
         modelAndView.setViewName("verify-img-list");
         return modelAndView;
     }
@@ -51,7 +61,7 @@ public class VerifyImgController {
      * @param response
      */
     @RequestMapping("loadVerifyImgPageData")
-    public void loadPageData(HttpServletRequest request, HttpServletResponse response, TbVerifyImg condition) {
+    public void loadPageData(HttpServletRequest request, HttpServletResponse response, VerifyImgGroupCondition condition) {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
@@ -80,11 +90,11 @@ public class VerifyImgController {
      *
      */
     @RequestMapping("loadVerifyImg")
-    public void loadVerifyImgList(HttpServletRequest request, HttpServletResponse response, String verifyCode) {
+    public void loadVerifyImgList(HttpServletRequest request, HttpServletResponse response, String verifyCode, Integer status) {
         PrintWriter writer;
         try {
             writer = response.getWriter();
-            List<Map<String, Object>> list = iVerifyImgService.loadVerifyImgList(verifyCode);
+            List<Map<String, Object>> list = iVerifyImgService.loadVerifyImgList(verifyCode, status);
             //输出参数
             JSONObject dataJson = new JSONObject();
             dataJson.put("data", list);
@@ -105,6 +115,28 @@ public class VerifyImgController {
             writer = response.getWriter();
             JSONObject out = status == 0 ? HelpCommon.packagMsg("3") : HelpCommon.packagMsg("4");
             iVerifyImgService.updateVerifyGroupStatus(id, status);
+            writer.print(out);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 更新背景图片
+     *
+     * @param request
+     * @param response
+     * @param id
+     * @param img
+     */
+    @RequestMapping("updateBackImg")
+    public void updateBackImg(HttpServletRequest request, HttpServletResponse response, Integer id, String img) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject out = HelpCommon.packagMsg("1");
+            iVerifyImgService.updateBackImg(id, img);
             writer.print(out);
             writer.close();
         } catch (Exception e) {
@@ -158,7 +190,7 @@ public class VerifyImgController {
 
 
     /**
-     * 修改数据状态
+     * 新增数据
      */
     @RequestMapping("addVerifyImg")
     public void addVerifyImg(HttpServletRequest request, HttpServletResponse response, TbVerifyImg verifyImg) {

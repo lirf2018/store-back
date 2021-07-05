@@ -1,5 +1,6 @@
 package com.yufan.dao.verify;
 
+import com.yufan.bean.VerifyImgGroupCondition;
 import com.yufan.pojo.TbVerifyImg;
 import com.yufan.pojo.TbVerifyImgGroup;
 import com.yufan.utils.PageInfo;
@@ -22,11 +23,11 @@ public interface IVerifyImgDao {
      * @param condition
      * @return
      */
-    PageInfo loadDataPage(int currePage, TbVerifyImg condition);
+    PageInfo loadDataPage(int currePage, VerifyImgGroupCondition condition);
 
     TbVerifyImgGroup findVerifyImgGroup(TbVerifyImgGroup imgGroup);
 
-    List<Map<String, Object>> loadVerifyImgList(String verifyCode);
+    List<Map<String, Object>> loadVerifyImgList(String verifyCode, Integer status);
 
     void updateVerifyGroupStatus(int id, int status);
 
@@ -39,4 +40,7 @@ public interface IVerifyImgDao {
     void addVerifyImg(TbVerifyImg verifyImg);
 
     void updateVerifyImg(TbVerifyImg verifyImg);
+
+    void updateBackImg(int id, String img);
+
 }
