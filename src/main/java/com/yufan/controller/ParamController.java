@@ -190,4 +190,26 @@ public class ParamController {
         LOG.info("--------Constants.IMG_WEB_URL------" + Constants.IMG_WEB_URL);
         LOG.info("-----结束初始华参数----" + CacheData.PARAMLIST.size());
     }
+
+
+    /**
+     * 刷新缓存
+     * @param request
+     * @param response
+     */
+    @PostMapping("refreshCache")
+    public void refreshCache(HttpServletRequest request, HttpServletResponse response) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject result = HelpCommon.packagMsg("1");
+            iParamCodeService.refreshCache();
+            writer.print(result);
+            writer.close();
+            initParam();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

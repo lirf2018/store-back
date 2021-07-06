@@ -39,6 +39,7 @@
                             </select>
                             <input type="button" class="btn btn-primary" value="查询" onclick="searchData()">
                             <button class="btn btn-success" type="button" onclick="addOrUpdateData(0)"><i class=""></i><span class="bold">新增</span></button>
+                            <button class="btn btn-warning" type="button" onclick="refreshCache()"><i class=""></i><span class="bold">刷新缓存</span></button>
                         </div>
                     </div>
                     <div>&nbsp;</div>
@@ -169,12 +170,12 @@
     }
 
     function delData(paramId,status) {
-
         swal({
             title: "您确定要删除这条信息吗",
             text: "删除后将无法恢复，请谨慎操作！",
             type: "warning",
             showCancelButton: true,
+            cancelButtonText: "取消",
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "删除",
             closeOnConfirm: false
@@ -196,6 +197,33 @@
                         // setTimeout("javascript:window.location.href = 'param/paramPage'",1000);
                         searchData();
                     }
+                }
+            });
+        });
+    }
+
+
+    function refreshCache() {
+       swal({
+            title: "您确定要刷新缓存吗",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#f8ac59",
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            closeOnConfirm: false
+        }, function () {
+            $.ajax({
+                url: "param/refreshCache",
+                type: 'POST',
+                data: {
+                },// 要提交的表单 ,
+                async: false,
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    myAlertSimple4(data.msg);
+                    
                 }
             });
         });

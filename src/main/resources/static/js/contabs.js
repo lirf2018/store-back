@@ -111,6 +111,9 @@ $(function () {
             dataIndex = $(this).data('index'),
             menuName = $.trim($(this).text()),
             flag = true;
+        $('.page-tabs-content-1').html('');
+        $('.page-tabs-content-1').append("<span class=\"active J_menuTab\" id=\"clickMenu\">"+menuName+"</span>")
+
         if (dataUrl == undefined || $.trim(dataUrl).length == 0)return false;
 
         // 选项卡菜单已存在
@@ -131,7 +134,6 @@ $(function () {
                 return false;
             }
         });
-
         // 选项卡菜单不存在
         if (flag) {
             var str = '<a href="javascript:;" class="active J_menuTab" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-times-circle"></i></a>';

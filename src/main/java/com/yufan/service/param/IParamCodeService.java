@@ -32,4 +32,6 @@ public interface IParamCodeService {
 
     public List<Map<String, Object>> loadParamGroupName();
 
+     public void refreshCache();
+
 }

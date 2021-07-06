@@ -17,6 +17,15 @@
     <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <style>
+        .page-tabs-content-1{
+            padding: 0 15px;
+            background: #2f4050;
+            color: #a7b1c2;
+            float: left;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
@@ -82,22 +91,33 @@
             <div class="row content-tabs">
                 <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
                 </button>
-                <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
-                </button>
-                <div class="btn-group roll-nav roll-right">
-                    <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>
+<!--                <nav class="page-tabs J_menuTabs">-->
+<!--                    <div class="page-tabs-content">-->
+<!--                        <a href="javascript:;" class="active J_menuTab" data-id="welcome-page.html">首页</a>-->
+<!--                    </div>-->
+<!--                </nav>-->
+                <nav class="page-tabs ">
+                    <div class="page-tabs-content-1">
+                        <span class="" id="clickMenu">首页</span>
+                    </div>
+                </nav>
 
-                    </button>
-                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
-                        <li class="J_tabShowActive"><a>定位当前选项卡</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li class="J_tabCloseAll"><a>关闭全部选项卡</a>
-                        </li>
-                        <li class="J_tabCloseOther"><a>关闭其他选项卡</a>
-                        </li>
-                    </ul>
-                </div>
+<!--                <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>-->
+<!--                </button>-->
+<!--                <div class="btn-group roll-nav roll-right">-->
+<!--                    <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>-->
+
+<!--                    </button>-->
+<!--                    <ul role="menu" class="dropdown-menu dropdown-menu-right">-->
+<!--                        <li class="J_tabShowActive"><a>定位当前选项卡</a>-->
+<!--                        </li>-->
+<!--                        <li class="divider"></li>-->
+<!--                        <li class="J_tabCloseAll"><a>关闭全部选项卡</a>-->
+<!--                        </li>-->
+<!--                        <li class="J_tabCloseOther"><a>关闭其他选项卡</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </div>-->
                 <a href="login/userExit" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
