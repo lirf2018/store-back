@@ -88,11 +88,14 @@ public class CategoryDaoImpl implements ICategoryDao {
     @Override
     public List<Map<String, Object>> loadCategoryListMap(Integer status) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT category_id,category_name,category_code from tb_category where 1=1 ");
+        sql.append(" SELECT c.category_id,c.category_name,c.category_code from tb_category c where 1=1 ");
         if (null != status) {
-            sql.append(" and `status` =1 ");
+            sql.append(" and c.`status` =").append(status).append(" ");
+            if (status == 1) {
+                sql.append(" and c.category_id in (select rel.category_id from tb_level_category_rel rel JOIN tb_category_level l on l.level_id=rel.level_id and l.status = 1)");
+            }
         }
-        sql.append(" ORDER BY data_index desc,category_id desc ");
+        sql.append(" ORDER BY c.data_index desc,c.category_id desc ");
         return iGeneralDao.getBySQLListMap(sql.toString());
     }
 
@@ -199,7 +202,7 @@ public class CategoryDaoImpl implements ICategoryDao {
         if (null != categoryId) {
             sql.append(" and ca.category_id=").append(categoryId).append(" ");
         }
-        sql.append(" ORDER BY ca.data_index desc,it.data_index desc");
+        sql.append(" ORDER BY ca.data_index desc,ca.category_id desc,it.data_index desc");
 
         return iGeneralDao.getBySQLListMap(sql.toString());
     }
@@ -293,6 +296,7 @@ public class CategoryDaoImpl implements ICategoryDao {
         }
         return iGeneralDao.getBySQLListMap(sql.toString());
     }
+
     @Override
     public List<Map<String, Object>> loadLeveCategoryRelGroup(Integer levelId, Integer categoryId) {
         StringBuffer sql = new StringBuffer();

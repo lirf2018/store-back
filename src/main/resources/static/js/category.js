@@ -37,7 +37,7 @@ function addCategoryHtml(data, index) {
     var categoryImg = "";
     var categoryWebImg = "./img/null.jpg";
     var caOuteId = "";
-    var caDataIndex = "";
+    var caDataIndex = "0";
     var caRemark = "";
     if (index == 1) {
         title = "修改类目";
@@ -51,7 +51,6 @@ function addCategoryHtml(data, index) {
         caDataIndex = data.ca_data_index;
         caRemark = data.ca_remark;
     }
-
     var html = "";
     html = html + "<div>" +
         "<table id='caTitle' class='table table-hover table-bordered' style='table-layout:fixed;word-break: break-all; overflow:hidden;'>" +
@@ -94,7 +93,7 @@ function addCategoryHtml(data, index) {
         "<td class='tableLeft'><span style='color: red;font-weight: bold'>* </span>排序</td>" +
         "<td>" +
         "<div style='display: flex'>" +
-        "<input type='text' placeholder='请输入排序' class='form-control form-control-common' id='caDataIndex' name='caDataIndex' value='" + caDataIndex + "'>" +
+        "<input type='text' placeholder='请输入排序' class='form-control form-control-common' id='caDataIndex'   value='" + caDataIndex + "'>" +
         "<div style='color: red;padding-left: 10px;line-height: 45px'>数值越大越靠前</div>" +
         "</div>" +
         "</td>" +
@@ -170,7 +169,7 @@ function showPropHtml(data, index) {
     var propImg = "";
     var propWebImg = "./img/null.jpg";
     var pOuteId = "";
-    var pDataIndex = "";
+    var pDataIndex = "0";
     var isSales = "";
     var isSalesSelect = "";
     var showView = "";
