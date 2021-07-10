@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.GoodsCondition;
 import com.yufan.bean.GoodsDataObj;
 import com.yufan.bean.ItempropObj;
@@ -41,6 +42,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping(value = "goods")
+@ClassAnnotation(name = "goods", desc = "商品管理")
 public class GoodsController {
 
 

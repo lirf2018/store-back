@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.OrderCondition;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbOrder;
@@ -37,6 +38,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/order/")
+@ClassAnnotation(name = "order", desc = "订单管理")
 public class OrderController {
 
     @Autowired

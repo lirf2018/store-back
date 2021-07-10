@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.pojo.TbParam;
 import com.yufan.service.param.IParamCodeService;
 import com.yufan.utils.*;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/image/")
+@ClassAnnotation(name = "image", desc = "图片管理")
 public class ImageController {
 
     private Logger LOG = Logger.getLogger(ImageController.class);

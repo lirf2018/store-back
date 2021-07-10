@@ -2,6 +2,7 @@ package com.yufan.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.CouponCondition;
 import com.yufan.exception.ApplicationException;
 import com.yufan.pojo.TbAdmin;
@@ -40,6 +41,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "coupon")
+@ClassAnnotation(name = "coupon", desc = "卡券管理")
 public class CouponController {
 
     @Autowired

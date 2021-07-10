@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.AdminCondition;
 import com.yufan.bean.WapUserCondition;
 import com.yufan.pojo.*;
@@ -30,6 +31,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/user/")
+@ClassAnnotation(name = "user", desc = "用户管理")
 public class UserController {
 
     private Logger LOG = Logger.getLogger(UserController.class);

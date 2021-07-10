@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.ActivityCondition;
 import com.yufan.pojo.TbActivity;
 import com.yufan.pojo.TbAdmin;
@@ -34,6 +35,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/info/")
+@ClassAnnotation(name = "info", desc = "资讯管理")
 public class InfoController {
 
     @Autowired

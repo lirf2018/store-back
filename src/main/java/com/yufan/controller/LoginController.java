@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbFunctions;
 import com.yufan.service.func.IMenuService;
@@ -32,6 +33,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/login/")
+@ClassAnnotation(name = "login", desc = "登录管理")
 public class LoginController {
 
     private Logger LOG = Logger.getLogger(LoginController.class);

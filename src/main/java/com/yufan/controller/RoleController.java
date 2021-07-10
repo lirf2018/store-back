@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.MenuObj;
 import com.yufan.bean.RoleObj;
 import com.yufan.pojo.TbAdmin;
@@ -32,6 +33,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/role/")
+@ClassAnnotation(name = "role", desc = "角色管理")
 public class RoleController {
 
     @Autowired

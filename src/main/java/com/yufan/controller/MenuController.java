@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.ActivityCondition;
 import com.yufan.bean.MenuObj;
 import com.yufan.pojo.*;
@@ -31,6 +32,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/menu/")
+@ClassAnnotation(name = "menu", desc = "菜单管理")
 public class MenuController {
 
     @Autowired
@@ -421,5 +423,24 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+
+
+    /**
+     * 权限资源同步
+     */
+    @RequestMapping("synSource")
+    public void synSource(HttpServletRequest request, HttpServletResponse response, Integer id, Integer status) {
+        PrintWriter writer = null;
+        try {
+
+//            sdfs
+            iMenuService.updateMenuWebStatus(id, status);
+//            writer.print(out);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

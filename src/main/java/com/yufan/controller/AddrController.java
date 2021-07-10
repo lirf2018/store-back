@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.RegionCondition;
 import com.yufan.pojo.*;
 import com.yufan.service.addr.IAddrService;
@@ -34,6 +35,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value = "/addr/")
+@ClassAnnotation(name = "addr", desc = "地址管理")
 public class AddrController {
 
     @Autowired

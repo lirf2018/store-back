@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.cache.LoadCacheService;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbParam;
@@ -33,6 +34,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value = "/param/")
+@ClassAnnotation(name = "param", desc = "参数管理")
 public class ParamController {
     private Logger LOG = Logger.getLogger(ParamController.class);
 

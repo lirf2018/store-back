@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.GoodsCondition;
 import com.yufan.bean.VerifyImgGroupCondition;
 import com.yufan.pojo.*;
@@ -27,6 +28,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping(value = "/verify/")
+@ClassAnnotation(name = "verify", desc = "校验管理")
 public class VerifyImgController {
 
     @Autowired
