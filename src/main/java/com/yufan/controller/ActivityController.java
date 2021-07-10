@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.ActivityCondition;
 import com.yufan.pojo.TbActivity;
 import com.yufan.pojo.TbAdmin;
@@ -34,6 +35,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/activity/")
+@ClassAnnotation(name = "activity", desc = "活动管理")
 public class ActivityController {
 
     @Autowired
@@ -53,12 +55,12 @@ public class ActivityController {
         //查询店铺
         List<TbShop> shopList = new ArrayList<>();
         TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
-        if("admin".equals(user.getLoginName())){
+        if ("admin".equals(user.getLoginName())) {
             shopList = iShopService.findShopAll();
-        }else{
+        } else {
             shopList = iShopService.findShopAll(user.getShopId());
         }
-        modelAndView.addObject("shopList",shopList);
+        modelAndView.addObject("shopList", shopList);
         modelAndView.setViewName("activity-list");
         return modelAndView;
     }
@@ -130,24 +132,24 @@ public class ActivityController {
         List<TbShop> shopList = new ArrayList<>();
         TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
         TbActivity activity = new TbActivity();
-        if("admin".equals(user.getLoginName())){
+        if ("admin".equals(user.getLoginName())) {
             shopList = iShopService.findShopAll();
-        }else{
+        } else {
             shopList = iShopService.findShopAll(user.getShopId());
-            if(CollectionUtils.isNotEmpty(shopList)){
+            if (CollectionUtils.isNotEmpty(shopList)) {
                 activity.setShopId(shopList.get(0).getShopId());
             }
         }
         activity.setDataIndex(0);
         if (null != activityId && activityId > 0) {
             activity = iActivityService.loadActivity(activityId);
-            if(!"admin".equals(user.getLoginName())&&activity.getShopId()!=user.getShopId()){
+            if (!"admin".equals(user.getLoginName()) && activity.getShopId() != user.getShopId()) {
                 modelAndView.setViewName("404");
                 return modelAndView;
             }
         }
 
-        modelAndView.addObject("shopList",shopList);
+        modelAndView.addObject("shopList", shopList);
         modelAndView.addObject("webImg", Constants.IMG_WEB_URL);
         modelAndView.addObject("nowDate", DatetimeUtil.getNow("yyyy-MM-dd"));
         modelAndView.addObject("activity", activity);

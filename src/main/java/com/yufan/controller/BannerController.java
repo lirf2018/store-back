@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.BannerCondition;
 import com.yufan.pojo.TbActivity;
 import com.yufan.pojo.TbAdmin;
@@ -35,6 +36,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/banner/")
+@ClassAnnotation(name = "banner", desc = "banner管理")
 public class BannerController {
 
     @Autowired

@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.ComplainCondition;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbComplain;
@@ -35,6 +36,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/complain/")
+@ClassAnnotation(name = "complain", desc = "投诉建议")
 public class ComplainController {
 
     @Autowired

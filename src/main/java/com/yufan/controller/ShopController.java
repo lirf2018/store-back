@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.ShopCondition;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbImg;
@@ -33,6 +34,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping(value = "/shop/")
+@ClassAnnotation(name = "shop", desc = "店铺管理")
 public class ShopController {
 
     @Autowired

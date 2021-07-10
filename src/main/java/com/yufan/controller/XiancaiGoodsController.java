@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.GoodsCondition;
 import com.yufan.pojo.TbSecondGoods;
 import com.yufan.pojo.TbShop;
@@ -31,6 +32,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/xc/")
+@ClassAnnotation(name = "xc", desc = "闲菜商品")
 public class XiancaiGoodsController {
 
     private Logger LOG = Logger.getLogger(XiancaiGoodsController.class);

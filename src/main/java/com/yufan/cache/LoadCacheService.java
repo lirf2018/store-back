@@ -4,6 +4,7 @@ import com.yufan.pojo.TbParam;
 import com.yufan.service.param.IParamCodeService;
 import com.yufan.utils.CacheData;
 import com.yufan.utils.Constants;
+import com.yufan.utils.ResourceUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,16 @@ public class LoadCacheService implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         initParamList();
         initFileSavePath();
+        initResource();
     }
 
     /**
      * 初始化参数列表
      */
     private void initParamList() {
-        LOG.info("-----开始初始华参数----");
+        LOG.info("-----开始初始化参数----");
         CacheData.PARAMLIST = iParamCodeService.loadTbParamCodeList(1);
-        LOG.info("-----结束初始华参数----" + CacheData.PARAMLIST.size());
+        LOG.info("-----结束初始化参数----" + CacheData.PARAMLIST.size());
     }
 
     /**
@@ -52,6 +54,15 @@ public class LoadCacheService implements InitializingBean {
         LOG.info("-------Constants.IMG_SAVE_ROOT_PATH-------" + Constants.IMG_SAVE_ROOT_PATH);
         LOG.info("--------Constants.IMG_WEB_URL------" + Constants.IMG_WEB_URL);
         LOG.info("-----结束初始化文件本地保存路径和web访问路径----");
+    }
+
+    /**
+     * 检索项目中配置的资源
+     */
+    private void initResource() {
+        LOG.info("-----开始初始化检索项目中配置的资源----");
+        ResourceUtil.initResource();
+        LOG.info("-----结束初始化检索项目中配置的资源----" + CacheData.PARAMLIST.size());
     }
 
 }

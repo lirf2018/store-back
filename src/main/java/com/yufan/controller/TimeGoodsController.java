@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.TimeGoodsCondition;
 import com.yufan.pojo.*;
 import com.yufan.service.goods.IGoodsService;
@@ -31,6 +32,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping(value = "timeGoods")
+@ClassAnnotation(name = "timeGoods", desc = "抢购管理")
 public class TimeGoodsController {
 
     @Autowired

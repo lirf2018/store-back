@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbSecondGoods;
 import com.yufan.pojo.TbShop;
@@ -30,6 +31,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/second/")
+@ClassAnnotation(name = "second", desc = "只提供简单浏览的简单商品（闲菜）管理")
 public class SecondGoodsController {
 
     @Autowired

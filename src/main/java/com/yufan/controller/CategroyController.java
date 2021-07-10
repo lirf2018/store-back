@@ -1,6 +1,7 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.anno.ClassAnnotation;
 import com.yufan.bean.CategoryCondition;
 import com.yufan.bean.CategoryObj;
 import com.yufan.bean.ItempropObj;
@@ -34,6 +35,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/category/")
+@ClassAnnotation(name = "category", desc = "分类管理")
 public class CategroyController {
 
     @Autowired
