@@ -655,13 +655,20 @@
             $("#limitNum").focus();
             return myAlertSimple4("非法限购数");
         }
-        if(limitWay == ''){
-            $("#limitWay").focus();
-            return myAlertSimple4("选择限购方式");
+
+        if(limitWay != '4'){
+            if(!checknumber(limitNum)){
+                $("#limitNum").focus();
+                return myAlertSimple4("非法限购数");
+            }
+            if(limitBeginTime == '' || limitBeginTime == null){
+                return myAlertSimple4("限购统计开始时间不能为空");
+            }
+        }else{
+            limitNum = 0;
         }
-        if(limitBeginTime == ''){
-            return myAlertSimple4("限购统计开始时间不能为空");
-        }
+
+
         if(!numAndpoint(advancePrice)){
             $("#advancePrice").focus();
             return myAlertSimple4("非法预付款");
@@ -851,7 +858,7 @@
             "purchasePrice": purchasePrice.trim(),
             "limitNum": limitNum,
             "limitWay": limitWay,
-            "limitBeginTime": limitBeginTime,
+            "limitBeginTimeStr": limitBeginTime,
             "levelId": levelId,
             "advancePrice": advancePrice,
             "img5": $("#img5").val(),

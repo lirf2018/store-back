@@ -21,6 +21,7 @@ import com.yufan.utils.Constants;
 import com.yufan.utils.DatetimeUtil;
 import com.yufan.utils.HelpCommon;
 import com.yufan.utils.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -345,6 +346,10 @@ public class GoodsController {
             writer = response.getWriter();
             TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
             goodsDataObj.setCreateman(user.getLoginName());
+            String limitBeginTimeStr = request.getParameter("limitBeginTimeStr");
+            if (StringUtils.isNotEmpty(limitBeginTimeStr)) {
+                goods.setLimitBeginTime(new Timestamp(DatetimeUtil.convertStrToDate(limitBeginTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
+            }
             out = iGoodsService.saveGoods(goods, goodsDataObj);
             writer.print(out);
             writer.close();

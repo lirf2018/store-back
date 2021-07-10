@@ -199,6 +199,10 @@ public class TimeGoodsController {
             timeGoods.setCreateman(user.getLoginName());
             timeGoods.setLastalterman("");
             timeGoods.setLastaltertime(new Timestamp(new Date().getTime()));
+            String limitBeginTimeStr = request.getParameter("limitBeginTimeStr");
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(limitBeginTimeStr)) {
+                timeGoods.setLimitBeginTime(new Timestamp(DatetimeUtil.convertStrToDate(limitBeginTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
+            }
             iTimeGoodsService.saveTimeGoods(timeGoods);
             writer.print(out);
             writer.close();

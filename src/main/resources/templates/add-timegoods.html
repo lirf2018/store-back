@@ -252,12 +252,19 @@
         if(endTime < beginTime){
             return myAlertSimple4("结束时间不能小于开始时间");
         }
-        if(limitBeginTime == null || limitBeginTime == ''){
-            return myAlertSimple4("限购统计开始时间不能为空");
+
+        if(timeWay != '4'){
+            if(!checknumber(limitNum)){
+                $("#limitNum").focus();
+                return myAlertSimple4("非法限购数");
+            }
+            if(limitBeginTime == '' || limitBeginTime == null){
+                return myAlertSimple4("限购统计开始时间不能为空");
+            }
+        }else{
+            limitNum = 0;
         }
-        if(timeWay == -1){
-            return myAlertSimple4("选择限购方式");
-        }
+
         var advancePrice = $("#advancePrice").val();
         if (advancePrice > timePrice) {
             return myAlertSimple4("抢购价不能小于对应商品的预付款, 请在商品详情页面修改预付款");
@@ -273,7 +280,7 @@
             "timeWay":timeWay,
             "weight":dataIndex,
             "status":1,
-            "limitBeginTime":limitBeginTime,
+            "limitBeginTimeStr":limitBeginTime,
             "remark":remark.trim()
         }
         //上传完得到id 或者路径 标志上传成功

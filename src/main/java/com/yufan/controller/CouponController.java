@@ -213,6 +213,12 @@ public class CouponController {
                 appointDateStr = appointDateStr.split(" ")[0] + " 23:59:59";
                 coupon.setAppointDate(new Timestamp(DatetimeUtil.convertStrToDate(appointDateStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
             }
+
+            String limitBeginTimeStr = request.getParameter("limitBeginTimeStr");
+            if (StringUtils.isNotEmpty(limitBeginTimeStr)) {
+                coupon.setLimitBeginTime(new Timestamp(DatetimeUtil.convertStrToDate(limitBeginTimeStr, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));
+            }
+
             out = iCouponService.saveCouponData(coupon);
             writer.print(out);
             writer.close();

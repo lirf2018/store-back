@@ -570,7 +570,7 @@
                 return myAlertSimple4("限购统计开始时间不能为空");
             }
         }else{
-            limitNum = null;
+            limitNum = 0;
         }
         let data = {
             couponId:couponId,
@@ -596,7 +596,7 @@
             limitWay:limitWay,
             status:status,
             limitNum:limitNum,
-            limitBeginTime:limitBeginTime,
+            limitBeginTimeStr:limitBeginTime,
             needKnow:needKnow,
             countGet:countGet,
             remark:remark
