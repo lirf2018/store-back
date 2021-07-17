@@ -288,7 +288,7 @@ public class GoodsController {
         goods.setGetWay(6);
         goods.setGoodsType(0);
         goods.setLimitBeginTime(new Timestamp(new Date().getTime()));
-        goods.setGoodsNum(1);
+        goods.setGoodsNum(0);
         goods.setGoodsUnit("7");// 默认促销
         goods.setStartTime(new Timestamp(new Date().getTime()));
         goods.setEndTime(new Timestamp(DatetimeUtil.convertStrToDate(DatetimeUtil.addYearTime(DatetimeUtil.getNow(), 1, DatetimeUtil.DEFAULT_DATE_FORMAT_STRING), DatetimeUtil.DEFAULT_DATE_FORMAT_STRING).getTime()));

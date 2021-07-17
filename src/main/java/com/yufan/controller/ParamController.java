@@ -64,8 +64,8 @@ public class ParamController {
             int start = Integer.parseInt(request.getParameter("start"));//第一条数据的起始位置，比如0代表第一条数据
             int currePage = start / pageSize + 1; //当前页
 
-            paramCode.setParamName(StringUtils.isEmpty(request.getParameter("paramName")) ? "" : request.getParameter("paramName"));
-            paramCode.setParamCode(StringUtils.isEmpty(request.getParameter("paramCode")) ? "" : request.getParameter("paramCode").trim());
+//            paramCode.setParamName(StringUtils.isEmpty(request.getParameter("paramName")) ? "" : request.getParameter("paramName"));
+//            paramCode.setParamCode(StringUtils.isEmpty(request.getParameter("paramCode")) ? "" : request.getParameter("paramCode").trim());
             pageInfo = iParamCodeService.loadParamCodePage(currePage, paramCode);
             //处理数据
             int recordSum = pageInfo.getRecordSum();

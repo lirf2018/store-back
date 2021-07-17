@@ -128,7 +128,6 @@
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>店铺</td>
                 <td>
                     <select  class="form-control form-control-common" name="shopId" id="shopId" >
-                        <option value="">--选择店铺--</option>
                         <option th:each="s:${shopList}" th:selected="${activity.shopId == s.shopId}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
                     </select>
                 </td>

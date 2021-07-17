@@ -32,6 +32,7 @@
                     <div class="form-inline">
                         <div>
                             <label>参数编码:</label><input class="form-control input-width190" id="paramCode" name="paramCode" type="text" value="" onkeyup="searchData()" onkeydown="searchData()">
+                            <label>参数key:</label><input class="form-control input-width190" id="paramKey" name="paramKey" type="text" value="" onkeyup="searchData()" onkeydown="searchData()">
                             <label>参数名称:</label>
                             <select class="form-control" name="paramName" id="paramName" onchange="searchData()">
                                 <option value="">&#45;&#45; 选择名称 &#45;&#45;</option>
@@ -105,6 +106,7 @@
                 data: function (d) {
                     d.paramCode = $('#paramCode').val();
                     d.paramName = $('#paramName').val();
+                    d.paramKey = $('#paramKey').val();
                 }
             },
             columns:[

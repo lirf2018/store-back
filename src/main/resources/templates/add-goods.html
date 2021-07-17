@@ -590,10 +590,10 @@
             $("#goodsName").focus();
             return myAlertSimple4("商品名称不能为空");
         }
-        if(goodsName.length>30){
-            $("#goodsName").focus();
-            return myAlertSimple4("商品名称不能超过24个汉字");
-        }
+        // if(goodsName.length>30){
+        //     $("#goodsName").focus();
+        //     return myAlertSimple4("商品名称不能超过24个汉字");
+        // }
         if(title == ''){
             $("#title").focus();
             return myAlertSimple4("商品title不能为空");
@@ -802,20 +802,21 @@
             var n = skuNowMoney.split("``");//现价
             var t = skuTrueMoney.split("``");//原价
             for (var i = 0; i < n.length; i++) {
-                if(skuNowMoney != ''&&Number(n[i])>Number(t[i])){
+                if (Number(n[i]) > Number(t[i])) {
                     myAlertSimple4("商品sku销售价格不能大于sku原价");
                     return;
                 }
-                if(advancePrice>skuNowMoney){
-                    myAlertSimple4(" 商品预付款不能大于商品sku现价");
+                if(advancePrice>Number(n[i])){
+                    myAlertSimple4("商品预付款不能大于商品sku现价");
                     return;
                 }
             }
         }
 
+        // 校验商品
         if (skuNowMoney == "" || skuNowMoney == null){
             if(advancePrice>nowMoney){
-                myAlertSimple4(" 商品预付款不能大于商品现价");
+                myAlertSimple4("商品预付款不能大于商品现价");
                 return;
             }
         }

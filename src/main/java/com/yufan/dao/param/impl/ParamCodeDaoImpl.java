@@ -33,6 +33,9 @@ public class ParamCodeDaoImpl implements IParamCodeDao {
         if(!StringUtils.isEmpty(param.getParamCode())){
             sql.append(" and param_code like '%").append(param.getParamCode()).append("%' ");
         }
+        if(!StringUtils.isEmpty(param.getParamKey())){
+            sql.append(" and param_key like '%").append(param.getParamKey()).append("%' ");
+        }
         if(!StringUtils.isEmpty(param.getParamName())){
             sql.append(" and param_name='").append(param.getParamName()).append("' ");
         }
