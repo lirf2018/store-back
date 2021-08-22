@@ -51,14 +51,26 @@
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>参数Key</td>
                 <td><input type="text" placeholder="请输入参数Key" class="form-control" name="userName" id="paramKey" th:value="${paramObj.paramKey}"></td>
-                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>参数值1</td>
-                <td><input type="text" placeholder="请输入value1" class="form-control" name="paramValue" id="paramValue" th:value="${paramObj.paramValue}"></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>参数值</td>
+                <td><input type="text" placeholder="请输入value" class="form-control" name="paramValue" id="paramValue" th:value="${paramObj.paramValue}"></td>
             </tr>
             <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>参数值1</td>
+                <td><input type="text" placeholder="请输入value1" class="form-control" name="paramValue1" id="paramValue1" th:value="${paramObj.paramValue1}"></td>
                 <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>参数值2</td>
-                <td><input type="text" placeholder="请输入value2" class="form-control" name="paramValue1" id="paramValue1" th:value="${paramObj.paramValue1}"></td>
+                <td><input type="text" placeholder="请输入value2" class="form-control" name="paramValue2" id="paramValue2" th:value="${paramObj.paramValue2}"></td>
+            </tr>
+            <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>参数值3</td>
-                <td><input type="text" placeholder="请输入value3" class="form-control" name="paramValue2" id="paramValue2" th:value="${paramObj.paramValue2}"></td>
+                <td><input type="text" placeholder="请输入value3" class="form-control" name="paramValue1" id="paramValue3" th:value="${paramObj.paramValue3}"></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>参数值4</td>
+                <td><input type="text" placeholder="请输入value4" class="form-control" name="paramValue2" id="paramValue4" th:value="${paramObj.paramValue4}"></td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>参数值5</td>
+                <td><input type="text" placeholder="请输入value5" class="form-control" name="paramValue1" id="paramValue5" th:value="${paramObj.paramValue5}"></td>
+                <td class="tableLeft"><span style="color: red;font-weight: bold"> </span>参数值6</td>
+                <td><input type="text" placeholder="请输入value6" class="form-control" name="paramValue2" id="paramValue6" th:value="${paramObj.paramValue6}"></td>
             </tr>
             <tr>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>排序</td>
@@ -113,6 +125,10 @@
         var paramValue = $("#paramValue").val();
         var paramValue1 = $("#paramValue1").val();
         var paramValue2 = $("#paramValue2").val();
+        var paramValue3 = $("#paramValue3").val();
+        var paramValue4 = $("#paramValue4").val();
+        var paramValue5 = $("#paramValue5").val();
+        var paramValue6 = $("#paramValue6").val();
         var dataIndex = $("#dataIndex").val();
         var remark = $("#remark").val();
 
@@ -136,6 +152,10 @@
             "paramObj.paramValue":paramValue.trim(),
             "paramObj.paramValue1":paramValue1.trim(),
             "paramObj.paramValue2":paramValue2.trim(),
+            "paramObj.paramValue3":paramValue3.trim(),
+            "paramObj.paramValue4":paramValue4.trim(),
+            "paramObj.paramValue5":paramValue5.trim(),
+            "paramObj.paramValue6":paramValue6.trim(),
             "paramObj.remark":remark.trim(),
             "paramObj.dataIndex":dataIndex.trim()
         }
@@ -157,8 +177,11 @@
                         $("#paramValue").val("");
                         $("#paramValue1").val("");
                         $("#paramValue2").val("");
+                        $("#paramValue3").val("");
+                        $("#paramValue4").val("");
+                        $("#paramValue5").val("");
+                        $("#paramValue6").val("");
                         $("#dataIndex").val(0);
-                        $("#remark").val("");
                     }else {
                         setTimeout("javascript:window.location.href = 'param/paramPage'",1000);
                     }

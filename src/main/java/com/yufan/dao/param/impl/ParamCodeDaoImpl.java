@@ -28,16 +28,19 @@ public class ParamCodeDaoImpl implements IParamCodeDao {
     @Override
     public PageInfo loadParamCodePage(int currePage, TbParam param) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT param_id,param_name,param_code,param_key,param_value,param_value1 ,param_value2,remark,DATE_FORMAT(createtime,'%Y-%m-%d %T') as createtime from tb_param ");
+        sql.append(" SELECT param_id,param_name,param_code,param_key,param_value,param_value1 ,param_value2,param_value3,param_value4,param_value5,param_value6,remark,DATE_FORMAT(createtime,'%Y-%m-%d %T') as createtime from tb_param ");
         sql.append(" where status=1 ");
         if(!StringUtils.isEmpty(param.getParamCode())){
-            sql.append(" and param_code like '%").append(param.getParamCode()).append("%' ");
+            sql.append(" and param_code like '%").append(param.getParamCode().trim()).append("%' ");
         }
         if(!StringUtils.isEmpty(param.getParamKey())){
-            sql.append(" and param_key like '%").append(param.getParamKey()).append("%' ");
+            sql.append(" and param_key like '%").append(param.getParamKey().trim()).append("%' ");
+        }
+        if(!StringUtils.isEmpty(param.getParamValue())){
+            sql.append(" and param_value like '%").append(param.getParamValue().trim()).append("%' ");
         }
         if(!StringUtils.isEmpty(param.getParamName())){
-            sql.append(" and param_name='").append(param.getParamName()).append("' ");
+            sql.append(" and param_name='").append(param.getParamName().trim()).append("' ");
         }
         sql.append(" ORDER BY  param_code,data_index desc ");
 
@@ -58,5 +61,11 @@ public class ParamCodeDaoImpl implements IParamCodeDao {
     public List<Map<String, Object>> loadParamGroupName() {
         String sql = " SELECT param_name,param_code from tb_param where `status`=1 GROUP BY param_name,param_code order by data_index desc ";
         return iGeneralDao.getBySQLListMap(sql);
+    }
+
+    @Override
+    public TbParam loadTbParamCodeById(int id) {
+        String hql = " from TbParam where paramId=?1 ";
+        return iGeneralDao.queryUniqueByHql(hql,id);
     }
 }

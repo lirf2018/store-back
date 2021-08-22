@@ -17,7 +17,9 @@ public interface IParamCodeDao {
 
     public void updateParamCodeStatus(int paramId, int status);
 
-    public List<Map<String,Object>> loadParamGroupName();
+    public List<Map<String, Object>> loadParamGroupName();
+
+    public TbParam loadTbParamCodeById(int id);
 
 
 }

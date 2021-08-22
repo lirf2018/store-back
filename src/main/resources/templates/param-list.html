@@ -33,6 +33,7 @@
                         <div>
                             <label>参数编码:</label><input class="form-control input-width190" id="paramCode" name="paramCode" type="text" value="" onkeyup="searchData()" onkeydown="searchData()">
                             <label>参数key:</label><input class="form-control input-width190" id="paramKey" name="paramKey" type="text" value="" onkeyup="searchData()" onkeydown="searchData()">
+                            <label>参数值1:</label><input class="form-control input-width190" id="paramValue"  type="text" value="" onkeyup="searchData()" onkeydown="searchData()">
                             <label>参数名称:</label>
                             <select class="form-control" name="paramName" id="paramName" onchange="searchData()">
                                 <option value="">&#45;&#45; 选择名称 &#45;&#45;</option>
@@ -51,11 +52,10 @@
                             <th>参数名称</th>
                             <th>参数编码</th>
                             <th>参数Key</th>
+                            <th>参数值</th>
                             <th>参数值1</th>
                             <th>参数值2</th>
-                            <th>参数值3</th>
                             <th>备注</th>
-                            <th>创建时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -107,6 +107,7 @@
                     d.paramCode = $('#paramCode').val();
                     d.paramName = $('#paramName').val();
                     d.paramKey = $('#paramKey').val();
+                    d.paramValue = $('#paramValue').val();
                 }
             },
             columns:[
@@ -145,11 +146,10 @@
                     data: function (obj) {
                         return obj.remark==null?"":obj.remark;
                     }
-                },
-                {data: 'createtime'}
+                }
             ]
             ,columnDefs: [{
-                targets: 9,
+                targets: 8,
                 data: null,
                 render: function (data, type, row) {
                     var html = "<button class='btn btn-info' data-value='" + data + "' type='button' onclick='addOrUpdateData("+data.param_id+")'><i class='fa fa-paste'></i> 编辑</button> ";

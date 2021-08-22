@@ -137,6 +137,16 @@ public class ParamController {
             paramCode.setParamValue1(paramValue1);
             String paramValue2 = request.getParameter("paramObj.paramValue2");
             paramCode.setParamValue2(paramValue2);
+
+            String paramValue3 = request.getParameter("paramObj.paramValue3");
+            paramCode.setParamValue3(paramValue3);
+            String paramValue4 = request.getParameter("paramObj.paramValue4");
+            paramCode.setParamValue4(paramValue4);
+            String paramValue5 = request.getParameter("paramObj.paramValue5");
+            paramCode.setParamValue5(paramValue5);
+            String paramValue6 = request.getParameter("paramObj.paramValue6");
+            paramCode.setParamValue6(paramValue6);
+
             String remark = request.getParameter("paramObj.remark");
             paramCode.setRemark(remark);
             paramCode.setStatus(1);
