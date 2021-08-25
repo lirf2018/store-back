@@ -247,4 +247,10 @@ public class UserDaoImpl implements IUserDao {
         String sql = " update tb_private_custom set flow_status=? where id=? ";
         iGeneralDao.executeUpdateForSQL(sql, flowStatus, id);
     }
+
+    @Override
+    public List<Map<String, Object>> findUserListMapByPhones(String phones) {
+        String sql = " select user_id,login_name,user_mobile,user_state from tb_user_info where user_mobile in ('" + phones + "') ";
+        return iGeneralDao.getBySQLListMap(sql);
+    }
 }

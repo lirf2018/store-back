@@ -74,7 +74,7 @@ public class CouponDaoImpl implements ICouponDao {
         if (null != couponCondition.getShow()) {
             sql.append(" and c.is_show = ").append(couponCondition.getShow()).append(" ");
         }
-        sql.append(" ORDER BY c.coupon_id desc ");
+        sql.append(" ORDER BY c.weight desc,c.coupon_id desc ");
 
         PageInfo pageInfo = new PageInfo();
         pageInfo.setCurrePage(currePage);
@@ -173,4 +173,79 @@ public class CouponDaoImpl implements ICouponDao {
         return iGeneralDao.queryUniqueByHql(hql, qrCoode, qrStatus);
     }
 
+    @Override
+    public PageInfo giveCouponListData(int currePage, CouponCondition couponCondition) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select c.coupon_id,c.coupon_name,c.title,CONCAT('").append(Constants.IMG_WEB_URL).append("',c.coupon_img) as coupon_img,c.intro,c.shop_id,c.weight,c.classify_id,");
+        sql.append(" c.is_show,c.coupon_type,DATE_FORMAT(c.start_time,'%Y-%m-%d')  as start_time,DATE_FORMAT(c.end_time,'%Y-%m-%d')  as end_time,c.out_date,c.createman, ");
+        sql.append(" c.coupon_num,c.is_putaway,c.limit_num,c.limit_way,c.leve1_id,c.appoint_type,DATE_FORMAT(c.appoint_date,'%Y-%m-%d')  as appoint_date,c.limit_begin_time,c.get_type,c.coupon_price, ");
+        sql.append(" if(c.end_time<NOW(),0,1) as ac_type ,l.level_name,ca.category_name ,");
+        sql.append(" DATE_FORMAT(guc.create_time,'%Y-%m-%d %T')  as createtime,DATE_FORMAT(guc.update_time,'%Y-%m-%d %T')  as updateTime,guc.status,guc.add_from,guc.id,");
+        sql.append(" DATE_FORMAT(guc.out_time,'%Y-%m-%d')  as out_time, ");
+        sql.append(" u.user_mobile,p.param_value as add_from_name");
+        sql.append(" from tb_give_user_coupon guc LEFT JOIN tb_coupon c on c.coupon_id=guc.coupon_id");
+        sql.append(" JOIN tb_user_info u on u.user_id=guc.user_id");
+        sql.append(" LEFT JOIN tb_param p on p.param_code ='add_from' and p.param_key=guc.add_from and p.`status`=1");
+        sql.append(" LEFT JOIN tb_category_level l on l.level_id=c.leve1_id and l.status=1 ");
+        sql.append(" LEFT JOIN tb_category ca on ca.category_id=c.classify_id and ca.status=1 ");
+        sql.append(" where 1=1 ");
+
+        if (couponCondition.getCouponId() != null) {
+            sql.append(" and c.coupon_id = ").append(couponCondition.getCouponId()).append(" ");
+        }
+        if (StringUtils.isNotEmpty(couponCondition.getCouponName())) {
+            sql.append(" and c.coupon_name like '%").append(couponCondition.getCouponName().trim()).append("%' ");
+        }
+        if (StringUtils.isNotEmpty(couponCondition.getUserPhone())) {
+            sql.append(" and u.user_mobile like '%").append(couponCondition.getUserPhone().trim()).append("%' ");
+        }
+        if (couponCondition.getIsPutaway() != null) {
+            sql.append(" and c.is_putaway = ").append(couponCondition.getIsPutaway()).append(" ");
+        }
+        if (couponCondition.getLeve1Id() != null) {
+            sql.append(" and c.leve1_id = ").append(couponCondition.getLeve1Id()).append(" ");
+        }
+        if (couponCondition.getClassifyId() != null) {
+            sql.append(" and c.classify_id = ").append(couponCondition.getClassifyId()).append(" ");
+        }
+        if (couponCondition.getCouponType() != null) {
+            sql.append(" and c.coupon_type = ").append(couponCondition.getCouponType()).append(" ");
+        }
+        if (couponCondition.getGetType() != null) {
+            sql.append(" and c.get_type = ").append(couponCondition.getGetType()).append(" ");
+        }
+        if (couponCondition.getAppointType() != null) {
+            sql.append(" and c.appoint_type = ").append(couponCondition.getAppointType()).append(" ");
+        }
+        if (couponCondition.getStatus() != null) {
+            sql.append(" and guc.status = ").append(couponCondition.getStatus()).append(" ");
+        }
+        if (couponCondition.getShopId() != null) {
+            sql.append(" and c.shop_id = ").append(couponCondition.getShopId()).append(" ");
+        }
+        sql.append(" ORDER BY guc.create_time desc ");
+
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setCurrePage(currePage);
+        pageInfo.setSqlQuery(sql.toString());
+        pageInfo = iGeneralDao.loadPageInfoSQLListMap(pageInfo);
+        return pageInfo;
+    }
+
+    @Override
+    public void deleteGiveCouponData(int id) {
+        String sql = " delete from tb_give_user_coupon where id=?  ";
+        iGeneralDao.executeUpdateForSQL(sql, id);
+    }
+
+    @Override
+    public List<Map<String, Object>> findUserGiveCouponListByStatus(int status, String userPhones, int couponId) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" select u.user_mobile,guc.coupon_id from tb_give_user_coupon guc JOIN tb_user_info u on u.user_id = guc.user_id ");
+        sql.append(" where 1=1 ");
+        sql.append(" and u.user_mobile in ('").append(userPhones).append("') ");
+        sql.append(" and u.user_state=").append(status).append(" ");
+        sql.append(" and guc.coupon_id=").append(couponId).append(" ");
+        return iGeneralDao.getBySQLListMap(sql.toString());
+    }
 }

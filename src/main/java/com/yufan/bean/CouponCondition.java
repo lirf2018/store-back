@@ -27,5 +27,6 @@ public class CouponCondition {
     private Integer getType;
     private String phone;
     private Integer show;
+    private String userPhone;
 
 }

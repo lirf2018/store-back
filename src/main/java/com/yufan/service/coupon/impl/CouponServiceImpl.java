@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -121,5 +122,20 @@ public class CouponServiceImpl implements ICouponService {
             e.printStackTrace();
         }
         return out;
+    }
+
+    @Override
+    public PageInfo giveCouponListData(int currePage, CouponCondition couponCondition) {
+        return iCouponDao.giveCouponListData(currePage, couponCondition);
+    }
+
+    @Override
+    public void deleteGiveCouponData(int id) {
+        iCouponDao.deleteGiveCouponData(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> findUserGiveCouponListByStatus(int status, String userPhones, int couponId) {
+        return iCouponDao.findUserGiveCouponListByStatus(status, userPhones, couponId);
     }
 }

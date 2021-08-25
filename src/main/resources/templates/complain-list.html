@@ -336,9 +336,10 @@
                 var code = data.code;
                 myAlertSimple4(data.msg);
                 if (code == '1') {
-                    // setTimeout("javascript:location.reload()",1000);
+                    $('#complainModel').modal('hide');
                     searchData();
                 }
+
             }
         });
     }

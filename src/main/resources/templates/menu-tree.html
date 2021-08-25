@@ -106,8 +106,23 @@
                 <div class="mianmenu" style="border: 1px solid #ddd;border-radius:6px;padding: 8px 10px;">
                     <form id="mianmenu-form" name="add-edit-form" action="" method="post">
                         <input type="hidden" id="menuId" name="menuId" value="">
-                        <input type="hidden" id="parentId" name="parentId" value="">
                         <input type="hidden" id="status" name="status" value="1">
+                        <input type="hidden" id="parentId" name="parentId" value="">
+                        <div class="row" id="parentId-div">
+                            <div class="col-md-3">
+                                <label><i>*</i>父级菜单:</label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group field-funform-url">
+                                    <div id="initParent">
+                                        <select  class="form-control form-control-common" onchange="updateParentId()" id="newParentId">
+                                            <option value="">--选择父级菜单--</option>
+                                        </select>
+                                    </div>
+                                    <div class="help-block"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-3">
                                 <label><i>*</i>功能名称:</label>
@@ -187,6 +202,7 @@
 <script th:inline="javascript" type="text/javascript">
     $(".addmainmenu").on("click",function (e) {
         $("#url-div").show();//功能动作
+        $("#parentId-div").show();//主菜单
         //添加深色
         $(".addmainmenu").attr("class","addmainmenu");
         $(this).attr("class","addmainmenu active");
@@ -239,6 +255,9 @@
         }
         if(op == "addParent" || op == "editParent"){
             $("#url-div").hide();
+            $("#parentId-div").hide();//主菜单
+        }else{
+            initParentIdDiv();
         }
         $("#mianmeuncontainer").show();
     })
@@ -269,6 +288,9 @@
         var functionType = 0;//第一级菜单
         if(parentId > 0){
             functionType = 1;
+            if(parentId == '' || parentId == null){
+                return myAlertSimple4("主菜单不能为空");
+            }
         }
         if(menuId == 0){
             menuId = "";
@@ -347,6 +369,31 @@
             });
         });*/
     })
+
+    function initParentIdDiv(){
+        let parentId = $("#parentId").val();
+        $("#initParent").html('');
+        var html = "<select  class=\"form-control form-control-common\" onchange=\"updateParentId()\" id=\"newParentId\">";
+        var dataHtml = "";
+        var functions = [[${functions}]];
+        for (var i = 0; i < functions.length; i++) {
+            if(functions[i].functionParentid == 0){
+                let selectHtml = '';
+                if(parentId == functions[i].functionId){
+                    selectHtml = "selected";
+                }
+                dataHtml = dataHtml + "<option "+selectHtml+" value=\""+functions[i].functionId+"\">"+functions[i].functionName+"</option>";
+            }
+        }
+
+        html = html + dataHtml + "</select>";
+        $("#initParent").html(html);
+    }
+    
+    function updateParentId() {
+        let parentId = $("#newParentId").val();
+        $("#parentId").val(parentId);
+    }
 </script>
 </body>
 </html>

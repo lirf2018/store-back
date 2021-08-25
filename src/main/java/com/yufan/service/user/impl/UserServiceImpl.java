@@ -149,4 +149,9 @@ public class UserServiceImpl implements IUserService {
     public void updateFlowStatus(int id, int flowStatus) {
         iUserDao.updateFlowStatus(id, flowStatus);
     }
+
+    @Override
+    public List<Map<String, Object>> findUserListMapByPhones(String phones) {
+        return iUserDao.findUserListMapByPhones(phones);
+    }
 }

@@ -34,6 +34,8 @@
                         <div>
                             <label>卡券标识:</label>
                             <input class="form-control input-width100" id="couponId" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
+                            <label>用户手机:</label>
+                            <input class="form-control" id="userPhone" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
                             <label>卡券名称:</label>
                             <input class="form-control" id="couponName" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
                             <label>销售状态:</label>
@@ -41,21 +43,6 @@
                                 <option value="">--选择销售状态--</option>
                                 <option th:value="0">已下架</option>
                                 <option th:value="2">销售中</option>
-                            </select>
-                            <label>一级分类:</label>
-                            <select class="form-control" id="leve1Id" name="leve1Id" onchange="setCategory()">
-                                <option value="">--选择一级分类--</option>
-                                <option th:each="lv:${listLevel}" th:value="${lv.level_id}"  th:text="${lv.level_name}"></option>
-                            </select>
-                            <label>类目:</label>
-                            <select class="form-control" id="classifyId" name="classifyId" onchange="searchData()">
-                                <option value="">--选择类目--</option>
-                            </select>
-                            <label>是否前端显示:</label>
-                            <select class="form-control" id="isShow" onchange="searchData()">
-                                <option value="">--选择是否前端显示--</option>
-                                <option value="1">显示</option>
-                                <option value="0">不显示</option>
                             </select>
                             <label>卡券类型:</label>
                             <select class="form-control" id="couponType" onchange="searchData()">
@@ -83,8 +70,9 @@
                             <label>状态:</label>
                             <select class="form-control" id="status" name="status" onchange="searchData()">
                                 <option value="">全部</option>
-                                <option value="1">有效</option>
-                                <option value="0">无效</option>
+                                <option value="0">未领取</option>
+                                <option value="1">已领取</option>
+                                <option value="2">已过期</option>
                             </select>
                             <label>店铺:</label>
                             <select class="form-control form-control-common" name="shopId" id="shopId" onchange="searchData()">
@@ -92,19 +80,22 @@
                                 <option th:each="s:${shopList}" th:value="${s.shopId}" th:text="${s.shopName}"></option>
                             </select>
                             <input type="button" class="btn btn-primary" value="查询" onclick="searchData()">
+                            <button class="btn btn-success" type="button" onclick='javascript:showGive()'><i class=""></i><span class="bold">增送卡券</span></button>
                         </div>
                     </div>
                     <div>&nbsp;</div>
                     <table id="tableId" class="table table-striped table-bordered table-hover display">
                         <thead>
                         <tr>
-                            <th>标识</th>
-                            <th>名称</th>
-                            <th>图片</th>
+                            <th>卡券标识</th>
+                            <th>用户手机</th>
+                            <th>状态</th>
+                            <th>领取过期日期</th>
+                            <th>卡券名称</th>
+<!--                            <th>图片</th>-->
                             <th>卡券类型</th>
                             <th>开始时间</th>
                             <th>结束时间</th>
-                            <th>权重</th>
                             <th>卡券数量</th>
                             <th>上架状态</th>
                             <th>领取方式</th>
@@ -113,11 +104,6 @@
                             <th>使用方式</th>
                             <th>兑换过期天</th>
                             <th>指定时间</th>
-                            <th>类目</th>
-                            <th>一级分类</th>
-                            <th>状态</th>
-                            <th>已领取数</th>
-                            <th>创建时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -131,17 +117,49 @@
 </div>
 <div id="myDialog" class="modal fade" aria-hidden="true">
     <input type="hidden" id="giveCouponId" value="">
+    <input type="hidden" id="giveCouponName" value="">
     <div class="modal-dialog">
         <div class="modal-content animated bounceInRight">
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group">
+                        <label>赠送用户手机号码(多个用,相连接)：</label>
+                        <textarea id="userPhones" style="resize: none;height:100px;width: 100%;border: 1px solid #e5e6e7"></textarea>
+                    </div>
+                    <div class="form-group">
                         <label>已选卡券：</label>
                         <label id="choseCouponName" style="font-weight: normal"></label>
                     </div>
                     <div class="form-group">
-                        <label>赠送用户手机号码(多个用,相连接)：</label>
-                        <textarea id="userPhones" style="resize: none;height:100px;width: 100%;border: 1px solid #e5e6e7"></textarea>
+                       <!-- <select class="form-control" id="status" name="status" >
+                            <option value="">全部</option>
+                            <option value="1">有效</option>
+                            <option value="0">无效</option>
+                        </select>-->
+                        <div class="form-inline">
+                            <label>卡券标识:</label>
+                            <input class="form-control" id="couponId_" type="text" value="" onkeydown="searchData_()" onkeyup="searchData_()">
+                            <label>卡券名称:</label>
+                            <input class="form-control" id="couponName_" type="text" value="" onkeydown="searchData_()" onkeyup="searchData_()">
+                            <input type="button" class="btn btn-primary" value="查询" onclick="searchData_()">
+                        </div>
+                        <br/>
+<!--                        <div style="height: 150px;border: 1px solid #e5e6e7;overflow:scroll;">-->
+                        <div style="height: 150px;border: 1px solid #e5e6e7;overflow-x: hidden;cursor: pointer">
+<!--                        <div style="height: 150px;overflow:scroll;">-->
+                            <table id="tableId_" class="table table-striped table-bordered table-hover display">
+                                <thead>
+                                <tr>
+                                    <th>标识</th>
+                                    <th>卡券名称</th>
+<!--                                    <th>是否前端显示</th>-->
+<!--                                    <th>操作</th>-->
+                                </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="form-group" align="center">
                         <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>&nbsp;&nbsp;&nbsp;
@@ -185,21 +203,18 @@
                 sInfoEmpty: "显示 0 条",
             },
             ajax: {
-                url: 'coupon/couponListData',
+                url: 'coupon/giveCouponListData',
                 type: 'POST',
                 data: function (d) {
                     d.couponId = $("#couponId").val();
                     d.couponName = $("#couponName").val();
                     d.shopId = $("#shopId").val();
-                    d.classifyId = $("#classifyId").val();
-                    d.isShow = $("#isShow").val();
                     d.couponType = $("#couponType").val();
                     d.status = $("#status").val();
                     d.isPutaway = $("#isPutaway").val();
-                    d.leve1Id = $("#leve1Id").val();
                     d.appointType = $("#appointType").val();
                     d.getType = $("#getType").val();
-                    d.show = 0;
+                    d.userPhone = $("#userPhone").val();
                 }
             },
             columns: [
@@ -210,16 +225,39 @@
                 }
                 , {
                     data: function (obj) {
-                        return "<a href='javaScript:addOrUpdateData(" + obj.coupon_id + ",0)'>" + obj.coupon_name + "</a>";
+                        return obj.user_mobile == null ? "" : obj.user_mobile;
                     }
                 }
                 , {
                     data: function (obj) {
-                        var img = obj.coupon_img == null ? "./img/null.jpg" : obj.coupon_img;
-                        return "<img src='" + img + "' width='100px' height='100px'>";
+                        var status = obj.status; // 0未领取1已领取2已使用3已过期
+                        if(status == 0){
+                            return  '未领取';
+                        }else if(status == 1){
+                            return  '已领取';
+                        }else if(status == 2){
+                            return  '已过期';
+                        }
+                        return "";
                     }
-
                 }
+                , {
+                    data: function (obj) {
+                        return obj.out_time == null ? "" : obj.out_time;
+                    }
+                }
+                , {
+                    data: function (obj) {
+                        return obj.coupon_name;
+                    }
+                }
+                // , {
+                //     data: function (obj) {
+                //         var img = obj.coupon_img == null ? "./img/null.jpg" : obj.coupon_img;
+                //         return "<img src='" + img + "' width='100px' height='100px'>";
+                //     }
+                //
+                // }
                 , {
                     data: function (obj) {
                         // 卡券类型 1:代金券2兑换券3折扣券4满减券
@@ -237,11 +275,6 @@
                             return "<span style='color: red'>" + obj.end_time + "</span>"
                         }
                         return obj.end_time == null ? "" : obj.end_time;
-                    }
-                }
-                , {
-                    data: function (obj) {
-                        return obj.weight == null ? "" : obj.weight;
                     }
                 }
                 , {
@@ -300,44 +333,13 @@
                         return obj.appoint_date == null ? "" : obj.appoint_date;
                     }
                 }
-                , {
-                    data: function (obj) {
-                        return obj.level_name == null ? "" : obj.level_name;
-                    }
-                }
-                , {
-                    data: function (obj) {
-                        return obj.category_name == null ? "" : obj.category_name;
-                    }
-                }
-                , {
-                    data: function (obj) {
-                        var status = obj.status;
-                        return status == '1' ? '有效' : "<span style='color: red'>无效</span>";
-                    }
-                }
-                , {
-                    data: function (obj) {
-                        return obj.count_get == null ? "0" : obj.count_get;
-                    }
-                }
-                , {
-                    data: function (obj) {
-                        return obj.createtime == null ? "" : obj.createtime;
-                    }
-                }
             ]
             , columnDefs: [{
-                targets: 20,
+                targets: 16,
                 data: null,
                 render: function (data, type, row) {
                     var html = "";
-                    if (data.status == '1') {
-                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:delData(" + data.coupon_id + ",0)'><i class='fa fa-warning'></i> 删除</button>";
-                    } else {
-                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-primary' data-id='" + data + "' type='button' onclick='javascript:delData(" + data.coupon_id + ",1)'><i class='fa fa-check'></i> 启用</button>";
-                    }
-                    html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-primary' data-id='" + data + "' type='button' onclick='javascript:showGive(" + data.coupon_id + ",\""+data.coupon_name+"\")'><i class='fa fa-check'></i> 赠送</button>";
+                    html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-danger' data-id='" + data + "' type='button' onclick='javascript:delData(" + data.id + ",0)'><i class='fa fa-warning'></i> 删除</button>";
                     return html;
                 }
             }]
@@ -350,89 +352,89 @@
         });
     }
 
+    // 弹框查询优惠券
+    var table_ ;
+    $(document).ready(function () {
+        table_ = $('#tableId_').DataTable({
+            serverSide: true,
+            ordering: false,
+            searching: false,
+            bProcessing: false,
+            iDisplayLength:15,
+            bLengthChange: false, //改变每页显示数据数量 [10, 20, 30, 40],
+            // aLengthMenu : [10, 20, 30, 40],
+            language: {
+                sInfo: "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+                sInfoEmpty: "显示 0 条",
+            },
+            ajax: {
+                url: 'coupon/couponListData',
+                type: 'POST',
+                data: function (d) {
+                    d.couponId = $("#couponId_").val();
+                    d.couponName = $("#couponName_").val();
+                    d.isShow = 0;
+                }
+            },
+            columns: [
+                {
+                    data: function (obj) {
+                        return obj.coupon_id == null ? "" : obj.coupon_id;
+                    }
+                }
+                , {
+                    data: function (obj) {
+                        return obj.coupon_name;
+                    }
+                }
+                // , {
+                //     data: function (obj) {
+                //         // 用于直接赠送券,不会在前端显示0不在前端显示1在前端显示
+                //         if (obj.is_show == '0') {
+                //             return '不显示';
+                //         } else if (obj.is_show == '1') {
+                //             return '显示';
+                //         }
+                //         return '<span style="color: red">未知</span>';
+                //     }
+                // }
+            ]
+        });
+    });
+
+    function searchData_() {
+        $("#giveCouponId").val('');
+        $("#giveCouponName").val('');
+        $("#choseCouponName").html('');
+        table_.draw({
+            start: 0
+        });
+    }
+
+    //展开icon的点击事件
+    $('#tableId_ tbody').on('click',"td" ,function () {
+        //获取点击时的td的父级tr(closest  获取祖先元素)
+        var tr = $(this).closest('tr');
+        //可通过row().child.show()和row().child.hide()显示隐藏
+        var row = table_.row(tr);//传给table
+        var data = row.data();
+        $("#giveCouponId").val(data.coupon_id);
+        $("#giveCouponName").val(data.coupon_name);
+        $("#choseCouponName").html(data.coupon_name);
+
+
+    });
+
     function addOrUpdateData(id, editorFlag) {
         window.location.href = "coupon/toAddcouponPage?id=" + id + "&editorFlag=" + editorFlag;
     }
 
-    function delData(id, status) {
-        $.ajax({
-            url: "coupon/updateCouponStatus",
-            type: 'POST',
-            data: {
-                "id": id,
-                "status": status
-            },// 要提交的表单 ,
-            async: false,
-            cache: false,
-            dataType: "json",
-            success: function (data) {
-                var code = data.code;
-                myAlertSimple4(data.msg);
-                if (code == "4" || code == '3') {
-                    // setTimeout("javascript:window.location.href = 'shop/shopPage'",1000);
-                    searchData();
-                }
-            }
-        });
-    }
-
-    var categoryHtml = $("#classifyId").html();
-
-    // 根据一级分类设置类目
-    function setCategory() {
-        var levelId = $("#leve1Id").val();
-        $("#classifyId").html(categoryHtml);
-        $.ajax({
-            url: "category/loadLevelCategoryData",
-            type: 'POST',
-            data: {
-                "levelId": levelId,
-                "status": 1
-            },// 要提交的表单 ,category_id category_name
-            async: false,
-            cache: false,
-            dataType: "json",
-            success: function (data) {
-                var list = data.data;
-                var html = "";
-                for (var i = 0; i < list.length; i++) {
-                    html = html + "<option value='" + list[i].category_id + "'>" + list[i].category_name + "</option>";
-                }
-                $("#classifyId").append(html);
-            }
-        });
-        searchData();
-    }
 
 
-    function delData(id, status) {
-        $.ajax({
-            url: "coupon/updateCouponStatus",
-            type: 'POST',
-            data: {
-                "id": id,
-                "status": status
-            },// 要提交的表单 ,
-            async: false,
-            cache: false,
-            dataType: "json",
-            success: function (data) {
-                var code = data.code;
-                myAlertSimple4(data.msg);
-                if (code == "4" || code == '3') {
-                    // setTimeout("javascript:window.location.href = 'shop/shopPage'",1000);
-                    searchData();
-                }
-            }
-        });
-    }
-
-    function showGive(id, name) {
-        $("#giveCouponId").val(id);
-        $("#choseCouponName").html(name);
+    function delData(id) {
         swal({
-            title: "您确定要赠送当前优惠券吗",
-            text: "(" + name + ")，请谨慎操作！",
+            title: "您确定要删除当前数据吗",
+            text: "无法撤回，请谨慎操作！",
             type: "warning",
             showCancelButton: true,
             cancelButtonText: "取消",
@@ -440,15 +442,58 @@
             confirmButtonText: "确定",
             closeOnConfirm: true
         }, function () {
-            $('#myDialog').modal('show');
+            $.ajax({
+                url: "coupon/deleteGiveCouponData",
+                type: 'POST',
+                data: {
+                    "id": id
+                },// 要提交的表单 ,
+                async: false,
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    var code = data.code;
+                    myAlertSimple4(data.msg);
+                    if (code == "4" || code == '3') {
+                        searchData();
+                    }
+                }
+            });
         })
     }
 
+    function showGive() {
+        $("#giveCouponId").val('');
+        $("#giveCouponName").val('');
+        $("#choseCouponName").html('');
+        $("#userPhones").val('');
+        $('#myDialog').modal('show');
+    }
     function saveMyDialog() {
+        var couponId = $("#giveCouponId").val();
+        var couponName = $("#giveCouponName").val();
         var userPhones = $("#userPhones").val();
         if(userPhones.trim() == ''){
-            return myAlertSimple4("赠送用户手机号码不能为空");
+            return myAlertSimple2("赠送用户手机号码不能为空",2000);
         }
+        if(couponId == '' || couponId == null){
+            return myAlertSimple2("请点击选择卡券",2000);
+        }
+        swal({
+            title: "您确定要赠送当前优惠券吗",
+            text: "(" + couponName + ")，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: "取消",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定",
+            closeOnConfirm: true
+        }, function () {
+            saveMyDialogTrue();
+        })
+    }
+
+    function saveMyDialogTrue() {
         $.ajax({
             url: "coupon/saveGiveCouponData",
             type: 'POST',
@@ -461,7 +506,7 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
-                myAlertSimple4(data.msg);
+                myAlertSimple2(data.msg,2000);
                 if (code == '1') {
                     $('#myDialog').modal('hide');
                     searchData();

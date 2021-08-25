@@ -53,6 +53,7 @@ function myAlertSimple4(text) {
     });
 }
 
+
 //将时间戳格式化
 function getMyDate(time) {
     if (typeof(time) == "undefined") {

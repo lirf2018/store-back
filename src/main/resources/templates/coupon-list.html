@@ -48,7 +48,7 @@
                                 <option th:each="lv:${listLevel}" th:value="${lv.level_id}"  th:text="${lv.level_name}"></option>
                             </select>
                             <label>类目:</label>
-                            <select class="form-control" id="classifyId" name="classifyId" onchange="searchData()">
+                            <select class="form-control" id="categoryId"  onchange="searchData()">
                                 <option value="">--选择类目--</option>
                             </select>
                             <label>是否前端显示:</label>
@@ -125,6 +125,30 @@
                         <tbody class="text-center">
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myDialog" class="modal fade" aria-hidden="true">
+    <input type="hidden" id="giveCouponId" value="">
+    <input type="hidden" id="giveCouponName" value="">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label>已选卡券：</label>
+                        <label id="choseCouponName" style="font-weight: normal"></label>
+                    </div>
+                    <div class="form-group">
+                        <label>赠送用户手机号码(多个用,相连接)：</label>
+                        <textarea id="userPhones" style="resize: none;height:100px;width: 100%;border: 1px solid #e5e6e7"></textarea>
+                    </div>
+                    <div class="form-group" align="center">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-success" onclick="saveMyDialog()">保存</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -315,6 +339,9 @@
                     } else {
                         html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-primary' data-id='" + data + "' type='button' onclick='javascript:delData(" + data.coupon_id + ",1)'><i class='fa fa-check'></i> 启用</button>";
                     }
+                    if(data.is_show == 0){
+                        html = html + "&nbsp;&nbsp;<button class='btn btn-info btn-primary' data-id='" + data + "' type='button' onclick='javascript:showGive(" + data.coupon_id + ",\""+data.coupon_name+"\")'><i class='fa fa-check'></i> 赠送</button>";
+                    }
                     return html;
                 }
             }]
@@ -357,7 +384,7 @@
 
     // 根据一级分类设置类目
     function setCategory() {
-        var levelId = $("#levelId").val();
+        var levelId = $("#leve1Id").val();
         $("#categoryId").html(categoryHtml);
         $.ajax({
             url: "category/loadLevelCategoryData",
@@ -380,6 +407,49 @@
         });
 
         searchData();
+    }
+
+    function showGive(id, name) {
+        $("#giveCouponId").val(id);
+        $("#choseCouponName").html(name);
+        swal({
+            title: "您确定要赠送当前优惠券吗",
+            text: "(" + name + ")，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: "取消",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定",
+            closeOnConfirm: true
+        }, function () {
+            $('#myDialog').modal('show');
+        })
+    }
+
+    function saveMyDialog() {
+        var userPhones = $("#userPhones").val();
+        if(userPhones.trim() == ''){
+            return myAlertSimple4("赠送用户手机号码不能为空");
+        }
+        $.ajax({
+            url: "coupon/saveGiveCouponData",
+            type: 'POST',
+            data: {
+                "couponId":$("#giveCouponId").val(),
+                "userPhones":$("#userPhones").val().trim()
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple4(data.msg);
+                if (code == '1') {
+                    $('#myDialog').modal('hide');
+                    searchData();
+                }
+            }
+        });
     }
 </script>
 

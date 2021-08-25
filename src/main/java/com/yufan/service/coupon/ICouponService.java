@@ -6,6 +6,9 @@ import com.yufan.pojo.TbCoupon;
 import com.yufan.pojo.TbCouponDownQr;
 import com.yufan.utils.PageInfo;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @description:
  * @author: lirf
@@ -13,18 +16,24 @@ import com.yufan.utils.PageInfo;
  */
 public interface ICouponService {
 
-    public PageInfo loadCouponPage(int currePage, CouponCondition couponCondition);
+    PageInfo loadCouponPage(int currePage, CouponCondition couponCondition);
 
-    public TbCoupon loadCouponById(int id);
+    TbCoupon loadCouponById(int id);
 
-    public void updateStatus(int id, int status);
+    void updateStatus(int id, int status);
 
-    public void updateIsPutAway(int id, int isPutAway);
+    void updateIsPutAway(int id, int isPutAway);
 
-    public JSONObject saveCouponData(TbCoupon coupon);
+    JSONObject saveCouponData(TbCoupon coupon);
 
-    public PageInfo loadCouponQrPage(int currePage, CouponCondition couponCondition);
+    PageInfo loadCouponQrPage(int currePage, CouponCondition couponCondition);
 
-    public JSONObject changeQrCode(String qrCoode,String checkCode);
+    JSONObject changeQrCode(String qrCoode, String checkCode);
+
+    PageInfo giveCouponListData(int currePage, CouponCondition couponCondition);
+
+    void deleteGiveCouponData(int id);
+
+    List<Map<String, Object>> findUserGiveCouponListByStatus(int status, String userPhones, int couponId);
 
 }

@@ -5,6 +5,7 @@ import com.yufan.pojo.TbCoupon;
 import com.yufan.pojo.TbCouponDownQr;
 import com.yufan.utils.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,22 +16,28 @@ import java.util.Map;
 public interface ICouponDao {
 
 
-    public PageInfo loadCouponPage(int currePage, CouponCondition couponCondition);
+    PageInfo loadCouponPage(int currePage, CouponCondition couponCondition);
 
-    public TbCoupon loadCouponById(int id);
+    TbCoupon loadCouponById(int id);
 
-    public void updateStatus(int id, int status);
+    void updateStatus(int id, int status);
 
-    public void updateIsPutAway(int id, int isPutAway);
+    void updateIsPutAway(int id, int isPutAway);
 
-    public void updateCouponData(TbCoupon coupon);
+    void updateCouponData(TbCoupon coupon);
 
-    public void saveCouponData(TbCoupon coupon);
+    void saveCouponData(TbCoupon coupon);
 
-    public Map<String, Object> loadCouponDataMap(int couponId);
+    Map<String, Object> loadCouponDataMap(int couponId);
 
-    public PageInfo loadCouponQrPage(int currePage, CouponCondition couponCondition);
+    PageInfo loadCouponQrPage(int currePage, CouponCondition couponCondition);
 
-    public TbCouponDownQr loadCouponDownQr(String qrCoode, Integer qrStatus);
+    TbCouponDownQr loadCouponDownQr(String qrCoode, Integer qrStatus);
+
+    PageInfo giveCouponListData(int currePage, CouponCondition couponCondition);
+
+    void deleteGiveCouponData(int id);
+
+    List<Map<String, Object>> findUserGiveCouponListByStatus(int status, String userPhones, int couponId);
 
 }

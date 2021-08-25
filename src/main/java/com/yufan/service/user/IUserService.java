@@ -62,5 +62,7 @@ public interface IUserService {
 
     PageInfo loadWapUserPrivatePage(int currePage, WapUserCondition wapUserCondition);
 
-    public void updateFlowStatus(int id, int flowStatus);
+    void updateFlowStatus(int id, int flowStatus);
+
+    List<Map<String, Object>> findUserListMapByPhones(String phones);
 }
