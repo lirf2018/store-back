@@ -39,7 +39,7 @@
                             <label>卡券名称:</label>
                             <input class="form-control" id="couponName" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
                             <label>兑换码:</label>
-                            <input class="form-control input-width120" id="changeCode" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
+                            <input class="form-control input-width150" id="changeCode" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
                             <label>用户手机号:</label>
                             <input class="form-control input-width120" id="phone" type="text" value="" onkeydown="searchData()" onkeyup="searchData()">
                            <label>卡券类型:</label>
@@ -87,6 +87,7 @@
                         <thead>
                         <tr>
                             <th>qr标识</th>
+                            <th>用户</th>
                             <th>卡券名称</th>
                             <th>卡券类型</th>
                             <th>兑换码</th>
@@ -100,7 +101,6 @@
                             <th>领取方式</th>
                             <th>卡券金额</th>
                             <th>描述</th>
-                            <th>用户</th>
                             <th>兑换时间</th>
                             <th>创建时间</th>
                         </tr>
@@ -167,6 +167,11 @@
                 {
                     data: function (obj) {
                         return obj.id == null ? "" : obj.id;
+                    }
+                }
+                , {
+                    data: function (obj) {
+                        return obj.phone == null ? "" : obj.phone;
                     }
                 },
                 {
@@ -250,11 +255,6 @@
                 , {
                     data: function (obj) {
                         return obj.qr_desc == null ? "" : obj.qr_desc;
-                    }
-                }
-                , {
-                    data: function (obj) {
-                        return obj.phone == null ? "" : obj.phone;
                     }
                 }
                 , {
