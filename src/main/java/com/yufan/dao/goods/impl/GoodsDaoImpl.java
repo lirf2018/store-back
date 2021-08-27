@@ -163,6 +163,12 @@ public class GoodsDaoImpl implements IGoodsDao {
     }
 
     @Override
+    public void updateGoodsOnSell(String goodsIds, int isPutway) {
+        String sql = " update tb_goods set is_putaway=?,lastaltertime=now()  where goods_id in (" + goodsIds + ") ";
+        iGeneralDao.executeUpdateForSQL(sql, isPutway);
+    }
+
+    @Override
     public List<Map<String, Object>> loadGoodsAttribute(int goodsId) {
         String sql = " SELECT attr_id,goods_id,prop_id,value_id from tb_goods_attribute where goods_id=? ";
         return iGeneralDao.getBySQLListMap(sql, goodsId);

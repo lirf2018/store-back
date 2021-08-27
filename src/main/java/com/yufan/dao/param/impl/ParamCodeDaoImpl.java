@@ -28,7 +28,8 @@ public class ParamCodeDaoImpl implements IParamCodeDao {
     @Override
     public PageInfo loadParamCodePage(int currePage, TbParam param) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT param_id,param_name,param_code,param_key,param_value,param_value1 ,param_value2,param_value3,param_value4,param_value5,param_value6,remark,DATE_FORMAT(createtime,'%Y-%m-%d %T') as createtime from tb_param ");
+        sql.append(" SELECT param_id,param_name,param_code,param_key,param_value,param_value1 ,param_value2,param_value3,param_value4, ");
+        sql.append(" param_value5,param_value6,remark,DATE_FORMAT(createtime,'%Y-%m-%d %T') as createtime,data_index from tb_param ");
         sql.append(" where status=1 ");
         if(!StringUtils.isEmpty(param.getParamCode())){
             sql.append(" and param_code like '%").append(param.getParamCode().trim()).append("%' ");
@@ -41,6 +42,9 @@ public class ParamCodeDaoImpl implements IParamCodeDao {
         }
         if(!StringUtils.isEmpty(param.getParamName())){
             sql.append(" and param_name='").append(param.getParamName().trim()).append("' ");
+        }
+        if(param.getParamId()>0){
+            sql.append(" and param_id=").append(param.getParamId()).append(" ");
         }
         sql.append(" ORDER BY  param_code,data_index desc ");
 

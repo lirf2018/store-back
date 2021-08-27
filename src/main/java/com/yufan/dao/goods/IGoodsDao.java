@@ -66,6 +66,8 @@ public interface IGoodsDao {
      */
     public void updateGoodsOnSell(int goodsId, int isPutway);
 
+    public void updateGoodsOnSell(String goodsIds, int isPutway);
+
     /**
      * 查询商品销售和非销售属性关联
      *
@@ -76,13 +78,14 @@ public interface IGoodsDao {
 
     /**
      * 更新对象
+     *
      * @param object
      */
     public void updateObject(Object object);
 
     public void updateGoodsSku(TbGoodsSku goodsSku);
 
-    public void updateGoodsSingle(int goodsId,int isSingle);
+    public void updateGoodsSingle(int goodsId, int isSingle);
 
     /**
      * 删除商品sku
@@ -98,14 +101,16 @@ public interface IGoodsDao {
 
     /**
      * 删除商品属性
+     *
      * @param goodsId
      */
     public void deleteGoodsAttribute(int goodsId);
 
     /**
      * 查询商品信息
+     *
      * @param goodsId
      * @return
      */
-    public Map<String,Object> getGoodsInfoMap(int goodsId);
+    public Map<String, Object> getGoodsInfoMap(int goodsId);
 }

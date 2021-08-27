@@ -220,12 +220,15 @@ public class GoodsController {
      * @param isPutway 上架状态 0下架  2销售中
      */
     @RequestMapping("updateGoodsSellStatus")
-    public void updateDataSellStatus(HttpServletRequest request, HttpServletResponse response, Integer goodsId, Integer isPutway) {
+    public void updateDataSellStatus(HttpServletRequest request, HttpServletResponse response, String goodsIds, Integer isPutway) {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
+            if(goodsIds.endsWith(",")){
+                goodsIds = goodsIds.substring(0,goodsIds.length()-1);
+            }
             JSONObject out = isPutway == 2 ? HelpCommon.packagMsg("20") : HelpCommon.packagMsg("19");
-            iGoodsService.updateGoodsOnSell(goodsId, isPutway);
+            iGoodsService.updateGoodsOnSell(goodsIds, isPutway);
             writer.print(out);
             writer.close();
         } catch (Exception e) {

@@ -169,8 +169,8 @@
             dataType: "json",
             success: function (data) {
                 var code = data.code;
+                myAlertSimple4(data.msg);
                 if (code == "1") {
-                    myAlertSimple4(data.msg);
                     if(mark == 1){
                         //setTimeout("javascript:window.location.href = 'param/addParamPage'",1000);
                         $("#paramKey").val("");

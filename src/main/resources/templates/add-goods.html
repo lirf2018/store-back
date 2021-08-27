@@ -144,6 +144,20 @@
                         <tbody id="classifyList">
                         </tbody>
                     </table>
+                    <table class="table table-hover table-bordered">
+                        <tbody>
+                        <tr>
+                            <td class="tableLeft">设置sku成本价</td>
+                            <td><input class="form-control input-width100" type="text" value="" onkeydown="sysnSkuPurchasePrice(this)" onkeyup="sysnSkuPurchasePrice(this)"></td>
+                            <td class="tableLeft">设置sku原价</td>
+                            <td><input class="form-control input-width100" type="text" value="" onkeydown="sysnSkuTrueMoney(this)" onkeyup="sysnSkuTrueMoney(this)"></td>
+                            <td class="tableLeft">设置sku销售价</td>
+                            <td><input class="form-control input-width100" type="text" value="" onkeydown="sysnSkuNowMoney(this)" onkeyup="sysnSkuNowMoney(this)"></td>
+                            <td class="tableLeft">设置sku库存</td>
+                            <td><input class="form-control input-width100" type="text" value="" onkeydown="sysnSkuNum(this)" onkeyup="sysnSkuNum(this)"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                     <table class="table table-hover table-bordered" style="display: none" id="skuTable">
                         <thead  id="skuListHead">
                         </thead>
@@ -1025,6 +1039,29 @@
         $("#goodsKnow").val(str);
     }
 </script>
+<script>
+    
+    function sysnSkuPurchasePrice(obj) {
+        $("input[name='skuPurchasePrice']").val($(obj).val());
+        $("#purchasePrice").val($(obj).val())
+    }
 
+    function sysnSkuTrueMoney(obj) {
+        $("input[name='skuTrueMoney']").val($(obj).val());
+        $("#trueMoney").val($(obj).val())
+    }
+
+    function sysnSkuNowMoney(obj) {
+        $("input[name='skuNowMoney']").val($(obj).val());
+        $("#nowMoney").val($(obj).val())
+    }
+
+    function sysnSkuNum(obj) {
+        $("input[name='skuNum']").val($(obj).val());
+        $("#goodsNum").val($(obj).val())
+    }
+
+    
+</script>
 </body>
 </html>

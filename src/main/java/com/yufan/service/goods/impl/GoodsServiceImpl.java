@@ -383,6 +383,11 @@ public class GoodsServiceImpl implements IGoodsService {
         iGoodsDao.updateGoodsOnSell(goodsId, isPutway);
     }
 
+    @Override
+    public void updateGoodsOnSell(String goodsIds, int isPutway) {
+        iGoodsDao.updateGoodsOnSell(goodsIds, isPutway);
+    }
+
     @Transactional
     @Override
     public void deleteTimeGoods(int goodsId) {

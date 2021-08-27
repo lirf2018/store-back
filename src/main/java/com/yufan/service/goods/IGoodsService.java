@@ -61,6 +61,7 @@ public interface IGoodsService {
      * @param isPutway 上架状态 0下架 1等待确认 2销售中
      */
     void updateGoodsOnSell(int goodsId, int isPutway);
+    void updateGoodsOnSell(String goodsIds, int isPutway);
 
 
     /**

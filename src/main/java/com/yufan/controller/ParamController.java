@@ -3,6 +3,7 @@ package com.yufan.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.anno.ClassAnnotation;
 import com.yufan.cache.LoadCacheService;
+import com.yufan.exception.ApplicationException;
 import com.yufan.pojo.TbAdmin;
 import com.yufan.pojo.TbParam;
 import com.yufan.service.param.IParamCodeService;
@@ -90,13 +91,16 @@ public class ParamController {
      * @return
      */
     @RequestMapping("addParamPage")
-    public ModelAndView toAddParamCodePage(HttpServletRequest request, Integer paramId) {
+    public ModelAndView toAddParamCodePage(HttpServletRequest request, Integer paramId, Boolean isCopy) {
 
         ModelAndView modelAndView = new ModelAndView();
         TbParam param = new TbParam();
         param.setDataIndex(0);
         if (null != paramId && paramId > 0) {
             param = iParamCodeService.loadTbParamCodeById(paramId);
+        }
+        if (null != isCopy && isCopy) {
+            param.setParamId(0);
         }
         modelAndView.addObject("paramObj", param);
         modelAndView.setViewName("add-param");
@@ -150,7 +154,7 @@ public class ParamController {
             String remark = request.getParameter("paramObj.remark");
             paramCode.setRemark(remark);
             paramCode.setStatus(1);
-            int dataIndex = Integer.parseInt(StringUtils.isEmpty(request.getParameter("paramObj.dataIndex"))?"0":request.getParameter("paramObj.dataIndex"));
+            int dataIndex = Integer.parseInt(StringUtils.isEmpty(request.getParameter("paramObj.dataIndex")) ? "0" : request.getParameter("paramObj.dataIndex"));
             paramCode.setDataIndex(dataIndex);
             iParamCodeService.saveParamCode(paramCode);
             writer.print(result);
@@ -206,6 +210,7 @@ public class ParamController {
 
     /**
      * 刷新缓存
+     *
      * @param request
      * @param response
      */
