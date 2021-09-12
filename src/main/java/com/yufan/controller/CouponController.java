@@ -448,10 +448,10 @@ public class CouponController {
                         continue;
                     }
                     TbGiveUserCoupon giveUserCoupon = new TbGiveUserCoupon();
-                    giveUserCoupon.setAddFrom((byte) 0);// 来源：0赠送 1 订单3抽奖
+                    giveUserCoupon.setAddFrom(0);// 来源：0赠送 1 订单3抽奖
                     giveUserCoupon.setCouponId(couponId);
                     giveUserCoupon.setCreateTime(new Timestamp(System.currentTimeMillis()));
-                    giveUserCoupon.setStatus((byte) 0);// 状态：0未领取1已领取2已使用3已过期
+                    giveUserCoupon.setStatus(0);// 状态：0未领取1已领取2已使用3已过期
                     giveUserCoupon.setUpdateTime(new Timestamp(System.currentTimeMillis()));
                     giveUserCoupon.setOutTime(outDate);
                     int userId = Integer.parseInt(userDbMap.get(phone).get("user_id").toString());

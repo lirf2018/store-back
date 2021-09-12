@@ -35,7 +35,6 @@ public class GoodsCondition {
     private String secretKey;
     private Integer isZiYin;
 
-
     @JSONField(name = "curre_page")
     private Integer currePage;
 

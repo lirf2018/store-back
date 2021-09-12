@@ -132,4 +132,9 @@ public class OrderServiceImpl implements IOrderService {
         }
         return out;
     }
+
+    @Override
+    public void updateDetailInfo(Integer orderId, Integer detailId, String rentEntTime, Integer status) {
+        iOrderDao.updateDetailInfo(orderId, detailId, rentEntTime, status);
+    }
 }

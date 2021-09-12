@@ -68,7 +68,7 @@ public class GoodsController {
      * @return
      */
     @RequestMapping("goodsPage")
-    public ModelAndView toBannerPage(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView toBannerPage(HttpServletRequest request, HttpServletResponse response, String type) {
         ModelAndView modelAndView = new ModelAndView();
         //查询参数列表
         List<TbParam> listParam = iParamCodeService.loadTbParamCodeList(1);
@@ -87,6 +87,10 @@ public class GoodsController {
         modelAndView.addObject("listLevel", listLevel);
         modelAndView.addObject("listParam", listParam);
         modelAndView.addObject("shopList", shopList);
+        if (StringUtils.isNotEmpty(type) && "1".equals(type)) {
+            modelAndView.setViewName("goods-rent-list");
+            return modelAndView;
+        }
         modelAndView.setViewName("goods-list");
         return modelAndView;
     }
@@ -224,8 +228,8 @@ public class GoodsController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            if(goodsIds.endsWith(",")){
-                goodsIds = goodsIds.substring(0,goodsIds.length()-1);
+            if (goodsIds.endsWith(",")) {
+                goodsIds = goodsIds.substring(0, goodsIds.length() - 1);
             }
             JSONObject out = isPutway == 2 ? HelpCommon.packagMsg("20") : HelpCommon.packagMsg("19");
             iGoodsService.updateGoodsOnSell(goodsIds, isPutway);
@@ -332,7 +336,7 @@ public class GoodsController {
         modelAndView.addObject("listLevel", listLevel);
         modelAndView.addObject("shopList", shopList);
         modelAndView.addObject("skuList", skuList);
-        modelAndView.addObject("editorFlag",editorFlag );
+        modelAndView.addObject("editorFlag", editorFlag);
         modelAndView.setViewName("add-goods");
         return modelAndView;
     }

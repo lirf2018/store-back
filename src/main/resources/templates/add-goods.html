@@ -221,6 +221,12 @@
                 </td>
             </tr>
             <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>商品类型</td>
+                <td>
+                    <select  class="form-control form-control-common" name="goodsType" id="goodsType">
+                        <option th:each="p:${listParam}" th:if="${p.paramCode == 'goods_type'}" th:value="${p.paramKey}" th:selected="${p.paramKey == (goods.goodsType+'')}"><span th:text="${p.paramValue}"></span></option>
+                    </select>
+                </td>
                 <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>是否自营</td>
                 <td>
                     <select  class="form-control form-control-common" name="isZiYin" id="isZiYin" >
@@ -228,11 +234,21 @@
                         <option value="0" th:selected="${goods.isZiYin == 0}">非自营</option>
                     </select>
                 </td>
-                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>商品类型</td>
+            </tr>
+            <tr>
+                <td class="tableLeft"><span style="color: red;font-weight: bold">* </span>租赁计费方式</td>
                 <td>
-                    <select  class="form-control form-control-common" name="goodsType" id="goodsType">
-                        <option th:each="p:${listParam}" th:if="${p.paramCode == 'goods_type'}" th:value="${p.paramKey}" th:selected="${p.paramKey == (goods.goodsType+'')}"><span th:text="${p.paramValue}"></span></option>
+<!--                    租赁计费方式:0 按天 1 按月 2 按季度 3 按年-->
+                    <select  class="form-control form-control-common" id="rentPayType" >
+                        <option value="-1">--选择租赁计费方式--</option>
+                        <option value="0" th:selected="${goods.rentPayType == 0}">按天</option>
+                        <option value="1" th:selected="${goods.rentPayType == 1}">按月</option>
+                        <option value="2" th:selected="${goods.rentPayType == 2}">按季度</option>
+                        <option value="3" th:selected="${goods.rentPayType == 3}">按年</option>
                     </select>
+                </td>
+                <td class="tableLeft"></td>
+                <td>
                 </td>
             </tr>
             <tr>
@@ -589,6 +605,7 @@
         var advancePrice = $("#advancePrice").val();
         var isZiYin = $("#isZiYin").val();
         var goodsKnow = $("#goodsKnow").val();// 废弃字段,直接取配置内容
+        var rentPayType = $("#rentPayType").val();//
         if(startTime != '' && startTime != null){
             startTime = startTime + " 00:00:00";
         }
@@ -652,6 +669,10 @@
         if(goodsType == ''){
             $("#goodsType").focus();
             return myAlertSimple4("选择商品类型")
+        }
+        if((goodsType == '3' || goodsType == 3)&&rentPayType == -1){
+            $("#rentPayType").focus();
+            return myAlertSimple4("选择租赁计费方式")
         }
         if(goodsUnit == ''){
             $("#goodsUnit").focus();
@@ -895,7 +916,8 @@
             "skuPropCode": skuPropCode,
             "unsellPropId": unsellPropId,
             "isZiYin":isZiYin,
-            "goodsKnow":""// 废弃字段,直接取配置内容
+            "goodsKnow":"",// 废弃字段,直接取配置内容
+            "rentPayType":rentPayType// 废弃字段,直接取配置内容
         }
         //上传完得到id 或者路径 标志上传成功
         $.ajax({

@@ -300,6 +300,10 @@ public class GoodsServiceImpl implements IGoodsService {
                 sku.setSkuCode("0".equals(skuCode) ? "" : skuCode);
                 sku.setSkuNum(Integer.parseInt(skuNum));
                 sku.setSkuImg("0".equals(skuImg) ? "" : skuImg);
+                //
+                if(StringUtils.isEmpty(sku.getSkuImg())||sku.getSkuImg().indexOf("null.jpg")>-1){
+                    sku.setSkuImg(goods.getGoodsImg());
+                }
                 sku.setPurchasePrice(new BigDecimal(skuPurchasePrice));
                 sku.setSellCount(0);
                 sku.setSkuId(Integer.parseInt(StringUtils.isEmpty(skuId) ? "0" : skuId));

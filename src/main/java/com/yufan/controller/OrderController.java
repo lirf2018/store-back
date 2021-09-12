@@ -256,6 +256,8 @@ public class OrderController {
         List<Map<String, Object>> detailPropList = iOrderService.queryOrderDetailPropByOrderId(orderId);
         for (int i = 0; i < detailList.size(); i++) {
             Map<String, Object> detailMap = detailList.get(i);
+            String rentPayType = String.valueOf(detailMap.get("rent_pay_type"));
+            detailMap.put("rent_pay_type_name", paramMap.get("rent_pay_type-" + rentPayType));
             List<Map<String, Object>> detailPropOutList = new ArrayList<>();
             for (int j = 0; j < detailPropList.size(); j++) {
                 if (Integer.parseInt(detailPropList.get(j).get("detail_id").toString()) == Integer.parseInt(detailMap.get("detail_id").toString())) {
@@ -294,6 +296,23 @@ public class OrderController {
             writer = response.getWriter();
             JSONObject out = HelpCommon.packagMsg("1");
             iOrderService.updateOrderDetailStatus(detailId, status);
+            writer.print(out);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 修改详情状态
+     */
+    @PostMapping("updateDetailInfo")
+    public void updateDetailInfo(HttpServletRequest request, HttpServletResponse response, Integer orderId,Integer detailId, Integer status,String rentEntTime) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject out = HelpCommon.packagMsg("1");
+            iOrderService.updateDetailInfo(orderId, detailId, rentEntTime, status);
             writer.print(out);
             writer.close();
         } catch (Exception e) {

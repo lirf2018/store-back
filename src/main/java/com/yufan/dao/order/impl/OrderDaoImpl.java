@@ -6,6 +6,7 @@ import com.yufan.common.dao.IGeneralDao;
 import com.yufan.dao.order.IOrderDao;
 import com.yufan.pojo.TbOrder;
 import com.yufan.utils.Constants;
+import com.yufan.utils.DatetimeUtil;
 import com.yufan.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -112,6 +116,7 @@ public class OrderDaoImpl implements IOrderDao {
         sql.append(" SELECT d.order_id,d.detail_id,d.goods_id,d.goods_name,d.goods_spec_name,d.goods_count,CONCAT(d.sale_money,'') as sale_money,CONCAT(d.time_price,'') as time_price,CONCAT(d.deposit_price,'') as deposit_price,d.get_addr_name, ");
         sql.append(" DATE_FORMAT(d.get_time,'%Y-%m-%d %T') as get_time,d.back_addr_name,DATE_FORMAT(d.back_time,'%Y-%m-%d %T') as back_time,p.param_value as detail_status_name,if(d.is_coupon=1,'是','否') as is_coupon,d.detail_status ");
         sql.append(" ,d.goods_spec,CONCAT(d.goods_true_money,'') as goods_true_money,CONCAT(d.goods_purchase_price,'') as goods_purchase_price,d.time_goods_id,if(d.time_goods_id>0,'是','否') as is_time_goods ");
+        sql.append(" ,d.rent_pay_type,d.rent_day,DATE_FORMAT(d.rent_end_time,'%Y-%m-%d') as rent_end_time ");
         sql.append("  from tb_order_detail d ");
         sql.append(" LEFT JOIN tb_param p on p.param_code='detail_status' and p.param_key=d.detail_status and p.`status`=1 where order_id=? ");
         return iGeneralDao.getBySQLListMap(sql.toString(), orderId);
@@ -176,5 +181,26 @@ public class OrderDaoImpl implements IOrderDao {
         int orderId = orderData.getInteger("orderId");
         String sql = " update tb_order set lastalterman=?,lastaltertime=NOW(),order_status=?,refund_price=?,refund_remark=?,service_remark=?,post_man=?,post_phone=?,finish_time=NOW(),user_read_mark=1 where order_id=? ";
         iGeneralDao.executeUpdateForSQL(sql, lastalterman, orderStatus, refundPrice, refundRemark, serviceRemark, postMan, postPhone, orderId);
+    }
+
+    @Override
+    public void updateDetailInfo(Integer orderId, Integer detailId, String rentEntTime, Integer status) {
+        String sql = " update tb_order_detail set detail_status=" + status + ",lastaltertime=now() ";
+        if (!StringUtils.isEmpty(rentEntTime)) {
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate now = LocalDate.now();
+            LocalDate endDate = LocalDate.parse(rentEntTime, format);
+            int rentDay = Period.between(now, endDate).getDays() + 1;
+            sql = sql + " ,rent_day=" + rentDay + ",rent_end_time='" + rentEntTime + "' ";
+        }else{
+            sql = sql + " ,rent_day=0,rent_end_time=null ";
+        }
+        if (detailId == -1) {
+            // 更新全部
+            sql = sql + " where order_id=" + orderId + " ";
+        } else {
+            sql = sql + " where detail_id=" + detailId + " ";
+        }
+        iGeneralDao.executeUpdateForSQL(sql);
     }
 }

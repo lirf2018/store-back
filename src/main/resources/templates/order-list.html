@@ -150,6 +150,8 @@
                     <th>押金</th>
                     <th>是否抢购</th>
                     <th>领取时间</th>
+                    <th>租赁计费方式</th>
+                    <th>租赁结束时间</th>
                     <th>归还时间</th>
                     <th>是否卡券</th>
                     <th>是否预定</th>
@@ -385,6 +387,27 @@
                     {
                         data: function (obj) {
                             return obj.get_time==null?"":obj.get_time;
+                        }
+                    },
+                    {
+                        data: function (obj) {
+                            // 租赁计费方式:0 按天 1 按月 2 按季度 3 按年
+                            var rentPayType = obj.rent_pay_type;
+                            if(rentPayType == 0){
+                                return "按天";
+                            }else if(rentPayType == 1){
+                                return "按月";
+                            }else if(rentPayType == 2){
+                                return "按季度";
+                            }else if(rentPayType == 3){
+                                return "按年";
+                            }
+                            return  '';
+                        }
+                    },
+                    {
+                        data: function (obj) {
+                            return obj.rent_end_time==null?"":obj.rent_end_time;
                         }
                     },
                     {

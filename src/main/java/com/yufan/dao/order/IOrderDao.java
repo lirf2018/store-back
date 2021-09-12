@@ -33,4 +33,6 @@ public interface IOrderDao {
 
     public TbOrder loadOrder(String orderNo);
 
+    public void updateDetailInfo(Integer orderId,Integer detailId, String rentEntTime,Integer status );
+
 }

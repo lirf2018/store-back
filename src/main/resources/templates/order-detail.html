@@ -186,42 +186,48 @@
                    <!--0待付款-->
                    <div th:if="${order.orderStatus == 0}">
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='7'  type='button' onclick="setNewClickOrderStatus(this)" >设置已取消</button>&nbsp;&nbsp;
-                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>
+                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>&nbsp;
                    </div>
                    <!--1已付款 orderPrice>0-->
                    <div th:if="${order.orderStatus == 1 && order.orderPrice>0}">
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='5'  type='button' onclick="setNewClickOrderStatus(this)" >设置待收货</button>&nbsp;&nbsp;
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='9'  type='button' onclick="setNewClickOrderStatus(this)" >设置退款中</button>&nbsp;&nbsp;
-                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>
+                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>&nbsp;
+                       <button data-toggle="modal" data-target="#resetOrderDetailModel"  class='btn btn-success' type='button' >修改订单详情信息</button>&nbsp;
                    </div>
                    <!--1已付款 orderPrice=0-->
                    <div th:if="${order.orderStatus == 1 && order.orderPrice==0}">
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='3'  type='button' onclick="setNewClickOrderStatus(this)" >设置已失败</button>&nbsp;&nbsp;
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='5'  type='button' onclick="setNewClickOrderStatus(this)" >设置待收货</button>&nbsp;&nbsp;
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='7'  type='button' onclick="setNewClickOrderStatus(this)" >设置已取消</button>&nbsp;&nbsp;
-                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>
+                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>&nbsp;
+                       <button data-toggle="modal" data-target="#resetOrderDetailModel"  class='btn btn-success' type='button' >修改订单详情信息</button>&nbsp;
                    </div>
                    <!--5待收货-->
                    <div th:if="${order.orderStatus == 5}">
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='6'  type='button' onclick="setNewClickOrderStatus(this)" >设置已完成</button>&nbsp;&nbsp;
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='9'  type='button' onclick="setNewClickOrderStatus(this)" >设置退款中</button>&nbsp;&nbsp;
-                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>
+                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>&nbsp;
+                       <button data-toggle="modal" data-target="#resetOrderDetailModel"  class='btn btn-success' type='button' >修改订单详情信息</button>&nbsp;
                    </div>
                    <!--9退款中-->
                    <div th:if="${order.orderStatus == 9}">
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='6'  type='button' onclick="setNewClickOrderStatus(this)" >设置已完成</button>&nbsp;&nbsp;
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='10'  type='button' onclick="setNewClickOrderStatus(this)" >设置已退款</button>&nbsp;&nbsp;
-                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>
+                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>&nbsp;
+                       <button data-toggle="modal" data-target="#resetOrderDetailModel"  class='btn btn-success' type='button' >修改订单详情信息</button>&nbsp;
                    </div>
                    <!--12还货中-->
                    <div th:if="${order.orderStatus == 12}">
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='6'  type='button' onclick="setNewClickOrderStatus(this)" >设置已完成</button>&nbsp;&nbsp;
                        <button data-toggle="modal" data-target="#orderUpdateStatusModel" class='btn btn-info' data-value='13'  type='button' onclick="setNewClickOrderStatus(this)" >设置已还货</button>&nbsp;&nbsp;
-                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>
+                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>&nbsp;
+                       <button data-toggle="modal" data-target="#resetOrderDetailModel"  class='btn btn-success' type='button' >修改订单详情信息</button>&nbsp;
                    </div>
                    <!--非最终状态-->
                    <div th:if="${order.orderStatus != 0 && order.orderStatus != 1 && order.orderStatus != 4 && order.orderStatus != 5 && order.orderStatus != 9 && order.orderStatus != 12 }">
-                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>
+                       <button data-toggle="modal" data-target="#resetOrderInfoModel"  class='btn btn-success' type='button' >修改订单信息</button>&nbsp;
+                       <button data-toggle="modal" data-target="#resetOrderDetailModel"  class='btn btn-success' type='button' >修改订单详情信息</button>&nbsp;
                    </div>
                </td>
             </tr>
@@ -239,12 +245,13 @@
                            <th>押金</th>
                            <th>是否抢购</th>
                            <th>取货时间</th>
-                           <th>取货地点</th>
+                           <th>租赁计费方式</th>
+                           <th>租赁结束时间</th>
                            <th>还货时间</th>
                            <th>还货地点</th>
                            <th>是否卡券</th>
                            <th>详情状态</th>
-                           <th>操作</th>
+<!--                           <th>操作</th>-->
                        </tr>
                        </thead>
                        <tbody class="text-center" th:each="d:${detailOutList}" style="border: none">
@@ -258,29 +265,45 @@
                                 <td><span th:text="${d.deposit_price}"></span></td>
                                 <td><span th:text="${d.is_time_goods}"></span></td>
                                 <td><span th:text="${d.get_time}"></span></td>
-                                <td><span th:text="${d.get_addr_name}"></span></td>
+                                <td><span th:text="${d.rent_pay_type_name}"></span></td>
+                                <td><span th:text="${d.rent_end_time}"></span></td>
                                 <td><span th:text="${d.back_time}"></span></td>
                                 <td><span th:text="${d.back_addr_name}"></span></td>
                                 <td><span th:text="${d.is_coupon}"></span></td>
                                 <td><span th:text="${d.detail_status_name}"></span></td>
-                                <td>
-                                    <!--待取货-->
-                                    <div th:if="${d.detail_status == 0}">
-                                        <button class='btn btn-info' data-value='1' th:value="${d.detail_id}" type='button' onclick="updateDetailStatus(this)">设置已取货</button><br> <div>&nbsp;</div>
-                                        <button class='btn btn-info' data-value='2' th:value="${d.detail_id}" type='button' onclick="updateDetailStatus(this)">设置已取消</button><br> <div>&nbsp;</div>
-                                        <button class='btn btn-info' data-value='5' th:value="${d.detail_id}" type='button' onclick="updateDetailStatus(this)">设置已退款</button>
-                                    </div>
-                                    <!--已取货-->
-                                    <div th:if="${d.detail_status == 1}">
-                                        <button class='btn btn-info' data-value='3' th:value="${d.detail_id}" type='button' onclick="updateDetailStatus(this)">设置已完成</button><br><div>&nbsp;</div>
-                                        <button class='btn btn-info' data-value='4' th:value="${d.detail_id}" type='button' onclick="updateDetailStatus(this)">设置已退货(退款)</button>
-                                    </div>
-                                </td>
+<!--                                <td>-->
+<!--                                    &lt;!&ndash;待取货&ndash;&gt;-->
+<!--                                    <div th:if="${d.detail_status == 0}">-->
+<!--                                        <button class='btn btn-info' data-value='1' th:value="${d.detail_id}" type='button' onclick="updateDetailStatus(this)">设置已取货</button><br> <div>&nbsp;</div>-->
+<!--                                        <button class='btn btn-info' data-value='2' th:value="${d.detail_id}" type='button' onclick="updateDetailStatus(this)">设置已取消</button><br> <div>&nbsp;</div>-->
+<!--                                        <button class='btn btn-info' data-value='5' th:value="${d.detail_id}" type='button' onclick="updateDetailStatus(this)">设置已退款</button>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash;已取货&ndash;&gt;-->
+<!--                                    <div th:if="${d.detail_status == 1}">-->
+<!--                                        <button class='btn btn-info' data-value='3' th:value="${d.detail_id}" type='button' onclick="updateDetailStatus(this)">设置已完成</button><br><div>&nbsp;</div>-->
+<!--                                        <button class='btn btn-info' data-value='4' th:value="${d.detail_id}" type='button' onclick="updateDetailStatus(this)">设置已退货(退款)</button>-->
+<!--                                    </div>-->
+<!--                                </td>-->
                             </tr>
-                            <tr th:each="p:${d.detailPropOutList}">
-                                <td colspan="5"><span th:text="${p.property_key}"></span></td>
-                                <td colspan="5"><span th:text="${p.property_value}"></span></td>
-                                <td colspan="5"><span th:text="${p.remark_name}"></span></td>
+                            <tr>
+                                <td colspan="50">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>详情属性名称</th>
+                                            <th>详情属性值</th>
+                                            <th>详情属性备注</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="text-center"  style="border: none">
+                                        <tr th:each="p:${d.detailPropOutList}">
+                                            <td><span th:text="${p.property_key}"></span></td>
+                                            <td><span th:text="${p.property_value}"></span></td>
+                                            <td><span th:text="${p.remark_name}"></span></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
                             </tr>
                        </tbody>
                    </table>
@@ -295,12 +318,48 @@
         </table>
     </div>
 </div>
+<div id="resetOrderDetailModel" class="modal fade" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" ><span>修改订单详情</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label>订单详情：</label>
+                        <select class="form-control" name="orderStatus" id="detailId">
+                            <option value="-1">-- 修改全部订单详情 --</option>
+                            <option th:each="item : ${detailOutList}" th:value="${item.detail_id}"  th:text="${item.goods_name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>租赁结束时间：</label>
+                        <input type="text" class="form-control form-control-common" readonly placeholder="租赁结束时间" value="" id="rentEntTime" name="rentEntTime">
+                    </div>
+                    <div class="form-group">
+                        <label>详情状态：</label>
+                        <select class="form-control"  id="detailStatus">
+                            <option value="-1">-- 选择状态 --</option>
+                            <option th:each="item : ${paramList}" th:value="${item.paramKey}"  th:text="${item.paramValue}" th:if="${item.status == 1 && item.paramCode == 'detail_status'}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group" align="center">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-success" onclick="updateOrderDetailStatus()">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="orderUpdateStatusModel" class="modal fade" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" ><span></span></h4>
+                <h4 class="modal-title" ><span>客服备注</span></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -379,8 +438,7 @@
 <!-- Data picker -->
 <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <!-- layerDate plugin javascript -->
-<script src="js/plugins/layer/laydate/laydate.js"></script>
-
+<script src="js/laydate/laydate.js"></script>
 <!-- Sweet alert -->
 <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
 
@@ -572,6 +630,57 @@
         });
     }
     //修改订单状态============结束====================
+    // 修改订单详情============开始============= resetOrderDetailModel
+    $('#resetOrderDetailModel').modal({
+        backdrop: 'static'
+    });
+    $('#resetOrderDetailModel').modal('hide');
+    $('#resetOrderDetailModel').on('show.bs.modal', function () {
+        $("#detailId").val("-1");
+        $("#rentEntTime").val("");
+        $("#detailStatus").val("-1");
+    })
+    
+    function updateOrderDetailStatus() {
+        var orderId = $("#orderId").val();
+        var detailId = $("#detailId").val();
+        var rentEntTime = $("#rentEntTime").val();
+        var status = $("#detailStatus").val();
+        if(status == -1 || status == '-1'){
+            myAlertSimple4("请选择详情状态");
+            return;
+        }
+        $.ajax({
+            url: "order/updateDetailInfo",
+            type: 'POST',
+            data: {
+                "orderId":orderId,
+                "detailId":detailId,
+                "status":status,
+                "rentEntTime":rentEntTime
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                myAlertSimple4(data.msg);
+                if (code == '1') {
+                    setTimeout("javascript:location.reload()",1000);
+                }
+            }
+        });
+    }
+
+    //修改订单详情============结束====================
+</script>
+<script th:inline="javascript">
+    laydate.render({
+        elem: '#rentEntTime' //指定元素
+        ,type: 'date'
+        ,closeStop: '#rentEntTime'
+        ,position: 'abolute'
+    });
 </script>
 </body>
 </html>

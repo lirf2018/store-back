@@ -46,7 +46,7 @@ public class GoodsDaoImpl implements IGoodsDao {
         sql.append(" g.status,g.remark,g.goods_type,g.is_pay_online,g.out_code,CONCAT(g.deposit_money,'') as deposit_money,g.peisong_zc_desc,g.peisong_pei_desc, ");
         sql.append(" CONCAT(g.purchase_price,'') as purchase_price,g.is_time_goods,g.limit_num,g.bar_code,g.bar_code_shop,g.sell_count, ");
         sql.append(" g.limit_way,DATE_FORMAT(g.limit_begin_time,'%Y-%m-%d %T') as limit_begin_time,g.level_id,CONCAT(g.advance_price,'') as advance_price ");
-        sql.append(" ,cl.level_name,ca.category_name,IFNULL(tg.id,0) as time_goods_id,g.is_zi_yin,if(g.end_time<NOW(),0,1) as ac_type ");
+        sql.append(" ,cl.level_name,ca.category_name,IFNULL(tg.id,0) as time_goods_id,g.is_zi_yin,if(g.end_time<NOW(),0,1) as ac_type,g.rent_pay_type ");
         sql.append(" from tb_goods g LEFT JOIN tb_category_level cl on cl.level_id=g.level_id LEFT JOIN tb_category ca on ca.category_id=g.category_id  ");
         sql.append(" LEFT JOIN tb_time_goods tg on tg.goods_id=g.goods_id and tg.`status`=1 ");
         sql.append(" where 1=1 ");
